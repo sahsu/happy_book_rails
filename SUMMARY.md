@@ -2,6 +2,7 @@
 * [前言](preface.md)
   * [毕业设计](biye.md)
   * [哪些不学](part3_rails_premier/buyongxue.md)
+  * [编程风格](coding_convention.md)
 * [与前端相关](authentication.md)
 * [数据结构](data_structure.md)
 * [数据库](database.md)
