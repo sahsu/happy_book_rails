@@ -17,12 +17,16 @@ end
 对于这个情况，我们就要让程序在后台运行。
 
 ##安装
+
 在Active Record中使用，直接在`Gemfile`中加入
+
 ```bash
 gem 'delayed_job_active_record'
 ```
+
 运行`bundle install`安装后端和delayed_job gem。
 Active Record后端需要一个任务表，创建命令：
+
 ```bash
 $ rails generate delayed_job:active_record
 $ rake db:migrate
@@ -30,7 +34,6 @@ $ rake db:migrate
 就会生成一个migration:
 
 ```
-
 class CreateDelayedJobs < ActiveRecord::Migration
   def self.up
     create_table :delayed_jobs, force: true do |table|
@@ -61,8 +64,8 @@ end
 # config/application.rb
 module YourApp
   class Application < Rails::Application
-    # Be sure to have the adapter's gem in your Gemfile and follow
-    # the adapter's specific installation and deployment instructions.
+
+  　# 这里，加上下面这一行：
     config.active_job.queue_adapter = :delayed_job
   end
 end
@@ -75,8 +78,98 @@ end
 ##开发模式(development)
 在development环境下，如果rails的版本大于3.1，每当执行完100个任务或者任务完成时，程序代码会自动加载，所以在development环境更改代码后不用重启任务。
 
+## 基本用法
+
+假设，原来的代码是：
+
+```
+["jim", "lily", "lucy", "alex"].each do |name|
+  puts "hi #{name}"
+end
+
+```
+
+需要创建一个文件：
+
+```
+# app/jobs/query_price_job.rb
+class QueryPriceJob < Struct.new(:name)
+	def perform
+    # 注意： 下面参数中的name, 来自于上面的  Struct参数
+		puts "hi #{name}"
+	end
+end
+```
+
+## 创建钩子方法
+
+```
+class QueryPriceJob< Struct.new(:name)
+  def enqueue(job)
+  end
+
+	def perform
+		puts "hi #{name}"
+	end
+
+  # 注意：　钩子方法中，参数要有 job.
+  def before(job)
+    # 注意：　每个钩子方法，可以使用该Struct的构建参数
+		puts "== in before, parameter: #{name}"
+  end
+
+  def after(job)
+  end
+
+  def success(job)
+  end
+
+  def error(job, exception)
+  end
+
+  def failure(job)
+  end
+end
+```
+
+在它的源代码中，我们可以看到下面几个顺序：
+
+```
+def invoke_job
+	hook :before
+	payload_object.perform
+	hook :success
+rescue Exception => e
+	hook :error, e
+	raise e
+ensure
+	hook :after
+end
+```
+
+## 关于执行的问题
+
+1.每个job worker的默认工作间隔时间，是　60s, 也就是说，这些worker进程，每隔60s, 才会检查一下 delayed_jobs这个表．
+2.比较有用的钩子方法是after, 可以根据delayed_jobs这个表的handler，来查看状态，例如：
+
+```
+def after job
+	crypto_code = options[:crypto_code]
+	target_code = options[:target_code]
+
+ 	# 注意：　在这里，可以根据下面这句话，找到符合条件的job.
+	size = Delayed::Job.where('handler like ?', "%crypto_code: SALT%").size
+	# 如果该job是最后一个job, 那么就开始更新．．．
+	if size == 1
+		Pair.update_single_crypto_difference_rate crypto_code, target_code
+	end
+　　
+　# 执行完这个after, 上面的size才能变成0
+end
+```
 
 ##任务队列
+
 在任何对象中调用`.delay.method(params)`，它将在后台进行处理
 ```ruby
 #不使用延时任务
@@ -109,7 +202,7 @@ rails console:
 ```
 $ bundle exec script/delayed_job -n 2 start
 ```
- 表示，同时有两个worker 在干活儿。这两个worker, 会紧盯着“任务表”， 一有任务，马上开始执行。
+表示，同时有两个worker 在干活儿。这两个worker, 会紧盯着“任务表”， 一有任务，马上开始执行。
 
 ```
 kaikai:graduate$ bundle exec ruby bin/delayed_job -n 2 start
@@ -135,10 +228,8 @@ delayed_job.1: process with pid 31053 started.
 的时候。
 ```
 
-
-
-
 如果一个方法需要一直在后台运行，可以在方法声明之后，调用`handle_asynchronously`
+
 ```ruby
 class Device
   def deliver
@@ -227,14 +318,29 @@ $ QUEUES=mailers,tasks rake jobs:work
 ```
 
 ##重启delayed_job
-重启delayed_job：
+
+单个job的重启
+
 ```bash
 $ RAILS_ENV=production script/delayed_job restart
 ```
-重启多个delayed_job workers：
+
+多个job ：
+
 ```bash
 $ RAILS_ENV=production script/delayed_job -n2 restart
 ```
+
+建议：　使用下面的ruby脚本来重启：　
+
+```
+# stop_delayed_job.rb
+pids = `ps -ef | grep delayed_job | awk '{print $2}'`
+pids.each_line do |pid|
+  `kill -9 #{pid}`
+end
+```
+
 >Rials 4 需要替换`script/delayed_job`为`bin/delayed_job`
 
 ###清除任务
