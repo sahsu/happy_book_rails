@@ -108,6 +108,8 @@ set :repository, "."
 set :scm, :none
 set :deploy_via, :copy
 
+set :copy_exclude, ['tmp', 'log'] # 部署到远程的时候,不考虑的两个文件夹
+
 role :web, server
 role :app, server
 role :db,  server, :primary => true
