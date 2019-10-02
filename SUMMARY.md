@@ -5,23 +5,15 @@
   * [编程风格](coding_convention.md)
   * [与前端相关](authentication.md)
   * [数据结构](data_structure.md)
-  * [数据库](homework_database.md)
-  * [后端的使用方式](database_server.md)
-  * [前端命令行的使用方式](database_command_line.md)
-  * [前端GUI的使用方式](database_gui.md)
+  * [web基础:发起请求的原理](network_basic.md)
 
 * [Ruby入门](ruby_intro.md)
   * [学习过程](ruby_steps.md)
   * [安装环境](ruby_installation.md)
   * [Ruby 语法入门](ruby_basic.md)
   * [Ruby 中的简写](ruby_abbreviation.md)
-  * [Ruby 进阶](ruby_jin_jie.md)
   * [Ruby module](ruby_module.md)
-  * [Ruby 进阶2](ruby_advanced.md)
-
-* Web基础
-  * [发起请求的原理](network_basic.md)
-  * [对服务器的称谓](server_names.md)
+  * [Ruby 进阶](ruby_advanced.md)
 
 * [Rails 入门](part3_rails_premier.md)
   * [学习过程](rails_steps.md)

@@ -41,10 +41,15 @@ Apple.create({:name => 'apple', :color => 'red'})
 
 ```ruby
 Apple.all.each do {  |apple|      apple.name  }
+```
 
-# 等同于：
+等同于：
+
+```ruby
 Apple.all.map(&:name)
 ```
+
+注意：　这个缩写非常常见．几乎是Ruby目前语法的标准．
 
 ### do ...end 与 { } 几乎是一样的.
 
