@@ -1,4 +1,14 @@
-# 花多少时间来搜索合适？
+# 方法论
+
+推荐先看我的这本书: ＜＜软件开发之殇＞＞ https://item.jd.com/12641896.html
+
+从事软件开发, 一定要有个好的方法论. 因为软件开发领域需要每天学习. 不能用笨方法去学习.
+
+下面是我们从实战角度梳理出来的初学者最容易犯的错误.
+
+# 搜索时间过多/过短.
+
+花多少时间来搜索合适？
 
 1. 先自己试着搜索1～2小时. 我的正常搜索时间： 5～ 20分钟。 少数内容， 2小时内也基本搞定。
 2. 如果2小时还搞不定，果断人肉问身边的同事同学。
@@ -10,7 +20,9 @@
 
 我问过几个问题，90%都可以顺利在 stackoverflow上得到答案。 如果得不到的话，可能该问题就无解了。
 
-# 官网上的内容比我的内容多的多？ 该怎么办？ 比如log4r 的官网有好多内容。
+# 官网上的内容比这本书的内容多的多？
+
+该怎么办？ 比如log4r 的官网有好多内容。
 
 http://log4r.rubyforge.org/manual.html
 
@@ -66,6 +78,7 @@ stackoverflow 上有两个问题， 一个问题15个星，一个问题35个星�
 官方网站就不用看了。
 
 TODO: 好几个图。放到 methodologies 目录下。
+
 # 如何搜索到这些知识？ (上面回答了，google）
 
 # 大师是否一开始也看官网说明？ (不看）
@@ -112,7 +125,7 @@ The object in the params hash is an instance of a subclass of IO. Depending on t
 
 rails.  会依赖好多好多：  activesupport, active
 
-
+```
     rails (4.2.1)
       actionmailer (= 4.2.1)
       actionpack (= 4.2.1)
@@ -124,30 +137,36 @@ rails.  会依赖好多好多：  activesupport, active
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.2.1)
       sprockets-rails
+```
 
 
 对于 activerecord, 依赖了：
 
-
+```
     activerecord (4.2.1)
       activemodel (= 4.2.1)
       activesupport (= 4.2.1)
       arel (~> 6.0)
+```
 
 对于 activemodel, 依赖了：
 
+```
     activemodel (4.2.1)
       activesupport (= 4.2.1)
       builder (~> 3.1)
+```
 
 对于  activesupport, 还有更多：
 
+```
     activesupport (4.2.1)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+```
 
 所以，这是个方法论： A  依赖 B， B 依赖 C， C 依赖 D， 如果D 依赖回A 呢？
 
@@ -156,14 +175,16 @@ rails.  会依赖好多好多：  activesupport, active
 
 ## 在操作系统中也是一样。
 
-而且，还存在与：  Linux, Windows, Mac当中。 例如，Linux, 为什么会存在：  apt-get , yum  ...
+而且，还存在于：  Linux, Windows, Mac当中。 例如，Linux, 为什么会存在：  apt-get , yum  ...
 在mac中， 为什么会存在： homebrew
 
 ## 编译好的包
 
 Homebrew, apt-get , 它们都是 package manager (第三方包的管理工具）
 
-$ apt-get install git,
+```
+$ apt-get install git
+```
 
 它会自动帮我们把相关的内容下载下来。 省的我们一个一个去寻找了。
 
@@ -180,7 +201,7 @@ windows:  .exe (会自动解压，然后把编译后的文件，copy到对应目
 
 ## 最后一个例子。
 
-例如，我们的生产服务器，往往， 都是只有命令行。 没有GUI。
+例如，我们的生产服务器，往往都是只有命令行。 没有GUI。
 为什么我们的桌面LINUX有GUI呢？
 
 因为，桌面LINUX， 比服务器LINUX，多了一些软件。（xwindow)
@@ -190,7 +211,10 @@ windows:  .exe (会自动解压，然后把编译后的文件，copy到对应目
 # 在ruby中，如何定位并且搜索？
 
 例如：
+
+```
 $ gem install httparty
+```
 
 之后, 下面代码会报错：
 
@@ -250,7 +274,9 @@ http.rb:879:in `initialize': Connection refused - connect(2) for nil port 80 (Er
 
 于是，我加上 httpart , 搜索词换成了：
 
+```
 httparty http.rb:879:in `initialize': Connection refused - connect(2) for nil port 80 (Errno::ECONNREFUSED)
+```
 
 发现结果没太大变化。 因为： google认为， 我们的搜索词， 没啥变化。
 
@@ -258,9 +284,12 @@ httparty http.rb:879:in `initialize': Connection refused - connect(2) for nil po
 
 所以, 我们现在这样搜：
 
+```
 httparty Connection refused - connect(2) for nil port 80 (Errno::ECONNREFUSED)
+```
 
 找到第二个：
+
 http://stackoverflow.com/questions/11768111/connection-refused-connect2-httparty
 
 里面的一个答案：
@@ -270,27 +299,33 @@ I was using an incorrect url.
 于是我们就修改代码：
 
 
+```
 response = HTTParty.get 'www.baidu.com'
+```
 
 改成：
 
-
+```
 response = HTTParty.get 'http://www.baidu.com'
-
+```
 
 ## httparty , 在ruby中报错，跟在rails中报错，是不一样的。
 
- rails增加了： 3个分类：
- 1. Application Trace
- 2. Framework trace
- 3. Full trace
+rails增加了： 3个分类：
+1. Application Trace
+2. Framework trace
+3. Full trace
 
 
- 1. Application Trace
+1. Application Trace
+
+```
 app/controllers/books_controller.rb:8:in `index'
+```
 
- 2. Framework trace (增加了好多rails 框架的出错路径）
+2. Framework trace (增加了好多rails 框架的出错路径）
 
+```
  /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
  /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb:879:in `open'
  /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
@@ -378,10 +413,12 @@ app/controllers/books_controller.rb:8:in `index'
  /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/webrick/httpserver.rb:138:in `service'
  /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/webrick/httpserver.rb:94:in `run'
  /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/webrick/server.rb:294:in `block in start_thread'
+```
 
 
 3. fulltrace 同上， 只不过增加了application trace 的内容：
 
+```
 /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
 /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb:879:in `open'
 /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
@@ -396,6 +433,7 @@ httparty (0.14.0) lib/httparty.rb:486:in `get'
 httparty (0.14.0) lib/httparty.rb:598:in `get'
 app/controllers/books_controller.rb:8:in `index'
 .... (以下同 framework trace )
+```
 
 # 如何使用？
 
@@ -457,19 +495,23 @@ Errno::ECONNREFUSED (Connection refused - connect(2) for nil port 80):
 
 1. 要了解 用例图。  把每个角色， 要干什么事儿，写出来。
 
+```
 学员  O    ----> 可以报名
      / \   ----> 可以查看课程分类
            ----> 可以查看课程详情
            ----> 可以注册
+```
 
 
 2. 要了解类图(class diagram). 画出class 之间的对应关系（不需要把它的所有属性都列出来）
 
 3. 要熟练掌握：时序图（sequence diagram)
 
- 3.1 列出所有的角色
- 3.2 按照时间点，严格的一条一条的写，从上到下
- 3.3 在 3.2的基础上，每个角色, 找到谁，干什么事儿，都写出来。
+3.1 列出所有的角色
+
+3.2 按照时间点，严格的一条一条的写，从上到下
+
+3.3 在 3.2的基础上，每个角色, 找到谁，干什么事儿，都写出来。
 
 
 掌握上面三种UML图就可以了。特别是第三种，是最强大的分析问题，梳理流程的方法。
@@ -486,15 +528,17 @@ Errno::ECONNREFUSED (Connection refused - connect(2) for nil port 80):
 ## 1. 英语不能差。 英语对于程序员，就好比鼻子对于大厨。
 
 与国外大牛交流， 要用英文。
+
 看国外官方文档， 都是英文（就连vuejs，作者是中国人， 官方文档都是英文. ruby 日本人写的，官方文档还是英文）
+
 看stackoverflow, 全都是英文。 （stackoverflow 如果是 95分， 国内iteye, infoq 70分， csdn 30 分,给高了。）
 
 ## 2. 提高搜索，解决问题的能力。
 
 遇到一个新技术，要有敏锐的嗅觉，知道：这个新技术的
-1.官方网站在哪里。
-2.源代码地址在哪里。
-3.再看这个新技术是否有前景。（一般搜索 “技术A怎么样？", 用英文，在google上搜，就会出来特别有价值的内容)
-4.如果有价值学习，那么就来到官网，看tutorial。guide.
-5.随着学习的深入，不断的问其他人，不断的参与新项目，要与人交流，所以ruby论坛，线上的要参加，线下的也要参加。
-6.多关注一些github。
+1. 官方网站在哪里。
+2. 源代码地址在哪里。
+3. 再看这个新技术是否有前景。（一般搜索 “技术A怎么样？", 用英文，在google上搜，就会出来特别有价值的内容)
+4. 如果有价值学习，那么就来到官网，看tutorial。guide.
+5. 随着学习的深入，不断的问其他人，不断的参与新项目，要与人交流，所以ruby论坛，线上的要参加，线下的也要参加。
+6. 多关注一些github。

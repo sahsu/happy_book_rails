@@ -12,9 +12,12 @@
 
 ## 查看方法
 
-1. 安装 npm
+1. 安装 nvm  (http://siwei.me/blog/posts/nvm-node )
 2. 安装 node
-3. 安装 gitbook
+3. 安装 gitbook  (参考: http://siwei.me/blog/posts/gitbook-gitbook )
+
+  $ npm install gitbook-cli -g
+
 4. $ gitbook serve  ( 注意这里不是 $ gitbook server)
 
 然后就可以看到了!
