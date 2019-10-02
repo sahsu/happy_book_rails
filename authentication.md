@@ -1,18 +1,19 @@
 # 关于密码校验
 
-
 ## 密码的产生过程。
 
 明文 -> md5(明文）  ->  'a1b2c3d4 .... z20' -> 保存到数据库。
 
 永远不要把明文密码保存在数据库中。永远要使用md5加密的方式。
 
-
 在rails/ java 等 框架中，正确的做法是： md5加密是框架自动做的。
 
 例如：
 
+```
 user = User.create  :name => 'Jim',  :password => '123456'
+```
+
 然后我们登录到MYSQL 查看password 这个列的时候，会发现，已经被自动加密过了。
 
 ## WEB 端， 也不是每次都需要校验密码。
@@ -44,6 +45,7 @@ sessions:
 ```
 
 在1# 客户端上， 就会显示：  true
+
 在2#， 3#客户端上，就会显示：    （空）
 
 cookie:
@@ -66,10 +68,12 @@ User.create :email => 'someone@fake.com', :password => '88888888'
 于是，新的user 记录就会自动生成，并且，数据库中它的encrypted_password 会根据 '88888888'来
 自动生成。
 
-2. 根据上面生成的记录， devise 还能自动的根据encrypted_password, 得到真正的password.
+3. 根据上面生成的记录， devise 还能自动的根据encrypted_password, 得到真正的password.
 
+```
 user = User.last # 获取到刚才新建的用户
 user.password  # => 88888888
+```
 
 所以，在devise所作用的user表中，是没有password这个列存在的,它是一个独立的属性, 可以
 供我们访问。
@@ -101,14 +105,15 @@ app ：  /interface/login?name=xiaowang&password=123456
 
 app:
 
+```
 GET  /interface/create_case?token=abc
 GET  /interface/delete_case?id=3&token=abc
+```
 
 
 这样的话，我们在服务器端，每次都可以针对一个request做验证：
 
 ```ruby
-
 class Interface < ActionController::Base
 
   def create_case
@@ -134,17 +139,21 @@ md5的值，有当前的时间戳。有pid ... guid ...
 
 User表：
 
+```
 id  | name  |   encrypted_password  | token
 1   | jim   |   a1b2c3...           | abc
 2   | Lilei |   c3d4e5...           | efg
+```
 
 token是可以变的。我们可以让它具有一定的时效性：
 
 改良后的：User表：
 
+```
 id  | name  |   encrypted_password  | token | expires_at
 1   | jim   |   a1b2c3...           | abc   | 2015-10-30
 2   | Lilei |   c3d4e5...           | efg   | 2015-11-5
+```
 
 那么，这样的话，我们就可以根据某个user记录的expires_at 来判断，该用户的token是否有效。
 
@@ -156,9 +165,11 @@ id  | name  |   encrypted_password  | token | expires_at
 1. 要有一个统一的方法来发起get/post 请求
 
 
+```
 // 就是确保每次发起请求的时候，都要给到服务器端：  token,pid, guid....
 function send_request(url){
 
   final_url =  url + "&token=" + get_token() + "&pid=" + get_pid() ...
   // 把这个final_url 发送出去
 }
+```

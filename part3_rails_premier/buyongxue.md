@@ -1,19 +1,20 @@
 # 新手入门不用学的东西
 
-## csrf_token 在学习前可以省略掉。
-注释掉 protect_from_forgery
+## `csrf_token` 在学习前可以省略掉。
 
+在`application_controller.rb`注释掉 `protect_from_forgery`
+
+```
 class ApplicationController < ActionController::Base
 #   protect_from_forgery with: :exception
 end
-
+```
 
 ##  asset pipe line.
 
 会在部署的时候给你带来大麻烦
 
-in `config/application.rb`:
-
+in `config/application.rb`中，暂时把它注释掉，这个可以在整体学完之后再学:
 
 ```
 config.assets.enabled = false
@@ -22,6 +23,7 @@ config.assets.enabled = false
 ## permit
 
 in `config/application.rb`
+
 ```
 config.action_controller.permit_all_parameters = true
 ```
@@ -31,15 +33,22 @@ config.action_controller.permit_all_parameters = true
 
 我发现下面的知识会对新手造成学习阻碍。所以，千万不要用它。
 
-另外，学习rails之前，务必熟悉HTML的表单。务必知道request的各种参数是如何来的。否则你会被 form_for, f.input弄晕。
+另外，学习rails之前，务必熟悉HTML的表单。务必知道request的各种参数是如何来的。否则你会被 `form_for`, `f.input`弄晕。
 
 ## scaffold
 
 新手入门可以。但是入门时，不要依赖它。
 
 仅仅把它用在学习的过程中。例如，我希望知道，一个完整的 CRUD， 是需要哪些文件来
-配合的。那么一个最快速的办法就是使用 `$ rails g scaffold users  name:string ..`
-这个命令来生成。就能看到：会生成controller, model, view, helper ... 所有依赖的文件。
+配合的。那么一个最快速的办法就是使用
+
+```
+$ rails g scaffold users  name:string ..
+```
+
+这个命令来生成,就能看到：
+
+会生成controller, model, view, helper ... 所有依赖的文件。
 
 也会生成 migration 等等。
 
@@ -47,10 +56,9 @@ config.action_controller.permit_all_parameters = true
 入门的速度，可能要达到3个月。但是，不依赖这个命令，所有的CRUD，都自己手写的人，
 2~3周入门。
 
-## form validation
+## form validation 表单验证
 
-在服务器端，验证一个 form object , 是否符合要求。例如， name  是否是空。 例如： email
-是否是 xx@yy.com 这个格式。
+在服务器端，验证一个 form object , 是否符合要求。例如， name  是否是空。 例如： email 是否是 xx@yy.com 这个格式。
 
 我用了7年rails, 到现在，我还一直不用这个功能。对于对象的验证，在前端做（PC WEB端）做
 就可以了。因为我经历的系统，对安全性都不是特别特别的看重（如果你的负责的系统，不是BAT
@@ -77,9 +85,9 @@ config.action_controller.permit_all_parameters = true
 
 ## 关联关系。
 
-忘掉 has_many_and_belongs_to .
+忘掉 `has_many_and_belongs_to` .
 
-不用这个，我们要用： has_many 来代替。
+不用这个，我们要用： `has_many` 来代替。
 多对多的关系，不是由两个对象（表）来决定的。是由 3个表来决定的。例如：
 
 老师-学生 = N:N
@@ -100,11 +108,13 @@ config.action_controller.permit_all_parameters = true
 
 只有一个表： 就叫：  creatures
 
+```
 creatures
 -------
 id: integer
 name: string
 type: string
+```
 
 表的内容，就是；
 
@@ -143,23 +153,21 @@ rails 就会以为，你传递进来的对象的class, 是 Man, 而不是 Creatu
 
 ## i18n
 
-internationalization  ,  国际化。 忘掉它。 咱们国内项目永远用不到。而且国际化将来会
+internationalization  国际化。 忘掉它。 咱们国内项目永远用不到。而且国际化将来会
 为你带来巨大的麻烦。
 
 ## Plugins
 
 忘掉它。 我干了7年，从来没写过。在我使用ruby的第一年，好像官方就把它抛弃了。(deprecated)
 
-
-
 ## 不要使用 nested form.
 
 例如：  我在新建 一个文章的时候，就在页面上，增加针对文章的form.
 不要：  在这个form中，又新增文章，又新增 该文章的评论。 (因为这个评论是属于这个文章的）
 
+## 不要使用：respond_to 或者 类似的方法。
 
-
-## 不要使用：respond_to 或者 类似的方法。要么返回html, 要么返回json
+要么只返回html, 要么只返回json
 
 下面的代码，同时支持两种格式： json, html , 实际上这是鸡肋。
 ```
@@ -184,9 +192,9 @@ internationalization  ,  国际化。 忘掉它。 咱们国内项目永远用�
 
 如果一定要带上前面的参数的话，干嘛不直接；
 
-/provinces/4/cities/3/schools/2
-
-/schools/2?province_id=4&city_id=3
+- /provinces/4/cities/3/schools/2
+或者：
+- /schools/2?province_id=4&city_id=3
 
 后者我可以加上100个参数，不超过64k的长度（或者2K长度，在IE下）就可以。
 如果用 nested routes, 我就没法做了
@@ -194,7 +202,6 @@ internationalization  ,  国际化。 忘掉它。 咱们国内项目永远用�
 极端例子： /provinces/4/cities/3/schools/2/grade/5/class/3/student/2
 
 但是，rails guide中，第一个就是这个例子。所以，忘掉它。
-
 
 ## routes中，只使用 resources,  不要使用其他的路由
 
@@ -210,15 +217,17 @@ routes.rb中，只应该出现： resources, root 两种路由。
 
 除非你对 form_object 很熟悉了。 否则很多新手会蒙。
 
-直接使用params[:users]
-
+直接使用`params[:users]`
 
 ## 不要使用turbo links.
 
 这个技术，是为了让客户端减少对服务器端的请求。 但是效果不理想，很容易引起js的错误。
 那么我们在需要的场合，直接使用更加纯粹的one-page-app. ( vuejs, react, angular,  ... )
 
+```
 Remove the gem 'turbolinks' line from your Gemfile.
-Remove the //= require turbolinks from your app/assets/javascripts/application.js .
-Remove the two "data-turbolinks-track" => true hash key/value pairs from your app/views/layouts/application.html.erb .
 
+Remove the //= require turbolinks from your app/assets/javascripts/application.js .
+
+Remove the two "data-turbolinks-track" => true hash key/value pairs from your app/views/layouts/application.html.erb .
+```
