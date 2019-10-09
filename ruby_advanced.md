@@ -68,19 +68,6 @@ Rails中, 我们只写controller, model的测试, 就够了.
 
 其他的测试,不写了.
 
-### Rspec
-
-(rpsec)[http://rspec.info/]是一个ＢＤＤ框架． 它鼓励我们先写行为，再写测试． 例如:
-
-```ruby
-# 下面代码仅是示意． 运行的话需要在rails环境内, 后面rails章节会有描述
-describe Apple do
-  it 'color shoud be red' do
-    Apple.new.color.should == 'red'
-  end
-end
-```
-
 ## Rescue , exception
 
 跟java一样，Ruby也会抛出异常，捕获异常．

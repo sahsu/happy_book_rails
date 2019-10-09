@@ -1,16 +1,14 @@
-# Bundler 
-
->-- The best way to manage a Ruby application's gems
+# Bundler
 
 bunlder就是一个rubygem依赖关系的管理工具，而它本身就是一个gem，即a gem to bundle gems。
 
 由于RubyGems批处理运行。在配置文件Gemfile里说明你的应用依赖哪些第三方包，他自动帮你下载安装多个包，并且会下载这些包依赖的包。
 
-##安装和使用
+## 安装和使用
 
 因为它本身也是一个gem，所以使用`gem install`来安装它：
 
-`$ gem install bundler`	
+`$ gem install bundler`
 
 然后初始化：
 
@@ -31,8 +29,8 @@ bunlder就是一个rubygem依赖关系的管理工具，而它本身就是一个
 使用bundler来执行你安装的gem:
 
 `$ bundle exec rspc`
-	
-##说明
+
+## 说明
 
 使用bundler能帮助你管理你项目中所依赖的gem。在Gemfile中给定一个gem的列表，bundler能够自动的下载并且安装它们，也包括一些必须要的gem。但是有一点需要注意，就是在执行`bundle install`之前，要确认你写在Gemfile中的gem，有确切的版本，这样能减少一些版本冲突之类的问题。
 

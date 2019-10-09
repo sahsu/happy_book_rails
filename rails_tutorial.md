@@ -1,6 +1,6 @@
-# 什么是Rails.   为什么学习Rails.
+# 什么是Rails.
 
-1. Rails 是Ruby 的 Web框架。
+## Rails 是Ruby 的 Web框架。
 
 语言： java, ruby, python... 学习了之后，你们会发现， 做不了任何事儿。 只能写个算法。不能做任何事儿。
 
@@ -92,10 +92,12 @@ SELECT a.name, a.color, a.weight, a.height...
 
 apples 表：
 
+```
 列名  |  属性
 -- | --
 name  |  String
 color |  String
+```
 
 这就是一个 model: 有两个属性： name, color.
 
@@ -239,7 +241,7 @@ end
 Rails中的 ORM 是最最简单的。
 
 
-### 结语：
+## 持久层
 
 好的框架，必须有数据库持久层。
 
@@ -248,6 +250,7 @@ Rails: ActiveRecord ( 20页）
 
 
 ## 处理路由
+
 
 ### 铺垫
 这个很重要。我在实际教学当中，发现的点。
@@ -272,32 +275,36 @@ Rails: ActiveRecord ( 20页）
 
 通常， 在web开发中，有下面几种形式，会引起URL的变化：
 
+```
 1. <a href/></a>  (通常都是由用户来点击的）
 2. <form action='/some_path'/> 也是由用户来点击提交的。
 3. 由js引起的：
   3.1 location.href='www.baidu.com'
   3.2 js 触发 a的 click事件，间接实现点击
   3.3 js 触发 form的 submit 事件，间接实现点击。
+```
 
 ### 处理路由
 
-
-对于一个请求，  http://a.com/apples/all?name=red
+对于一个请求，  `http://a.com/apples/all?name=red`
 
 好的路由，应该有一个分发机制：
 把某个url 分配给某个特定的代码来处理。 这个特定的代码，就叫做 controller中的 action。
 
-例如：  /apples/all    =>   apples_controller 的  all action
-例如：  /apples/update    =>   apples_controller 的  update action
+- 例如：  /apples/all    =>   apples_controller 的  all action
+- 例如：  /apples/update    =>   apples_controller 的  update action
 
 
 我们就给出一个配置文件：
 
+```
    match '/apples/all', 'apples#all'
    match '/apples/update', 'apples#update'
+```
 
 然后，我们有个 controller:
 
+```
 class ApplesController
 
   def all
@@ -307,14 +314,15 @@ class ApplesController
   def update
   end
 end
-
+```
 
 all.html:
 
+```
 <html>
   这里显示所有的 apple.
 </html>
-
+```
 
 - 必要的表单辅助方法
 
@@ -322,19 +330,21 @@ all.html:
 
 例如：  我们修改(注意不是新增） 用户信息的页面，  小王 是 男性。 那么， 页面打开后，应该默认把小王的性别，显示男。
 
-
+```
 <select name='sex' >
   <option value=''>请选择</option>
   <option value='男' selected>男</option>
   <option value='女'>女</option>
 </select>
+```
 
 难点就来了。 如果只用PHP， JSP的话，页面是这样的：
 需要两个点：
 1. 列出所有的选项
 2. 列出默认选中的选项。
 
-# JSP代码： 列出默认选中的项。
+JSP代码： 列出默认选中的项。
+```
 <select name='sex' >
   <option value=''>请选择</option>
   <option value='男'
@@ -348,9 +358,10 @@ all.html:
   <% } %>
   >女</option>
 </select>
+```
 
-# JSP 代码： 列出所有的选项：
-
+JSP 代码： 列出所有的选项：
+```
 <% String<String>[] sex_options = {"男", "女"} %>
 
 <select name='sex' >
@@ -359,9 +370,11 @@ all.html:
   <option value='<%= sex_options[i] %>' selected><%= sex_options[i] %></option>
   <% } %>
 </select>
+```
 
-# 把上面两个代码结合到一起：(又显示所有选项，又要加上默认选中项）
+把上面两个代码结合到一起：(又显示所有选项，又要加上默认选中项）
 
+```
 <% String<String>[] sex_options = {"男", "女"} %>
 
 <select name='sex' >
@@ -374,21 +387,25 @@ all.html:
   ><%= sex_options[i] %></option>
   <% } %>
 </select>
-
+```
 
 超级罗嗦。
 
 所以，我们需要一个 表单辅助方法。 一两行代码解决。
 
+```
 <%= select_tag("sex" , options_for_select(["男", "女"], user.sex) )%>
+```
 
-select_tag 专门负责生成：  <select name=...>  </select>
+select_tag 专门负责生成：  `<select name=...>  </select>`
 
-options_for_select 专门负责生成：  
+options_for_select 专门负责生成：
 
+```
   <option value=''>请选择</option>
   <option value='男' selected>男</option>
   <option value='女'>女</option>
+```
 
 所以，Rails, 对于老鸟来说（一般都是从java转过来的），都觉得太简洁了！
 对于很多新手来说，入了rails的门槛，他再去学习其他的语言，会觉得，其他语言好复杂！
@@ -401,7 +418,9 @@ options_for_select 专门负责生成：  
 
 ### Layout
 
+
 比如，某个项目中，每个页面，看起来都是这样的：
+```
 <html>
   <head>
     <style.../>
@@ -414,12 +433,13 @@ options_for_select 专门负责生成：  
     <div clas='footer'>...</div>
   </body>
 </html>
+```
 
 所以，好的框架，现在都支持一个概念： 布局。 (layout)
 
 多个页面，可以共用一个布局。
 例如， 对某个资源的 增删该查，列表页，我只需要 显示 相关的内容就可以了（ form, table ... )
-其他的 <head> <footer/>等公共使用的内容，都不需要单独再写一次。
+其他的 `<head> <footer/>`等公共使用的内容，都不需要单独再写一次。
 
 目前来看， Rails, angular, Vuejs 都实现了这个功能。
 
@@ -429,38 +449,49 @@ options_for_select 专门负责生成：  
 
 1.html
 
+```
 <div> 这里是 1 的内容 </div>
 <div class="footer">
   copyright @ 2016 xx co.ltd ...
 </div>
+```
 
 
 2.html
 
+```
 <div> 这里是 2 的内容 </div>
 <div class="footer">
   copyright @ 2016 xx co.ltd ...
 </div>
+```
 
 
 在好的框架中， 就可以把 footer给提取出来。成为一个独立的文件
 例如：
 
-_footer.html.erb (例如规定，公共的视图片段，使用 _ 开头。)
+
+`_footer.html.erb` (例如规定，公共的视图片段，使用 _ 开头。)
+
+```
 <div class="footer">
   copyright @ 2016 xx co.ltd ...
 </div>
-
+```
 
 1.html
 
+```
 <div> 这里是 1 的内容 </div>
 <%= render '_footer' %>
+```
 
 2.html
 
+```
 <div> 这里是 2 的内容 </div>
 <%= render '_footer' %>
+```
 
 非常简单，但是极其有效。能让你的代码量大幅减少。
 
@@ -524,15 +555,16 @@ migration: 可以取出任意时刻的你的数据库的表结构。（通过 mi
 方式：
 
 把对数据库的操作，变成：
-   1. 不是通过SQL语句来人肉修改。 而是：通过代码来修改。（把对数据库的操作，放到专门的代码文件中，例如  db/migration/*.rb, *.java  */
+   1. 不是通过SQL语句来人肉修改。 而是：通过代码来修改。（把对数据库的操作，放到专门的代码文件中，例如  `db/migration/*.rb`, `*.java`)
    2. 一个migration, 占用一个文件。
 
 ### 例子
 
 我希望创建一个表：
 
-1. 新建一个文件：    db/migration/001-create-apples.rb
+1. 新建一个文件：    `db/migration/001-create-apples.rb`
 
+```
 class CreateApples
   def self.up
     create_table 'apples' do  |t|
@@ -545,19 +577,23 @@ class CreateApples
     drop_table 'apples'
   end
 end
+```
 
     1. 任何一个migration, 都要有 up, down, 这样的话，它才能迁移。（前进的时候调用up, rollback 的时候，调用down)
     2. up 和 down, 永远是对立的操作。
 
 2. 运行migration
 
+```
 $ rake db:migrate
+```
 
 这个migration 就会通过某种方式， 来生成SQL， 并且执行。
 
+```
 self.up : 就会生成： create table 'apples' .....
 slef.down:           drop table 'apples' ..
-
+```
 
 有了这个形式， 小王和小李， 就happy了。
 
