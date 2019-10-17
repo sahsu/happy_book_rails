@@ -1,4 +1,6 @@
-# Model 入门 ## 学习收获
+# Model 入门
+
+## 学习收获
 
 1. 知道如何进入Rails Console.
 2. 知道持久层的概念
@@ -8,8 +10,7 @@ Model是 MVC中的M, 作用是操作数据库。
 
 ## 军规
 
-model 的名字不能跟项目重名. 例如, 你的项目名字叫"book", 那么 `config/application.rb` 中,
-一定定义了:
+model 的名字不能跟项目重名. 例如, 你的项目名字叫"book", 那么 `config/application.rb` 中一定定义了:
 
 ```
 module Book
@@ -269,11 +270,9 @@ $ bundle exec rails generate migration xx
 ## 进入到console 来做一些操作.
 
 
-
-# 正式学习 CRUD:
+# 下面开始 正式学习 CRUD:
 
 先创建一个表：  `books`
-
 
 4.1 新建一个migration
 ```
