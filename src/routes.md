@@ -1,5 +1,7 @@
 # RESTful 路由
 
+本章官方文档： http://guides.rubyonrails.org/routing.html
+
 ## 官方文档中不用看的内容。
 
 只学： resources :xx 就足够了。
@@ -55,11 +57,12 @@ PUT  /users/3       update    对id = 3的user进行修改 （后面还会紧跟
 POST /users         create    对users进行创建（后面也有一大堆参数)
 DELETE  /users/3    destroy   对 id=3的 user 进行删除操作。
 ```
-(可以使用 $ rake routes 就可以查看当前项目中所有的路由）
+
+可以使用 $ rake routes 就可以查看当前项目中所有的路由
 
 这就是一种： convention(约定） over configuration (配置)
 
-## Rails中的各种 _path, _url 的来历
+## Rails中的各种 `_path`,`_url` 的来历
 
 下面的代码, 来自某个项目中的命令:  `$ rake routes`:
 
@@ -85,8 +88,7 @@ DELETE  /users/3    destroy   对 id=3的 user 进行删除操作。
 |travel_path | PUT     | /travels/:id(.:format)        | travels#update|
 |travel_path | DELETE  | /travels/:id(.:format)        | travels#destroy|
 
-所以, 看到第一列了吗? 大家见到的 `xx_path`, `xx_url` 就是从这里来的. 另外, `travel_path`等同于`travel_url`.
-
+所以, 第一列中大家见到的 `xx_path`, `xx_url` 就是从这里来的. 另外, `travel_path`等同于`travel_url`.
 
 ## edit_user_path @user 是什么东东?
 
@@ -131,9 +133,6 @@ id方法。
 ```
 
 
-==== 有空使劲看:  http://guides.rubyonrails.org/routing.html
-有 各种  _url,  _path 的来历和用法.
-
 resources :countries do
   resources :provinces do
     resources :cities do
@@ -143,4 +142,3 @@ resources :countries do
     end
   end
 end
-

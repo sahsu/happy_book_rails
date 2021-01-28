@@ -75,7 +75,7 @@ irb(main):016:0> my_hash[:age]
 
 ```
 keys  , 返回所有的keys,
-key?  ,  来判断, 某个字符串, 是否是该hash的可以
+key?  ,  来判断, 某个字符串, 是否是该hash的key
 ```
 
 所有的key, 都是完全不一样的. 不会出现 重复的key.
