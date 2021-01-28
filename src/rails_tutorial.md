@@ -1,10 +1,6 @@
-# 什么是Rails.
+# Rails
 
-## Rails 是Ruby 的 Web框架。
-
-语言： java, ruby, python... 学习了之后，你们会发现， 做不了任何事儿。 只能写个算法。不能做任何事儿。
-
-包括：
+世界上的编程语言有很多: java, javascript, php, python, ruby... 学习了之后我们发现，只能写个算法。此外不能做任何事儿:
 
 - 在网页上显示个表单
 - 处理一个request请求
@@ -14,45 +10,49 @@
 想做的话，需要做大量的底层工作。（把一个请求，转换成XX类，再借助YY类力量，使用W方法）
 
 所以，我们做任何事情，都需要使用框架。(Framework)
+
 常见的框架有：
 
-java:  Spring, Struts, Hiberate ...
-PHP:  phpcake, ThinkPHP, ...
-Ruby: Rails, Sinatra
-Python: Django, Tornado
-javascript: Angular, React, Vuejs..
+- java:  Spring, Struts, Hiberate ...
+- PHP:  phpcake, ThinkPHP, ...
+- Ruby: Rails, Sinatra
+- Python: Django, Tornado
+- javascript: Vuejs,Angular, React ..
 
 有了框架，我们做起事情来，才会特别简单，得心应手。
 
-在上面的 web开发框架中， Rails, 完胜 其他框架。 什么叫完胜呢？
+在已知的web开发框架中, Rails完胜其他框架。什么叫完胜呢？
 
-1. 开发速度第一。 其他框架一个月，Rails： 1～2周。  包括 PHP .
-2. rails框架, 把其他的框架的优点,都整合到了一起.
+1. 开发速度第一: 其他框架一个月，Rails 1～2周。
+2. rails把其他的框架的优点,都整合到了一起.
 rails = spring + struts + hibernate  + django
 
-学会了rails , 看其他框架,都是换汤不换药. 比如:  上手 vuejs就特别快.
+学会了rails , 看其他框架,都是换汤不换药. 比如: 上手vuejs就特别快.
 
-## 为什么PHP 不是WEB开发的 首选。
+另外，现在大火的spring boot等，也都能看到rails的影子
 
-1. PHP 的代码，很罗嗦。跟java一样罗嗦。 导致了： 项目一大， php的代码量跟java 是一样的。
-2. 也许 php 的代码的开发速度比java快，但是， 只要在java项目中，不使用java bean, 那么JSP跟PHP是一样的。
-可以认为java的开发速度比php 慢，是因为java在开发时，要遵循的条条框框太多了。
-3. 维护上： php的代码跟java 几乎一样，导致了： php 的代码比ruby 代码多的多（可以认为是4，5倍）。记得一个点：
-代码越多， 维护起来就越困难。
+## 开发语言和框架非常重要
 
-当我们面对 几根头发的时候，可以很容易的理顺。 (Ruby > python)
-当我们面对一个 线团的时候，就没法弄了。  （PHP ,java）
+例如，PHP开发不是web开发的首选：
+
+1. PHP代码很罗嗦, 跟java一样罗嗦。导致了项目一大，php的代码量跟java 是一样的。
+2. 在项目初期，php的代码的开发速度比java快，但是，只要在java项目中，不使用java bean, 那么JSP跟PHP是一样的。
+可以认为java的开发速度比php 慢的原因是java在开发时要遵循的条条框框太多了。
+3. 维护上：php的代码跟java几乎一样，导致了php 的代码比ruby 代码多的多（可以认为是4，5倍）代码越多， 维护起来就越困难。
+
+当我们面对几根头发的时候，可以很容易的理顺。 (Ruby > python)
+当我们面对一个线团的时候，就没法弄了。  （PHP ,java）
 
 Ruby的代码量大约是 Python的 80%。
-Ruby的代码量大约时 java的 25%, 或者更少。
+Ruby的代码量大约是 java的 25%, 或者更少。
 
-所以，我们维护php/java代码的时候，会发现，我们需要在各种文件(class)中 跳来跳去。眼花缭乱。
+所以，我们维护php/java代码的时候会发现，我们需要在各种文件(class)中 跳来跳去。眼花缭乱。
 
-PHP之所以在国内流行，还是因为国人英语差了些。 外面教的人很多。
+PHP之所以在国内流行，还是因为国人英语差了些。外面教的人很多。
 
 ## 框架层面的比较
 
-一个优秀的框架，应该具备下面的特点：
+一个优秀的框架，应该具备下面的特点.
 
 ### ORM (数据库持久层）
 
@@ -83,10 +83,8 @@ SELECT a.name, a.color, a.weight, a.height...
    ORDER BY 'a.created_at, a.update_at'
 ```
 
-更多例子： 见： https://www.google.co.kr/search?q=complex+sql&espv=2&biw=1920&bih=987&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjL0dSc6ojPAhURtJQKHfwkAwIQ_AUIBigB#imgrc=r06AHuSVg2BJpM%3A
-
 所以，是个项目， 就好多这样的SQL。 几乎处于无法维护的状态。
-（所以，当年才会有DBA 这样的现在看起来比较奇怪的职位。十年以前 , Oracle DBA, 月薪1万多）
+（所以，当年才会有DBA 这样的现在看起来比较奇怪的职位。2006年左右, Oracle DBA, 月薪1万多）
 
 大家就想，如果数据库，能够以面向对象的形式来考虑，会不会好很多？
 
@@ -99,7 +97,7 @@ name  |  String
 color |  String
 ```
 
-这就是一个 model: 有两个属性： name, color.
+这就是一个 model, 有两个属性： name, color.
 
 如果用ruby语言来表示的话：
 
@@ -144,9 +142,9 @@ apple.color = '红色'
 apple.save
 ```
 
-## 同理， 删除：
+## 删除操作
 
-SQL;
+SQL语句：
 ```
 delete from apples where id = 1;
 ```
@@ -157,8 +155,6 @@ delete from apples where id = 1;
 apple = Apple.where('id = 1');
 apple.delete()
 ```
-
-## update 也是一样。
 
 ## 搜索：
 
@@ -226,10 +222,8 @@ end
 
 总之，目的：
 
-1. 我们知道，所有的sql语句，都可以使用 面向对象的方式，来操作。（用面向对象，封装 传统的数据库）
-2. 难度系数永远是个定值。 (你操作数据库的难度和复杂度，不会随着对象的增加而失控）
-（见恺恺的图片）
-
+1. 我们知道，所有的sql语句，都可以使用面向对象的方式来操作。（把传统的数据库的各种操作封装成对象的各种方法）
+2. 难度系数永远是个定值。 (操作数据库的难度和复杂度，不会随着对象的增加而失控）
 
 所以，我们一定要：
 
@@ -240,7 +234,6 @@ end
 
 Rails中的 ORM 是最最简单的。
 
-
 ## 持久层
 
 好的框架，必须有数据库持久层。
@@ -248,30 +241,21 @@ Rails中的 ORM 是最最简单的。
 java: Hibernate  ( 一本砖头厚的书 300页，起。）
 Rails: ActiveRecord ( 20页）
 
-
 ## 处理路由
 
-
 ### 铺垫
-这个很重要。我在实际教学当中，发现的点。
 
-我们做web开发， 记住： 页面间的跳转，是通过URL的变化来驱动的。
-也就是说，打开一个URL， 就会显示一个页面。
+我在实际教学当中发现，路由特别重要，有的同学一直无法入门，就是由于没掌握路由。
 
-注册页：  a.com/register.html
-登录页：  a.com/login.html
-处理登录页：  a.com/validate_login.html
+记住：在web开发中，页面间的跳转是通过URL的变化来驱动的。也就是说，打开一个URL就会显示一个页面。例如：
 
-（做前端开发 android/ios，或者桌面应用 LOL， QQ， 都是靠 事件来驱动的. 触发一个事件，就会显示一个页面。）
-
-登录页：  输入完之后， 点击某个按钮，触发：   onclick 事件的 , 然后，程序内部判断。 判断完之后，跳转到 首页。
-我在首页， 点击 某个按钮后， 触发 XX事件。
-
-把握好这两点，两者开发的本质，就清楚了。
+- 注册页：  `a.com/register.html`
+- 登录页：  `a.com/login.html`
+- 处理登录页：  `a.com/validate_login.html`
 
 很多同学，如果还不清楚这两点， 就容易在很多知识点上，不理解。
 
-所以，我们做web开发，一定要牢牢的知道， 哪个页面，对应哪个URL
+所以，我们做web开发，一定要牢牢的知道:哪个页面对应哪个URL
 
 通常， 在web开发中，有下面几种形式，会引起URL的变化：
 
@@ -286,7 +270,7 @@ Rails: ActiveRecord ( 20页）
 
 ### 处理路由
 
-对于一个请求，  `http://a.com/apples/all?name=red`
+对于一个请求，如 `http://a.com/apples/all?name=red`
 
 好的路由，应该有一个分发机制：
 把某个url 分配给某个特定的代码来处理。 这个特定的代码，就叫做 controller中的 action。
@@ -294,15 +278,14 @@ Rails: ActiveRecord ( 20页）
 - 例如：  /apples/all    =>   apples_controller 的  all action
 - 例如：  /apples/update    =>   apples_controller 的  update action
 
-
-我们就给出一个配置文件：
+所以，需要一个配置文件：
 
 ```
-   match '/apples/all', 'apples#all'
-   match '/apples/update', 'apples#update'
+match '/apples/all', 'apples#all'
+match '/apples/update', 'apples#update'
 ```
 
-然后，我们有个 controller:
+然后，还需要有个 controller:
 
 ```
 class ApplesController
@@ -324,7 +307,7 @@ all.html:
 </html>
 ```
 
-- 必要的表单辅助方法
+### 必要的表单辅助方法
 
 表单，是web开发的重中之重。 永远离不开的内容。 基本是日常工作必备。 所以： 框架对于表单的处理，就特别重要。
 
@@ -339,12 +322,12 @@ all.html:
 ```
 
 难点就来了。 如果只用PHP， JSP的话，页面是这样的：
-需要两个点：
+
 1. 列出所有的选项
 2. 列出默认选中的选项。
 
 JSP代码： 列出默认选中的项。
-```
+```jsp
 <select name='sex' >
   <option value=''>请选择</option>
   <option value='男'
@@ -361,7 +344,7 @@ JSP代码： 列出默认选中的项。
 ```
 
 JSP 代码： 列出所有的选项：
-```
+```jsp
 <% String<String>[] sex_options = {"男", "女"} %>
 
 <select name='sex' >
@@ -374,7 +357,7 @@ JSP 代码： 列出所有的选项：
 
 把上面两个代码结合到一起：(又显示所有选项，又要加上默认选中项）
 
-```
+```jsp
 <% String<String>[] sex_options = {"男", "女"} %>
 
 <select name='sex' >
@@ -389,17 +372,17 @@ JSP 代码： 列出所有的选项：
 </select>
 ```
 
-超级罗嗦。
+可以看出，java代码超级罗嗦。
 
-所以，我们需要一个 表单辅助方法。 一两行代码解决。
+所以，我们需要一个 表单辅助方法。一两行代码解决。
 
 ```
 <%= select_tag("sex" , options_for_select(["男", "女"], user.sex) )%>
 ```
 
-select_tag 专门负责生成：  `<select name=...>  </select>`
+`select_tag` 专门负责生成：  `<select name=...>  </select>`
 
-options_for_select 专门负责生成：
+`options_for_select` 专门负责生成：
 
 ```
   <option value=''>请选择</option>
@@ -412,12 +395,11 @@ options_for_select 专门负责生成：
 
 ## 表单对象。
 
-太重要了。回头单独讲。
+太重要了。这里会在后面重点介绍
 
 ## 良好的页面渲染
 
 ### Layout
-
 
 比如，某个项目中，每个页面，看起来都是这样的：
 ```
@@ -435,17 +417,17 @@ options_for_select 专门负责生成：
 </html>
 ```
 
-所以，好的框架，现在都支持一个概念： 布局。 (layout)
+所以，好的框架现在都支持一个概念：布局。 (layout)
 
 多个页面，可以共用一个布局。
-例如， 对某个资源的 增删该查，列表页，我只需要 显示 相关的内容就可以了（ form, table ... )
-其他的 `<head> <footer/>`等公共使用的内容，都不需要单独再写一次。
 
-目前来看， Rails, angular, Vuejs 都实现了这个功能。
+例如，对某个资源的增删改查页面和列表页，只需要显示相关的内容就可以了, 其他的 `<head> <footer/>`等公共使用的内容，都不需要单独再写一次。
+
+目前来看， Rails, Vuejs 都实现了这个功能。
 
 ### 页面的片段（partial,  fragment 等等）
 
-例如，好多页面，，都用到了：页面的footer.(显示版权信息）
+例如，一个web应用中，多个页面都用到底部footer.(显示版权信息）
 
 1.html
 
@@ -456,7 +438,6 @@ options_for_select 专门负责生成：
 </div>
 ```
 
-
 2.html
 
 ```
@@ -466,18 +447,16 @@ options_for_select 专门负责生成：
 </div>
 ```
 
-
 在好的框架中， 就可以把 footer给提取出来。成为一个独立的文件
-例如：
-
-
-`_footer.html.erb` (例如规定，公共的视图片段，使用 _ 开头。)
+例如 `_footer.html.erb`内容如下:
 
 ```
 <div class="footer">
   copyright @ 2016 xx co.ltd ...
 </div>
 ```
+
+于是，刚才的2个文件就可以写成：
 
 1.html
 
@@ -495,22 +474,22 @@ options_for_select 专门负责生成：
 
 非常简单，但是极其有效。能让你的代码量大幅减少。
 
-我刚进优酷的时候， 项目是4万行代码。 (算的不精准, 所有回车都算了）
-我没日没夜的 开发，维护， 不断的增加新功能， 功能数量翻了一倍多， 8个月以后，查看代码量， 2万行。
-原来项目： 到处都是重复的代码。
-所以我就一边重构（就像上面的方法，删掉重复代码，把公共的HTML抽取成片段，然后共用），一边加新功能。
+我刚进优酷的时候，项目是4万行代码。(算的不精准, 所有回车都算了）
+
+我没日没夜的开发, 维护, 不断的增加新功能, 功能数量翻了一倍多，8个月以后，查看代码量，2万行。
+
+原因是：原来的项目中到处都是重复的代码。所以我就一边重构（就像上面的方法，删掉重复代码，把公共的HTML抽取成片段，然后共用），一边加新功能。
 
 ## 数据库迁移
 
 ### 概念
 
 对表结构的 修改的管理（可以按照顺序来演进，修改，也可以按照反向的顺序来撤销）
-the management of incremental, reversible changes to relational database schemas
 
 ### 为什么要用它？
 
-我们直到，管理代码，用SCM(git, svn)
-管理数据库的表结构，用 database migration
+管理代码，我们使用SCM(git, svn)
+管理数据库的表结构，则使用 database migration
 
 git ： 可以取出任意时刻的代码
 migration: 可以取出任意时刻的你的数据库的表结构。（通过 migrate, 或者  rollback 来实现的）
