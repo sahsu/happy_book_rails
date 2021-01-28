@@ -3,9 +3,6 @@
   * [毕业设计](biye.md)
   * [哪些不学](buyongxue.md)
   * [编程风格](coding_convention.md)
-  * [与前端相关](authentication.md)
-  * [数据结构](data_structure.md)
-  * [web基础:发起请求的原理](network_basic.md)
 
 * [Ruby入门](ruby_intro.md)
   * [学习过程](ruby_steps.md)
@@ -66,3 +63,7 @@
   * [自动化部署Capistrano](automation_tools/capistrano.md)
 * [Rails 进阶](rails_advanced.md)
   * [优化Rails](optimzation.md)
+* [其他]
+  * [与前端相关](authentication.md)
+  * [数据结构](data_structure.md)
+  * [web基础:发起请求的原理](network_basic.md)
