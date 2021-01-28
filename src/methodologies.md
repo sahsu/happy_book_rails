@@ -1,22 +1,23 @@
 # 方法论
 
-推荐先看我的这本书: ＜＜软件开发之殇＞＞ https://item.jd.com/12641896.html
+推荐先看我的这本书: [《软件开发之殇》](https://item.jd.com/12641896.html)
 
 从事软件开发, 一定要有个好的方法论. 因为软件开发领域需要每天学习. 不能用笨方法去学习.
 
 下面是我们从实战角度梳理出来的初学者最容易犯的错误.
 
+如果您是老鸟，本节可以跳过去，不用看了。
+
 # 搜索时间过多/过短.
 
 花多少时间来搜索合适？
 
-1. 先自己试着搜索1～2小时. 我的正常搜索时间： 5～ 20分钟。 少数内容， 2小时内也基本搞定。
+1. 先自己试着搜索1～2小时. 我的正常搜索时间： 5～20分钟。少数内容2小时内也基本搞定。
 2. 如果2小时还搞不定，果断人肉问身边的同事同学。
 3. 如果他还不知道，咱们就继续问别人。起码问3个。
-4. 这时候， 别人起码能给到你很多线索。 再google/baidu.
-5. 如果2小时后还不行，就上stackoverflow / tieba /zhidao /zhihu 上 发问。 重要问题: 给额外的分数
-（例如在stackoverflow上，别人回答一个题目，得10分。 如果你分数多，就可以设置bonus , 最高可以给到
-500）
+4. 这时候，别人起码能给到你很多线索。再google/baidu.
+5. 如果2小时后还不行，就上stackoverflow / tieba /zhidao /zhihu上发问。重要问题: 给额外的分数
+（例如在stackoverflow上，别人回答一个题目，得10分。 如果你分数多，就可以设置bonus , 最高可以给到500）
 
 我问过几个问题，90%都可以顺利在 stackoverflow上得到答案。 如果得不到的话，可能该问题就无解了。
 
@@ -28,28 +29,29 @@ http://log4r.rubyforge.org/manual.html
 
 咱们的： http://web.siwei.tech/web_components/log4r.html
 
-80-20定律。  最有用的内容只有20%，但是它用在80%的地方，
-
-所以，我们的策略：
+所以要知道80-20定律: 最有用的内容只有20%，但是它用在80%的地方.因此，我们的策略是：
 
 1. 需求导向。 （我能解决实际的需求问题就行，其他的80%的内容，如果用不上，那就不学）
 
 上面也回答了： 什么学，什么不学。 （看需求）
 
 2. 在什么情况下学？
-平时是不用学的。啥时候，老板说： 男主角，把这个需求作一下。  这个时候才学。
 
-# 怎么学？  需求导向的话， 要作的事儿看起来是一个点，但是官网中有一堆东西。该怎么定位？
+平时是不用学的。啥时候，老板说：这位同学，把这个需求作一下。这个时候才学。
 
-1. 如何定位？
+# 小白怎么学习？
 
-不要根据官网来定位。 信息海量。除非你的英语阅读能力很强，经验老道。
+需求导向的话，要作的事儿看起来是一个点，但是官网中有一堆东西。该怎么定位？
 
-使用google. 例如： 使用ruby on rails如何上传文件。
+1. 如何定位精准答案？
 
-那么，我要作的，不是到rails官网看， 而是： google:
+不要根据官网来一行文字一行文字的看。除非你的英语阅读能力很强，经验老道。
 
-'rails file upload'
+应该使用google. 例如：使用ruby on rails如何上传文件。
+
+关键字是：`rails file upload`
+
+会得到如下结果：
 
 ```
 Ruby on Rails File Uploading - TutorialsPoint
@@ -68,145 +70,23 @@ guides.rubyonrails.org/form_helpers.html
 What makes a file upload form different. How to post forms to external resources and specify setting an authenticity_token . How to build complex forms.
 ```
 
-所以，本着经验，stackoverflow的内容，是最精准的。 所以，我们点开的，不是官方网站
+所以，根据经验来看，stackoverflow的内容是最精准的。
 
-stackoverflow 上有两个问题， 一个问题15个星，一个问题35个星。 后者有62个回答。 而且
-内容最简单： （超级简单）
+stackoverflow 上有两个问题， 一个问题15个星，一个问题35个星。 后者有62个回答。 而且内容最简单： （超级简单）
 
-于是，我就知道了。
-
-官方网站就不用看了。
+于是，我就知道了。官方网站就不用看了。
 
 TODO: 好几个图。放到 methodologies 目录下。
 
 # 如何搜索到这些知识？ (上面回答了，google）
 
-# 大师是否一开始也看官网说明？ (不看）
+# 大师是否一开始也看官网说明？
 
-对于： 自己丝毫不了解的东西，我会先找到官方网站， 看看LOGO啥的， 找到文档的链接，看看hello world.
+答案是：不看
+
+对于：自己丝毫不了解的东西，我会先找到官方网站，看看LOGO啥的，找到文档的链接，看看hello world.
 让自己心里有个底，知道这个东西的最权威的文档在哪里。
 
-然后，我就去搜索。google.  不做就会死的事儿。
-这时候没有时间一行一行的看代码。 就只能google.
-google完之后， 自己试。  （80%都是行的， 20%的情况会失败，往往是自己本地，没有这个环境）
-
-例如：  redis cache file
-
-我就搜，然后，找到一个看起来最正确的答案（因为有很多么）亲手试。
-但是发现不行：
-
-```
-while time.time() - t - expiry < 0:
-  yield r.get(fpKey)
-
-So 1 roundtrip per iteration. With the function, you have:
-
-if r.exists(fpKey):
-  return r.get(fpKey)
-```
-
-不知道上面代码写在什么 地方（英语里叫context ), 所以这个时候，回到官方文档， 查看intro...
-查看如何 搭建环境。。。跑起redis ... 之后，慢慢就知道， 上面的代码应该放到什么位置了。
-
-# 知道如何用它，但是不知道如何提升/深入。 (看官方文档，或者源代码）
-
-例如上面的，file upload, 官方文档中，专门有一段：
-
-```
-5.1 What Gets Uploaded
-The object in the params hash is an instance of a subclass of IO. Depending on the size of the uploaded file it may in fact be a StringIO or an instance of File backed by a temporary file. In both cases the object will have an original_filename attribute containing the name the file had on the user's computer and a content_type attribute containing the MIME type of the uploaded file. The following snippet saves the uploaded content in #{Rails.root}/public/uploads under the same name as the original file (assuming the form was the one in the previous example).
-```
-
-# 是否每个软件都有裙带性？ ==  是否每个工具都有依赖关系？
-
-是的。 但是完全不影响我们的使用。 （在java/oc/c中，到处都是import, include, 在ruby中，我们感受不到）
-
-例子：
-
-rails.  会依赖好多好多：  activesupport, active
-
-```
-    rails (4.2.1)
-      actionmailer (= 4.2.1)
-      actionpack (= 4.2.1)
-      actionview (= 4.2.1)
-      activejob (= 4.2.1)
-      activemodel (= 4.2.1)
-      activerecord (= 4.2.1)
-      activesupport (= 4.2.1)
-      bundler (>= 1.3.0, < 2.0)
-      railties (= 4.2.1)
-      sprockets-rails
-```
-
-
-对于 activerecord, 依赖了：
-
-```
-    activerecord (4.2.1)
-      activemodel (= 4.2.1)
-      activesupport (= 4.2.1)
-      arel (~> 6.0)
-```
-
-对于 activemodel, 依赖了：
-
-```
-    activemodel (4.2.1)
-      activesupport (= 4.2.1)
-      builder (~> 3.1)
-```
-
-对于  activesupport, 还有更多：
-
-```
-    activesupport (4.2.1)
-      i18n (~> 0.7)
-      json (~> 1.7, >= 1.7.7)
-      minitest (~> 5.1)
-      thread_safe (~> 0.3, >= 0.3.4)
-      tzinfo (~> 1.1)
-```
-
-所以，这是个方法论： A  依赖 B， B 依赖 C， C 依赖 D， 如果D 依赖回A 呢？
-
-上面的现象，在java当中很常见。 其他语言，也一样。
-
-
-## 在操作系统中也是一样。
-
-而且，还存在于：  Linux, Windows, Mac当中。 例如，Linux, 为什么会存在：  apt-get , yum  ...
-在mac中， 为什么会存在： homebrew
-
-## 编译好的包
-
-Homebrew, apt-get , 它们都是 package manager (第三方包的管理工具）
-
-```
-$ apt-get install git
-```
-
-它会自动帮我们把相关的内容下载下来。 省的我们一个一个去寻找了。
-
-相关的内容有：
-
-1. 依赖的第三方包
-2. 编译后的代码（直接可以执行了）
-
-上面的文件：
-ubuntu/debian:    .deb
-centos/redhat:    .rpm
-mac:   .dmg
-windows:  .exe (会自动解压，然后把编译后的文件，copy到对应目录下）
-
-## 最后一个例子。
-
-例如，我们的生产服务器，往往都是只有命令行。 没有GUI。
-为什么我们的桌面LINUX有GUI呢？
-
-因为，桌面LINUX， 比服务器LINUX，多了一些软件。（xwindow)
-
-例如，  xwindow 可能有个组建，叫 font (字体）。 那么我安装这个font， 就要先安装 100个第三方包。
 
 # 在ruby中，如何定位并且搜索？
 
@@ -248,21 +128,24 @@ liyun@hp:~/workspace/happy_book_rails$ ruby abc.rb
 
 这个代码的执行顺序是从下往上：
 
-1. 先找到  abc.rb 的第二行，
-2. 在运行  httparty.rb 598 行
-3.         httparty.rb 486 行
-
+1. 先找到`abc.rb` 的第二行，
+2. 再运行`httparty.rb` 598 行
+3. 再运行`httparty.rb` 486 行
 ...
-到最后， 执行的是 /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb 的 879行：
-出错信息是：
 
+到最后， 执行的是 `/home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb` 的 879行，出错信息是：
+
+```
 Connection refused - connect(2) for nil port 80 (Errno::ECONNREFUSED)
+```
 
 上面的出错信息，就是我要搜索的内容。
 
-为了定位准确，（上面的消息跟ruby无关）, 我加上 文件名 http.rb .  所以，我最终搜索的是：
+为了定位准确，我加上文件名`http.rb`, 所以，我最终搜索的是下面的关键字：
 
+```
 http.rb:879:in `initialize': Connection refused - connect(2) for nil port 80 (Errno::ECONNREFUSED)
+```
 
 结果： （截图）
 
@@ -278,9 +161,9 @@ http.rb:879:in `initialize': Connection refused - connect(2) for nil port 80 (Er
 httparty http.rb:879:in `initialize': Connection refused - connect(2) for nil port 80 (Errno::ECONNREFUSED)
 ```
 
-发现结果没太大变化。 因为： google认为， 我们的搜索词， 没啥变化。
+发现结果没太大变化。因为google认为我们的搜索词没啥变化。
 
-所以，我们修改关键词。 （google 会自动忽略：  879 这样的数字，有时候会，有时候又不会，我们就碰）
+所以，我们修改关键词。（google 会自动忽略：879 这样的数字，有时候会，有时候又不会，我们就碰）
 
 所以, 我们现在这样搜：
 
@@ -294,7 +177,9 @@ http://stackoverflow.com/questions/11768111/connection-refused-connect2-httparty
 
 里面的一个答案：
 
+```
 I was using an incorrect url.
+```
 
 于是我们就修改代码：
 
@@ -309,21 +194,27 @@ response = HTTParty.get 'www.baidu.com'
 response = HTTParty.get 'http://www.baidu.com'
 ```
 
+上面就是一个完整的根据google来解决编程问题的例子。
+
 ## httparty , 在ruby中报错，跟在rails中报错，是不一样的。
 
 rails增加了： 3个分类：
+
 1. Application Trace
 2. Framework trace
 3. Full trace
 
 
-1. Application Trace
+### 1. Application Trace
 
+这个是最重要的，几乎99%的错误都来自于这里，看起来如下：
 ```
 app/controllers/books_controller.rb:8:in `index'
 ```
 
-2. Framework trace (增加了好多rails 框架的出错路径）
+### 2. Framework trace (增加了好多rails 框架的出错路径）
+
+这里可以看到完整的报错路径：
 
 ```
  /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
@@ -416,7 +307,7 @@ app/controllers/books_controller.rb:8:in `index'
 ```
 
 
-3. fulltrace 同上， 只不过增加了application trace 的内容：
+### 3. fulltrace 同上， 只不过增加了application trace 的内容：
 
 ```
 /home/liyun/.rbenv/versions/2.2.1/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
@@ -435,12 +326,9 @@ app/controllers/books_controller.rb:8:in `index'
 .... (以下同 framework trace )
 ```
 
-# 如何使用？
+# 以上报错信息如何使用？
 
-我个人：
-
-1. 直接看rails 给出的提示。  （包括HTML页面的提示，和 rails server 的提示）
-
+我个人直接看rails 给出的提示。 （包括HTML页面的提示，和 rails server 的提示）
 
 ```
 Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.0ms)
@@ -466,12 +354,14 @@ Errno::ECONNREFUSED (Connection refused - connect(2) for nil port 80):
 
 ## 不了解需求怎么办？
 
-多问。 不要憋着。
-不要自己猜，不要自己发挥，要让最直接的人来回答问题。
-不耻下问。忘掉玻璃心。(很多人，你问对方的时候，对方会不耐烦。为啥不耐烦？以为他已经给别人讲过N遍了。
-我们要发扬 滚刀肉的精神， 必须问清楚。 带着很专业的态度。让它和自己心里明白，如果我不懂，项目没法作。
+多问。不要憋着。
 
-了解需求的时候， 必须有个可以留存的东西（文字，图片，语音）
+不要自己猜，不要自己发挥，要让最直接的人来回答问题。
+
+不耻下问。忘掉玻璃心。(很多人，你问对方的时候，对方会不耐烦。为啥不耐烦？以为他已经给别人讲过N遍了。
+我们要发扬滚刀肉的精神，必须问清楚。带着很专业的态度。让它和自己心里明白，如果我不懂，项目没法作。
+
+了解需求的时候，必须有个可以留存的东西（文字，图片，语音）
 
 做到一次弄明白。如果不明白的话，一定是对方的逻辑错了，或者没说明白，而不是我们忘了。
 
@@ -484,16 +374,15 @@ Errno::ECONNREFUSED (Connection refused - connect(2) for nil port 80):
 
 画图。
 
-1. 画出所有的表。 (标出表的名字和主要的列即可）
-2. 不要画的漂亮。不要用尺子去比着画，而是 手绘，歪歪扭扭的，但是： 快，可以任意修改而不心疼。
-3. 所有的表都画出来之后， 连接出各个表之间的关系。 标注出 那边是 1 ， 那边是多（ *也行， N 也行)
+1. 画出所有的表。(标出表的名字和主要的列即可）
+2. 不要画的漂亮。不要用尺子去比着画，而是手绘，虽然歪歪扭扭的，但是很快，可以任意修改而不心疼。
+3. 所有的表都画出来之后，连接出各个表之间的关系。标注出哪边是1，哪边是多
 
-以上几点都做完之后， 那么，就容易了，直接把主要的表的CRUD做出来。
-
+以上几点都做完之后，就容易了，直接把主要的表的CRUD做出来。
 
 ## 如何梳理需求？
 
-1. 要了解 用例图。  把每个角色， 要干什么事儿，写出来。
+1.要了解用例图。把每个角色，要干什么事儿，写出来。
 
 ```
 学员  O    ----> 可以报名
@@ -503,9 +392,9 @@ Errno::ECONNREFUSED (Connection refused - connect(2) for nil port 80):
 ```
 
 
-2. 要了解类图(class diagram). 画出class 之间的对应关系（不需要把它的所有属性都列出来）
+2.要了解类图(class diagram). 画出class 之间的对应关系（不需要把它的所有属性都列出来）
 
-3. 要熟练掌握：时序图（sequence diagram)
+3.要熟练掌握：时序图（sequence diagram)
 
 3.1 列出所有的角色
 
@@ -516,12 +405,13 @@ Errno::ECONNREFUSED (Connection refused - connect(2) for nil port 80):
 
 掌握上面三种UML图就可以了。特别是第三种，是最强大的分析问题，梳理流程的方法。
 
-忘掉：山寨图。   国内的人, 特别是半吊子的人，最喜欢画， http://img5.imgtn.bdimg.com/it/u=3293013674,2839859845&fm=21&gp=0.jpg
-1. 没有起点，
+忘掉：山寨图。国内的人(特别是半吊子的人)很喜欢画，例如: http://img5.imgtn.bdimg.com/it/u=3293013674,2839859845&fm=21&gp=0.jpg
+
+1. 没有起点
 2. 没有终点。
 3. 三角干吗的，正方形干吗的，没有规范。
 
-一定要流程图的话， 也使用UML的活动图。 http://www.ibm.com/developerworks/cn/rational/tip-drawuml/figure1.gif
+一定要流程图的话，也使用UML的活动图。http://www.ibm.com/developerworks/cn/rational/tip-drawuml/figure1.gif
 
 # 如何自学
 
@@ -529,13 +419,20 @@ Errno::ECONNREFUSED (Connection refused - connect(2) for nil port 80):
 
 与国外大牛交流， 要用英文。
 
-看国外官方文档， 都是英文（就连vuejs，作者是中国人， 官方文档都是英文. ruby 日本人写的，官方文档还是英文）
+看国外官方文档， 都是英文（就连vuejs作者是中国人，官方文档都是英文.ruby 日本人写的，官方文档还是英文）
 
-看stackoverflow, 全都是英文。 （stackoverflow 如果是 95分， 国内iteye, infoq 70分， csdn 30 分,给高了。）
+看stackoverflow, 全都是英文。
+
+Debug的时候，看到的报错信息全是英文。
+
+写代码的时候，声明变量，方法等，也是用英文。
+
+所以，英语不好，寸步难行.
 
 ## 2. 提高搜索，解决问题的能力。
 
-遇到一个新技术，要有敏锐的嗅觉，知道：这个新技术的
+遇到一个新技术，要有敏锐的嗅觉，要知道这个新技术的:
+
 1. 官方网站在哪里。
 2. 源代码地址在哪里。
 3. 再看这个新技术是否有前景。（一般搜索 “技术A怎么样？", 用英文，在google上搜，就会出来特别有价值的内容)
