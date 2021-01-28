@@ -32,10 +32,9 @@
   * [Server 服务器](rails_thin_deploy.md)
   * [rails 接口](interface_document.md)
   * [更侧重于APP端的接口入门](rails_interface.md)
-  * [各种回调（钩子)方法](hooks.md)
+  * [Model 回调（钩子)方法](hooks.md)
   * [Rails单元测试](unit_test.md)
   * [CSRF token](csrf_token.md)
-  * [常见的代码code review](code_review.md)
 
 * [Rails 常用的第三方组件](web_components/preface.md)
   * [分页: kaminari](web_components/kaminari.md)
@@ -44,7 +43,6 @@
   * [上传图片到云 upyun](web_components/upyun.md)
   * [即时上传 jquery-upload]()
   * [发送restful请求  HTTParty](web_components/httparty.md)
-  * [调试接口的工具: POSTMan](postman.md)
   * [发送短信](web_components/sms.md)
   * [wysiwyg 所见即所得编辑器](web_components/wysiwyg_ckeditor.md)
   * [日志工具log4r](web_components/log4r.md)
@@ -57,7 +55,6 @@
   * [执行定时任务：rufu-scheduler](rufus_scheduler.md)
   * [执行后台任务：god ](rails_god.md)
   * [执行延时任务：delayed-job](delayed_job.md)
-  * [工作流 event machine]
   * [缓存 redis, memcache](web_components/redis_memcache.md)
   * [自动化部署Capistrano](automation_tools/capistrano.md)
 * [Rails 进阶](rails_advanced.md)
