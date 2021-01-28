@@ -65,8 +65,6 @@ git 是程序员必会。具体教程我做了2个视频, 网上也有很多。
 
 Git视频教程： http://edu.51cto.com/course/course_id-8363.html
 
-Vim视频教程： http://edu.51cto.com/course/11219.html
-
 vim文字教程： https://github.com/sg552/my_vim
 
 ### 2.学习好ruby语言.
