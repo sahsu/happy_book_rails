@@ -1,9 +1,3 @@
-# 阅读本文收获
-
-- 知道Rails中的erb文件跟 JSP, PHP是一样的.
-- 知道如何使用controller中的变量
-- 知道partial ( 片段)
-
 # View的基本概念和用法
 
 View在MVC中,一直是最简单的概念. 大家要分分钟入门.
@@ -113,7 +107,7 @@ end
 
 那么就把它写成一个 partial (片段）
 
-全名是: `app/views/fruits/_footer.html.erb`(注意，文件名以 "_"开头)
+全名是: `app/views/fruits/_footer.html.erb`(注意，文件名以`_`开头)
 
 然后，我们就可以在对应的 erb文件中：
 
@@ -177,7 +171,6 @@ end
 ```
 
 我在任意的页面中,可以调用定义在任意helper中的方法. 例如:
-
 
 ```
 # app/helpers/foo_helper.rb

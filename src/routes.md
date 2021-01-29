@@ -1,10 +1,6 @@
-# RESTful 路由
+# 路由
 
-本章官方文档： http://guides.rubyonrails.org/routing.html
-
-## 官方文档中不用看的内容。
-
-只学： resources :xx 就足够了。
+## 学习目的
 
 了解一些： namespace.
 了解一些： match
@@ -17,35 +13,27 @@
 
 我们在项目中， 不用那些稀奇古怪的知识。
 
-## 学习的目标
+看到 resources, 就应该能瞬间算出它生成的7种路由，能瞬间说出某个路由对应的action。
 
-看到 resources, 能瞬间人肉算出它生成的7中路由， 能瞬间
-说出某个路由对应的action。
+## 概念
 
+路由，就是根据不同的请求类型和路径，来获取各种资源。
 
-## 下面是大师的讲解。
+- POST: create,  (创建资源）
+- PUT/PATCH： update, (更新）
+- GET:  index, show, new, edit, (只读取数据，不修改数据)
+- DELETE: destroy (删除)
 
-就是使用不同的请求类型， 来获取各种资源。
+所以， 在RESTful中，不同的http request类型，就决定了你是要对数据库进行什么操作（增，删，改，还是只读？）
 
-```
-POST: create,  (创建资源）
-PUT/PATCH： update, (更新）
-GET:  index, show, new, edit, (只读取数据，不修改数据)
-DELETE: destroy (删除)
-```
+在Rails中如何实现对RESTful进行解析的呢？
 
-所以， 在RESTful中，不同的http request类型，就决定了你是要对数据库进行
-什么操作（增，删，改，还是只读？）
+`config/routes.rb` 中：
 
-至于rails, 是如何实现对RESTful进行解析的呢？
-
-极其简单：
-
-config/routes.rb中：
-```
+```ruby
 resources :users
 ```
-(注意： 不是 resource )
+
 上面一句，就直接定义了7种路由：
 
 ```
@@ -58,9 +46,8 @@ POST /users         create    对users进行创建（后面也有一大堆参数
 DELETE  /users/3    destroy   对 id=3的 user 进行删除操作。
 ```
 
-可以使用 $ rake routes 就可以查看当前项目中所有的路由
+可以使用 `$ rake routes` 就可以查看当前项目中所有的路由
 
-这就是一种： convention(约定） over configuration (配置)
 
 ## Rails中的各种 `_path`,`_url` 的来历
 
@@ -90,7 +77,7 @@ DELETE  /users/3    destroy   对 id=3的 user 进行删除操作。
 
 所以, 第一列中大家见到的 `xx_path`, `xx_url` 就是从这里来的. 另外, `travel_path`等同于`travel_url`.
 
-## edit_user_path @user 是什么东东?
+## `<%= form_for %>` 中的 `edit_user_path @user` 是什么东东?
 
 如何编辑某个user?
 
@@ -132,13 +119,63 @@ id方法。
 <%= edit_user_url User.first %>
 ```
 
+## controller中的redirect_to 对应的路由
 
-resources :countries do
-  resources :provinces do
-    resources :cities do
-      resources :districts do
-         ...
-      end
-    end
-  end
+在 controller中，  在 create/ update/ 方法的尾部， 我们需要跳转到其他URL。
+会看到这样的代码：
+
+```
+def create
+  book = Book.create params[:book]
+  redirect_to book
 end
+```
+
+上面的 redirect_to book, 等同于下面2种的任一一种：
+
+```
+  redirect_to book_path(:id => book.id)
+  redirect_to '/books/' + book.id
+```
+
+所以，严格意义上来说，上面的代码是一种简写
+
+# 作业
+
+1.新建rails项目, market
+
+2.新建两个页面:
+
+2.1 水果列表页,`/fruits/list` 内容显示　三种水果列表就可以了．
+
+2.2 水果的新建页, `/fruits/new` 显示啥都行
+
+3.列表页中，下方有个链接，可以跳转到新建页．
+
+4.新建页中，下方有个链接，可以跳转到列表页．
+
+要使用　"named_routes"  (xx_path) 这样的形式．　
+
+- (错误例子)　`<a href='/fruits/list'>xx</a>`
+- (正确例子)　`<a href='<%= list_fruits_path %>'>xx</a>`
+- (正确例子)　`<%= link_to 'xx', list_fruits_path %>`
+
+5.要有root_path (访问　 /  的时候，　要显示页面，"欢迎来到某某水果超市!" )
+
+6.有个接口:  访问 `/interface/fruits/all` 的时候, 要给到json结果:
+(提示: 使用namespace路由)
+
+```
+{
+  "result": ['香蕉', '苹果', '橘子']
+}
+
+```
+
+(渲染json 的时候, 使用 render :json => ... )
+
+7.还可以访问这个url:  `/taste_good` ,  显示页面:  "好好吃啊!"
+
+(提示,使用 match ... to 的写法)
+
+
