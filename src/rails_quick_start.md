@@ -1,100 +1,62 @@
 # 最简单的rails 入门过程
 
+我们创建一个新的页面，并显示：
 
+## 修改路由
 
-先从一个例子来看：
-
-http://localhost:3000/fruits/new
-
-上面的url, 如果是按照rails的约定惯例来看的话，就是： new 一个 fruit.  (显示 新建fruit的页面）
-
-所以，rails会把这个请求，根据路由中定义的规则，发送给 action。
-
-1.一个用户在浏览器端输入了一个网址:
-
-http://server.com/fruits/new
-
-回车。(这会产生 一个 http request )
-
-2.http request 从浏览器，发送到服务器端(server.com)之后， Rails就会 把这个请求交给 router 来处理。
-
-(接下来的事儿，都发生在 服务器端, 见上面的小王例子。）
-
-3.在服务器上，有个router 配置文件： `config/routes.rb` 中的配置：
+修改`config/routes.rb`：
 
 ```
 Rails.application.routes.draw do
-  resources :fruits
+  get 'say/hi' => 'say#hi'
 end
 ```
 
-把这个请求，分发到： `fruits` controller中的`new` action.
+这里表示： 对于所有 `/say/hi` 的请求，都使用 `says_controller.rb` 中的`hi` action来处理。
 
-4.`new` action 做处理，显示对应的erb文件
+## 修改controller
+
+创建`app/controllers/say_controller.rb`, 内容如下：
 
 ```
-class FruitsController < ApplicationController
-  def new
-
-    # 方式1. 渲染 一段字符串
-    #render :text => 'hihihi'
-
-    # 方式2. 渲染 一个json
-    #render  :json => {
-    #  key: 'value',
-    #  name: 'dashi',
-    #  sex: 'male'
-    #}
-
-    # 方式3. 啥也不写，就渲染对应的
-    #  app/views/fruits/new.html.erb
+class SayController < ApplicationController
+  def hi
   end
 end
 ```
 
-5.如果要渲染的是一个 erb 页面， 我们可以这样写：
+## 创建对应的view
+
+创建`app/views/say/hi.html.erb`, 内容如下：
 
 ```
-你好阿。
-<% [1,2,3].each do |e| %>
-  <%= e %> <br/>
-<% end %>
-
+你好啊，这是我的Rails第一个页面
 ```
 
-6.有时候如果某个erb文件过于复杂了, 例如：20行。或者某些代码可以重用。
+## 读取页面传入的参数
+
+修改`app/controllers/say_controller.rb`, 增加一个新的action
 
 ```
-<!-- 下面这段是版权声明，多个页面都需要重用  -->
-<footer>
-  copyright@2016 xx.co.ltd
-</footer>
+class SayController < ApplicationController
+  # 增加这个action
+  def hi_with_name
+
+    # params[:name] 用来从 request中读取参数name,  params是Rails的内置方法
+    # @name 可以在该action对应的erb文件中直接使用
+    @name = params[:name]
+  end
+end
 ```
 
-那么就把它写成一个 partial (片段）(注意，文件名以 `_` 开头) `app/views/fruits/_footer.html.erb`
-
-然后，我们就可以在对应的 erb文件中：
-
+增加`app/views/say/hi_with_name.html.erb`, 内容如下：
 ```
-<%= render :partial => 'footer' %>
+你好阿, <%= @name %>
 ```
 
-如果这个partial是需要参数的（例如:年份是个变量）
+然后，我们访问 `http://localhost:3000/say/hi_with_name?name=略略略
 
-```
-
-<!-- 下面这段是版权声明，多个页面都需要重用  -->
-<footer>
-  copyright@ <%= year %> sweetysoft.com
-</footer>
-
-```
-
-那么在调用时, 就这样把参数传入到partial：
-
-```
-<%= render :partial => 'footer', :locals => {:year => 2018} %>
-```
+![hi_with_name](images/lesson_1_say_hi_with_name.jpeg)
 
 ## 不用学的。
 

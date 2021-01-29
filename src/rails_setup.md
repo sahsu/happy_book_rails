@@ -295,3 +295,12 @@ $ bundle exec rails s
 就可以发现Rails已经成功运行了
 
 ![hello](images/lesson_1_rails_running.png)
+
+
+## 关闭无用的警告
+
+修改`config/environments/development.rb`, 把下面的内容设置成 `false`,
+
+```
+config.assets.check_precompiled_asset = false
+```
