@@ -1,0 +1,19 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  collation: utf8_general_ci
+  pool: 5
+  host: localhost
+  username: root
+  password: 666666
+
+development:
+  <<: *default
+  database: study_rails
+
+test:
+  <<: *default
+  database: study_rails_test
+
+production:
+  database: study_rails
