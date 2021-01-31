@@ -130,6 +130,27 @@ root 'say#hi'
 match 'photos', to: 'photos#show', via: [:get, :post]
 ```
 
+## namespace
+
+```
+namespace :api do
+  resources :books do
+    get :search
+  end
+end
+
+```
+
+上面代码表示：对于任何`/api/books/search`的GET请求,都由下面的action处理：
+
+```
+class Api::BooksController < ApplicationController
+  def search
+    # 逻辑代码...
+  end
+end
+```
+
 上面表示：对于任何`/photos`的请求(包括GET和POST两种方式), 都由`photos_controller`的`show`action来处理。
 
 # 作业
