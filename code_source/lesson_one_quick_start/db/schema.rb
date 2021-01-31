@@ -11,12 +11,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210130010914) do
+ActiveRecord::Schema.define(version: 20210131073822) do
 
   create_table "books", force: :cascade do |t|
     t.string "name",   limit: 255
     t.string "title",  limit: 255
     t.string "author", limit: 255
+  end
+
+  create_table "husbands", force: :cascade do |t|
+    t.string "name", limit: 255
+  end
+
+  create_table "lessons", force: :cascade do |t|
+    t.string  "name",       limit: 255
+    t.integer "teacher_id", limit: 4
+    t.integer "student_id", limit: 4
+  end
+
+  create_table "mothers", force: :cascade do |t|
+    t.string "name", limit: 255
+  end
+
+  create_table "sons", force: :cascade do |t|
+    t.string  "name",      limit: 255
+    t.integer "mother_id", limit: 4
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string "name", limit: 255
+  end
+
+  create_table "teachers", force: :cascade do |t|
+    t.string "name", limit: 255
+  end
+
+  create_table "wives", force: :cascade do |t|
+    t.string  "name",       limit: 255
+    t.integer "husband_id", limit: 4
   end
 
 end
