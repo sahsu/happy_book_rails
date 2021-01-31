@@ -1,151 +1,89 @@
-# 从controller中读取request的参数
+# controller
 
-## 军规
+Controller的作用是：
 
-1.7个默认的路由(`index`, `show`, `new`, `edit`, `update`, `destroy`, `create`)，不能被覆盖。 例如：
-
-```
-resouces :books do
-  collection do
-    get :new  # 这样不行，不要重复定义路由。
-  end
-end
-```
-
-2.redirect_to 或者 render 只能有一个。并且这两者都只能出现在 action的最后一行.
-他们相当于方法的return， 执行完之后，不会往下面继续执行。
-
-```
-  def create
-    Teacher.create :name => params[:the_name]
-    render :text => 'ok'
-    redirect_to books_path
-  end
-```
+1. 处理request中的参数，例如用户提交的表单  (使用`params`)
+2. 处理完毕后，进行页面的渲染或者跳转。(使用`redirect_to` 或者 `render`)
 
 ## 开始之前
 
-记得修改  application_controller.rb , 把它的 把它的protect_from_forgery 注释掉。
+记得修改 `application_controller.rb` , 把它的 把它的`protect_from_forgery` 注释掉。
 
 ```
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
+  # 注释掉下面这一行
   #protect_from_forgery with: :exception
 end
 ```
 
 上面的代码，要求我们提交表单时，多提交几个参数。我们从学习的目的出发，暂时先把它注释掉。
 
-## 参数的来源：  两种：
+## 使用controller处理参数
+
+我们知道，最常见的参数有两种来源：
 
 1.url .  例如:  `/books?name=三体`
-
-2.form.
+2.form. 例如：
 
 ```
   <form action='/foo'  method='POST'>
-    <input type=text name='keyword' />
+    <input type=text name='name' value='三体' />
     <input type=submit value='搜索' />
   </form>
 ```
 
-## 使用params读取参数。
-
-### 读取 url中的参数
-
-对于请求: `GET /books?name=三`
-
-在 controller中：
+在 controller中, 可以获得该参数，并打印。
 
 ```
 def index
+
+  # 获得了参数
   name = params[:name]
-  @books = Books.where("name like '%#{name}%' ")
+
+  # 在控制台中打印了出来。
+  puts name.inspect
 end
 ```
 
-希望知道 params是什么，就给他打印出来：
+## 七个最基础的action
 
-```
-# 任何对象在ruby中，都可以通过  inspect 来查看。 极其方便
-puts params.inspect
-
-{"name"=>"aaa", "controller"=>"books", "action"=>"index"}
-```
-
-### 在form 中，读取参数
-
-1.假设页面有个搜索框：   请输入 书名
-
-```
-<form action='/books' method='GET' >
-  <input type='text' name='query' />
-  <input type='submit' value='查询！'/>
-</form>
-```
-
-2.在controller中，读取参数。
-
-```
-params[:query]
-```
-
-无论是POST， 还是GET， 过来的参数，都是一个hash, 都用 params[:key] 来获取。
-
-```
-puts params.inspect
-
-# => {"query"=>"c", "controller"=>"books", "action"=>"index"}
-```
-
-# Rails中，几个特殊的action
-
-七个：
+这七个Action都是Rails自带的特殊action, 用于"按照惯例编程".
 
 - index : 列表页
-- new: 新建页。用户在该页面上， 输入一些数据，点击确定按钮后，会触发create action。
-- create： 创建数据的action. 处理 new 中的form传递过来的参数，保存到数据库。
-- edit: 显示编辑的页面。 用户在这个页面上，输入编辑的数据。 点击确定按钮后，会触发update action
-- update ： 保存数据的action. 处理 edit 中的form传递过来的参数，保存到数据库。
-- show : 详情页 (往往，用户是在列表页中，点击某一行的记录，就会跳转到该记录的详情页了）
-- destroy : 删除action. (往往，用户也是在列表页中，点击某一行中的“删除”按钮，就会触发该action）
+- new: 新建页。用户在该页面上输入一些数据，点击确定按钮后，会触发create action。
+- create： 创建数据的action. 处理`new`中的form传递过来的参数，保存到数据库。
+- edit: 显示编辑的页面。 用户在这个页面上输入编辑的数据, 在点击确定按钮后，会触发update action
+- update ： 保存数据的action. 处理 `edit` 中的form传递过来的参数，保存到数据库。
+- show : 详情页 (往往用户是在列表页中，点击某一行的记录，就会跳转到该记录的详情页了）
+- destroy : 删除action. (往往用户是在列表页中，点击某一行中的“删除”按钮，就会触发该action）
 
-所以，上面7个action, 4个有页面（index, show, edit, new) , 3个无页面，直接操作数据库，操作完
-之后，显示 某个页面（例如，显示列表页）
+所以，上面7个action, 4个有页面（index, show, edit, new) , 3个无页面(直接操作数据库，操作完之后跳转到某个页面)（例如，显示列表页）
 
+下面我们来依次说明。
 
-
-# 读取参数并操作数据库
-
-我们先创建一个空的rails项目：　
-
-```
-$ rails new library
-```
+### 创建对应的controller和routes
 
 假设，我们在路由(`config/routes.rb`中，定义了：　
 
-```
+```ruby
 Rails.application.routes.draw do
   resources :books
 end
 ```
 
-并且，　我们定好对应的　controller:
-编辑：`app/controllers/books_controller.rb
+并且，我们定好对应的controller: `app/controllers/books_controller.rb`
 
-```
+```ruby
+# 现在这里是一个空的controller, 随着下面的学习，我们会陆续增加7种最基础的action
 class BooksController < ApplicationController
 end
 ```
 
-## 列表  index
+### index (列表)
 
-1.我们在controller中，创建action:
+我们在books controller中，增加：
 
-修改：　`app/controllers/books_controller.rb`
-```
+```ruby
 def index
   @books = Book.all
 end
@@ -159,11 +97,13 @@ end
 <% end %>
 ```
 
-3.在浏览器中，输入`/books` 就可以看到页面了。
+3.在浏览器中，输入`/books` 就可以看到页面了。如下图所示。
+
 
 ## new 与 create
 
 1.回顾下路由：　
+
 ```
 GET /books/new
 POST /books
@@ -376,6 +316,31 @@ redirect_to '/books'
 redirect_to :back
 ```
 
+
+## 军规
+
+1.7个默认的路由(`index`, `show`, `new`, `edit`, `update`, `destroy`, `create`)，不能被覆盖。 例如：
+
+```
+resouces :books do
+  collection do
+    get :new  # 这样不行，不要重复定义路由。
+  end
+end
+```
+
+2.redirect_to 或者 render 只能有一个。并且这两者都只能出现在 action的最后一行.
+他们相当于方法的return， 执行完之后，不会往下面继续执行。
+
+```
+  def create
+    Teacher.create :name => params[:the_name]
+    render :text => 'ok'
+    redirect_to books_path
+  end
+```
+
 ## 作业
 
 实现通过参数创建或者编辑一个东东.
+
