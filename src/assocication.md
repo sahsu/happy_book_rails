@@ -8,6 +8,8 @@
 
 所以，我们只要把一对多的关系学习好即可。
 
+本节用于快速入门，在实际工作中需要多多学习官方文档: https://guides.rubyonrails.org/association_basics.html
+
 ## 最简单的关联关系： 一对多
 
 假如王妈妈有两个孩子。小明和小亮。
@@ -21,9 +23,7 @@
 
 ### 用数据库结构来表示
 
-也就是说，有两给表
-
-妈妈mothers 表:
+妈妈mothers 表
 
 id | name
 -- | --
@@ -40,26 +40,66 @@ id   |  name |  mother_id
 
 可以看出: 外键的值，其实是另一个表的id 的值。
 
-### 用SQL来表示
+### 创建migration
+我们使用migration来创建这两个表：
 
-如果我们要找出孩子“小王”对应的妈妈。
+Mothers:
 
 ```
-   select * from mothers
-        join sons
-        on sons.mother_id = mothers.id
-        where sons.name = '小王'
+$ bundle exec rails g migration create_mothers
+      invoke  active_record
+      create    db/migrate/20210131013530_create_mothers.rb
 ```
 
-(复习一下SQL的知识，上面的SQL语句，会给到我们一个大表）
+内容该文件内容如下：
+```
+class CreateMothers < ActiveRecord::Migration
+  def change
+    create_table :mothers do |t|
+      t.string :name
+    end
+  end
+end
+```
 
-mothers.id | mothers.name | sons.id   |  sons.name |  sons.mother_id
------------| ------------ | --------  |  --------  |  --------------
-1          | 王妈妈       | 100       |  小王      |  1
+为sons表创建migration:
 
-### 在Rails中实现关联关系`has_many`,`belongs_to`
+```
+$ bundle exec rails g migration create_sons
+      invoke  active_record
+      create    db/migrate/20210131013535_create_sons.rb
+```
 
-一个妈妈可以有多个孩子:
+内容如下：
+```
+class CreateSons < ActiveRecord::Migration
+  def change
+    create_table :sons do |t|
+      t.string :name
+      t.integer :mother_id
+    end
+  end
+end
+
+```
+
+执行命令，创建两个表：
+```
+$ bundle exec rake db:migrate
+== 20210131013530 CreateMothers: migrating ====================================
+-- create_table(:mothers)
+   -> 0.0223s
+== 20210131013530 CreateMothers: migrated (0.0224s) ===========================
+
+== 20210131013535 CreateSons: migrating =======================================
+-- create_table(:sons)
+   -> 0.0191s
+== 20210131013535 CreateSons: migrated (0.0192s) ==============================
+```
+
+### 创建model
+
+增加`app/models/mother.rb`, 内容如下：
 
 ```
 class Mother < ActiveRecord::Base
@@ -67,13 +107,79 @@ class Mother < ActiveRecord::Base
 end
 ```
 
-一个儿子属于一个妈妈:
+上面的代码中：
+
+- `has_many` 是ActiveRecord自带的方法，
+- `has_many :sons`表示当前的model包含多个 sons
+
+增加`app/models/son.rb`, 内容如下：
 
 ```
 class Son < ActiveRecord::Base
   belongs_to :mother
 end
 ```
+
+上面的代码中：
+
+- `belongs_to` 是ActiveRecord自带的方法，
+- `belongs_to :mother`表示当前的model属于一个mother
+
+### 增加初始化数据
+
+进入到rails console:
+
+```
+irb> mother = Mother.create name: '王妈妈'
+irb> Son.create name: '小王', mother_id: mother.id
+irb> Son.create name: '小明', mother_id: mother.id
+```
+
+可以看到，mother表和sons 表都增加了对应的数据。
+
+mothers表：
+```
+mysql> select * from mothers;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | 王妈妈    |
++----+-----------+
+```
+
+sons表：
+```
+mysql> select * from sons;
++----+--------+-----------+
+| id | name   | mother_id |
++----+--------+-----------+
+|  1 | 小王   |         1 |
+|  2 | 小明   |         1 |
++----+--------+-----------+
+```
+
+### 原生SQL查询
+
+如果我们要找出孩子“小王”对应的妈妈。
+
+```
+select * from mothers
+  join sons
+  on sons.mother_id = mothers.id
+  where sons.name = '小王'
+```
+
+会得到这个结果
+```
++----+-----------+----+--------+-----------+
+| id | name      | id | name   | mother_id |
++----+-----------+----+--------+-----------+
+|  1 | 王妈妈    |  1 | 小王   |         1 |
++----+-----------+----+--------+-----------+
+```
+
+
+### 在Rails中实现关联查询
 
 然后，我就可以在 Rails Console 中：
 
@@ -92,7 +198,8 @@ select * from sons where id = 1;
 ```
 mama = xiao_wang.mother
 ```
- 这个 `.mother` 方法就是由 `class Son`的`belongs_to :mother`这句话生成的。
+
+这个 `.mother` 方法就是由 `class Son`的`belongs_to :mother`这句话生成的。
 
 上面的代码会被转换成下面的SQL语句, 然后被执行.
 
@@ -133,7 +240,7 @@ end
 而一对多关系中， 外键是保存在 多的那一端（也就是 sons, 所以说，在 sons表中，
 必须有一个列， 叫做： `mother_id` )
 
-所以， 这个复杂的SQL 条件就齐备了， 可以生成了。
+所以，这个复杂的SQL 条件就齐备了， 可以生成了。
 
 上面的ruby代码，配置好之后， 就可以这样调用：
 
@@ -151,124 +258,365 @@ mother.sons
 
 ## 一对一： 一对多的特例。
 
-一对多：   `has_many/belongs_to`
+在一对多关系中，用到的关键方法是：`has_many/belongs_to`
 
-一对一：   `has_one/belongs_to`
+在一对一关系中，可以用：`has_one/belongs_to`
+
+例如，最典型的1:1的关系是老公和老婆.
+
+一个老公：有一个老婆。
 
 
-老婆和老公的例子:
+### 创建数据库的表
 
-一个老婆：  有一个老公
+创建老婆表
 
 ```
-class Wife < ActiveRecord::base
+$ bundle exec rails g migration create_wives
+      invoke  active_record
+      create    db/migrate/20210131025033_create_wives.rb
+```
+
+文件`db/migrate/20210131025033_create_wives.rb` 内容如下：
+```
+class CreateWives < ActiveRecord::Migration
+  def change
+    create_table :wives do |t|
+      t.string :name
+      t.integer :husband_id
+    end
+  end
+end
+```
+
+创建对应的model `app/models/wife.rb`, 内容如下：
+
+```
+class Wife < ActiveRecord::Base
   belongs_to :husband
 end
 ```
 
-一个老公：  有一个老婆。
+注意：这里是`belongs_to`, 所以我们在wife表中增加外键`husband_id`
+
+创建老公表：
+
 
 ```
-class Husband < ActiveRecord::base
+$ bundle exec rails g migration create_husbands
+      invoke  active_record
+      create    db/migrate/20210131025043_create_husbands.rb
+```
+
+文件`db/migrate/20210131025043_create_husbands.rb`的内容如下：
+
+```
+class CreateHusbands < ActiveRecord::Migration
+  def change
+    create_table :husbands do |t|
+      t.string :name
+    end
+  end
+end
+```
+
+创建对应的model `app/models/husband.rb`, 内容如下：
+
+```
+class Husband < ActiveRecord::Base
   has_one :wife
 end
 ```
 
+运行migration:
 
-wivies表
+```
+$ bundle exec rake db:migrate
+== 20210131025033 CreateWives: migrating ======================================
+-- create_table(:wives)
+   -> 0.0198s
+== 20210131025033 CreateWives: migrated (0.0199s) =============================
 
-id |   name
--- | --
-1  |  王妈妈
+== 20210131025043 CreateHusbands: migrating ===================================
+-- create_table(:husbands)
+   -> 0.0182s
+== 20210131025043 CreateHusbands: migrated (0.0182s) ==========================
+```
 
-husbands表
+可以看到，2个表的结构都已经生成了。
 
-id  | name
- -- | --
-200 | 李爸爸
+### 添加数据
 
-那么，外键放在哪个表都可以。 ( 我们可以在 `wivies`表，增加一个列， 叫`husband_id`,
-也可以在`husbands`表，增加一个列， 叫`wife_id` )
+```
+$ bundle exec rails c
+irb> a = Husband.create name: '李爸爸'
+irb> b = Wife.create name: '王妈妈', husband_id: a.id
+```
+
+可以看到，此时的数据库内容：
+
+```
+mysql> select * from wives;
++----+-----------+------------+
+| id | name      | husband_id |
++----+-----------+------------+
+|  1 | 王妈妈    |          1 |
++----+-----------+------------+
+
+mysql> select * from husbands;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | 李爸爸    |
++----+-----------+
+```
+
+查询:
+
+```
+irb> Wife.first.husband
+=> #<Husband id: 1, name: "李爸爸">
+
+irb(main):007:0> Husband.first.wife
+=> #<Wife id: 1, name: "王妈妈", husband_id: 1>
+```
 
 ## 多对多
 
-一个学生， 有多个老师 （ 学习了多门课程）
-一个老师，可以教多个孩子 （教一门课程，但是有好多学生来听这个课程）
+下面是最典型的多对多关系：
 
+- 一个学生有多个老师（ 学习了多门课程）
+- 一个老师可以教多个孩子（教一门课程，但是有好多学生来听这个课程）
 
-### 表结构
+### 创建表结构
 
-students , 学生表
-
-id  | name
--- | --
-1   | 小王
-2   | 小明
-3   | 小红
-
-teachers, 老师表
-
-id  | name
- -- | --
-100 | 王老师
-200 | 李老师
-
-
-目前看来， 把外键，放在任何一个表中都不满足需求。 所以需要中间表: 课程。
-
-lessons, 课程
-
-id   |name    | student_id  |   teacher_id
----- |------- | ----------- |   -----------
-1000 |物理课  | 1(小王id)   |   100(王老师）
-2000 |物理课  | 2(小明id)   |   100(王老师）
-3000 |物理课  | 3(小红id)   |   100(王老师）
-4000 |化学课  | 1(小王id)   |   200(李老师）
-5000 |化学课  | 3(小红id)   |   200(李老师）
-
-从上表中，可以看出，
-
-王老师， 上的是物理课， 教了 3个孩子：  小王，小明和小红
-李老师， 上的是化学课， 教了 2个孩子：  小王和小红。
-
-### 传统的SQL语句,其实很麻烦的.
-
-小王都有哪些老师？ (一个SQL例子）
+为students表创建migration:
 
 ```
-select teachers.*, students.*, lessons.*
-    from lessons   //因为找的是老师，我们就要 from teachers ,
-
-    join teachers
-    on lessons.teacher_id = teachers.id  // 通过中间表，把老师 join 弄过来
-
-    join students
-    on lessons.student_id = students.id  // 通过中间表，把学生 join 弄过来
-
-    where students.name = '小王'
+$ bundle exec rails g migration create_students
+      invoke  active_record
+      create    db/migrate/20210131073802_create_students.rb
 ```
 
-这个 复杂的SQL, 会在where之前， 生成下面的表：
+`db/migrate/20210131073802_create_students.rb`内容如下：
 
-teachers. id |teachers. name |students. id |students. name |lessons. id |lessons. name |lessons. student_id| lessons. teacher_id
------------- |-------------- |------------ |-------------- |----------- |------------- |----------------- | ------
-100         |   王老师     |  1         |   小王   |      1000   |  物理成绩   |    1            |      100
-100         |   王老师     |  2         |   小明   |      2000   |  物理成绩   |    2            |      100
-100         |   王老师     |  3         |   小红   |      3000   |  物理成绩   |    3            |      100
-200         |   李老师     |  1         |   小王   |      4000   |  化学成绩   |    1            |      200
-200         |   李老师     |  3         |   小王   |      5000   |  化学成绩   |    3            |      200
+```
+class CreateStudents < ActiveRecord::Migration
+  def change
+    create_table :students do |t|
+      t.string :name
+    end
+  end
+end
+```
 
-跟下面的"中间表"(这个中间表，指的是： 存在于多对多关系两个表 之间的表。 ）是严格相对的：
+同时创建对应的model `app/models/student.rb`
 
-id   |name   |  student_id   |  teacher_id
- -- | -- | -- | --
-1000 |物理成绩  | 1(小王id)  |    100(王老师）
-2000 |物理成绩  | 2(小明id)  |    100(王老师）
-3000 |物理成绩  | 3(小红id)  |    100(王老师）
-4000 |化学成绩  | 1(小王id)  |    200(李老师）
-5000 |化学成绩  | 3(小红id)  |    200(李老师）
+```
+class Student < ActiveRecord::Base
+  has_many :lessons
+  has_many :teachers, :through => :lessons
+end
+```
 
-### 用代码来表示
+为teachers表创建migration
+
+
+```
+$ bundle exec rails g migration create_teachers
+      invoke  active_record
+      create    db/migrate/20210131073807_create_teachers.rb
+```
+
+`db/migrate/20210131073807_create_teachers.rb` 的内容如下：
+
+```
+class CreateTeachers < ActiveRecord::Migration
+  def change
+    create_table :teachers do |t|
+      t.string :name
+    end
+  end
+end
+```
+
+设置对应的model: `app/models/teacher.rb`
+
+```
+class Teacher < ActiveRecord::Base
+  has_many :lessons
+  has_many :students, :through => :lessons
+end
+```
+
+为中间表lessons创建migration:
+
+```
+$ bundle exec rails g migration create_lessons
+      invoke  active_record
+      create    db/migrate/20210131073822_create_lessons.rb
+```
+
+`db/migrate/20210131073822_create_lessons.rb`内容如下：
+
+```
+class CreateLessons < ActiveRecord::Migration
+  def change
+    create_table :lessons do |t|
+      t.string :name
+      t.integer :teacher_id
+      t.integer :student_id
+    end
+  end
+end
+```
+
+创建对应的model  `app/models/lesson.rb` 内容如下：
+
+```
+class Lesson < ActiveRecord::Base
+  belongs_to :student
+  belongs_to :teacher
+end
+```
+
+然后，我们运行migration , 创建对应的表：
+
+```
+$ bundle exec rake db:migrate
+== 20210131073802 CreateStudents: migrating ===================================
+-- create_table(:students)
+   -> 0.0170s
+== 20210131073802 CreateStudents: migrated (0.0171s) ==========================
+
+== 20210131073807 CreateTeachers: migrating ===================================
+-- create_table(:teachers)
+   -> 0.0234s
+== 20210131073807 CreateTeachers: migrated (0.0235s) ==========================
+
+== 20210131073822 CreateLessons: migrating ====================================
+-- create_table(:lessons)
+   -> 0.0192s
+== 20210131073822 CreateLessons: migrated (0.0193s) ===========================
+```
+
+### 初始化数据
+
+
+我们在Rails控制台中，运行如下代码:
+
+```
+irb> ['小王', '小明', '小红'].each { |name|  Student.create name: name}
+irb> ['物理老师','化学老师'].each { |name| Teacher.create name: name }
+```
+
+数据库中就会得到对应的数据：
+
+```
+mysql> select * from students;
++----+--------+
+| id | name   |
++----+--------+
+|  1 | 小王   |
+|  2 | 小明   |
+|  3 | 小红   |
++----+--------+
+
+mysql> select * from teachers;
++----+--------------+
+| id | name         |
++----+--------------+
+|  1 | 物理老师     |
+|  2 | 化学老师     |
++----+--------------+
+```
+
+接下来，我们通过为中间表lessons增加数据，来实现多对多的关系：
+
+物理老师教了3个孩子：小王，小明和小红
+
+```
+irb> ['小王', '小明', '小红'].each do |student_name|
+irb>    student = Student.find_by_name student_name
+irb>    teacher = Teacher.find_by_name '物理老师'
+irb>    Lesson.create name: '物理课', student_id: student.id, teacher_id: teacher.id
+irb>  end
+```
+
+化学老师教了2个孩子：小王和小红。
+
+```
+irb> ['小王', '小红'].each do |student_name|
+irb>   student = Student.find_by_name student_name
+irb>   teacher = Teacher.find_by_name '化学老师'
+irb>   Lesson.create name: '化学课', student_id: student.id, teacher_id: teacher.id
+irb> end
+```
+
+可以看到，数据库中已经存在了下面的数据：
+
+```
+mysql> select * from lessons;
++----+-----------+------------+------------+
+| id | name      | teacher_id | student_id |
++----+-----------+------------+------------+
+|  1 | 物理课    |          1 |          1 |
+|  2 | 物理课    |          1 |          2 |
+|  3 | 物理课    |          1 |          3 |
+|  4 | 化学课    |          2 |          1 |
+|  5 | 化学课    |          2 |          3 |
++----+-----------+------------+------------+
+```
+
+进行一些查询：
+
+小红的所有老师的名字：
+
+```
+irb(main):001:0> Student.find_by_name('小红').teachers.each { |teacher| puts teacher.name }
+  Student Load (0.4ms)  SELECT  `students`.* FROM `students` WHERE `students`.`name` = '小红' LIMIT 1
+  Teacher Load (0.7ms)  SELECT `teachers`.* FROM `teachers` INNER JOIN `lessons` ON `teachers`.`id` = `lessons`.`teacher_id` WHERE `lessons`.`student_id` = 3
+物理老师
+化学老师
+```
+
+可以看到，Rails分别生成了2条SQL语句，并且在第二条SQL中使用了JOIN查询
+
+### 使用join 查询
+
+在很多时候，我们需要在where与join配合才能进行查询。例如：
+
+找出符合下面条件的所有学生
+1. 姓名包含"红",
+2. 老师的名字中包含"物理"
+
+我们可以这样做：
+
+```
+irb> Student.joins(:teachers).where('students.name like ? and teachers.name like ?',
+        '%红%', '%物理%').each { |student| puts student.inspect }
+```
+
+会看到，生成对应的SQL是：
+
+```SQL
+SELECT students.* FROM students
+  INNER JOIN lessons
+  ON lessons.student_id = students.id
+  INNER JOIN teachers
+  ON teachers.id = lessons.teacher_id
+  WHERE (students.name like '%红%' and teachers.name like '%物理%')
+```
+
+得到的结果：
+
+```
+#<Student id: 3, name: "小红">
+```
+
+### 回顾一下多对多的代码
+
+可以发现，在Rails中，多对多的关系是有 `has_many` 来实现的。
 
 ```
 class Student
@@ -286,23 +634,7 @@ class Teachers
 end
 ```
 
-上面的代码定义完之后，就可以实现这个了：
-
-小王都有哪些老师？ (同SQL例子）
-```
-Student.find_by_name('小王').teachers
-```
-
-如果你不需要查询：王老师，有哪些学生？，就不需要定义 class Teacher里的  has_many :students
-
-所以说，rails中的定义非常灵活。 但是在实战中，建议大家都老老实实的加上。 这样当你的同事，
-如果之前哪怕不知道有student这个model, 但看到了teacher这个model, 也就知道了teacher与student的关系了。
-
-另外，从实现模式的角度讲， 也要两端都加上这个`has_many` 的声明。
-
 ### 注意： 多对多关联不要学习 `has_many_and_belongs_to`
-
-为什么？
 
 因为这个方法会生成一个无意义的只包含外键的中间表。例如：
 
@@ -320,9 +652,9 @@ student_id |  teacher_id
 
 ### 多对多关联时对"中间表"的命名。
 
-中间表，一定要有名字。不能叫： 中间表1， 中间表2.
+中间表一定要有"有意义的"名字。不能叫：中间表1，中间表2.
 
-有个不太好用，但是也将就能用的模式：  `A_Bs` , 例如： `student_teachers`, 但是它不如`lessons`可读性强。
+有个不太好用但是也将就能用的模式： `A_Bs` , 例如： `student_teachers`, 但是它不如`lessons`可读性强。
 
 好的名字:
 
@@ -330,7 +662,6 @@ student_id |  teacher_id
 - 学生 与 老师 的中间表是 课程(或成绩)
 
 ## `has_many`与`belongs_to` 会自动生成一系列的方法
-
 
 例如：
 
@@ -355,9 +686,7 @@ collection=objects                 |   wangmama.sons=
 collection_singular_ids            |   wangmama.son_id
 collection.create(attributes = {})	|  wangmama.sons.create(...)
 
-总共16个. 其他的略.
-
-不过,这些方法中,常用的只有一两个.大家可以参考文档.
+总共16个.不过,这些方法中,常用的只有一两个.大家可以参考文档.
 
 ## destroy 与 delete 区别？
 

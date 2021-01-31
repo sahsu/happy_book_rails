@@ -342,5 +342,42 @@ end
 
 ## 作业
 
-实现通过参数创建或者编辑一个东东.
+1.新建rails项目, market
 
+2.新建两个页面:
+
+2.1 水果列表页,`/fruits/list` 内容显示　三种水果列表就可以了．
+
+2.2 水果的新建页, `/fruits/new` 显示啥都行
+
+3.列表页中，下方有个链接，可以跳转到新建页．
+
+4.新建页中，下方有个链接，可以跳转到列表页．
+
+要使用　"named_routes"  (xx_path) 这样的形式．　
+
+- (错误例子)　`<a href='/fruits/list'>xx</a>`
+- (正确例子)　`<a href='<%= list_fruits_path %>'>xx</a>`
+- (正确例子)　`<%= link_to 'xx', list_fruits_path %>`
+
+5.要有root_path (访问　 /  的时候，　要显示页面，"欢迎来到某某水果超市!" )
+
+6.有个接口:  访问 `/interface/fruits/all` 的时候, 要给到json结果:
+(提示: 使用namespace路由)
+
+```
+{
+  "result": ['香蕉', '苹果', '橘子']
+}
+
+```
+
+(渲染json 的时候, 使用 render :json => ... )
+
+7.还可以访问这个url:  `/taste_good` ,  显示页面:  "好好吃啊!"
+
+(提示,使用 match ... to 的写法)
+
+8.实现对fruits 的列表页，新增，编辑，删除功能。
+
+9.列表页要有查询。
