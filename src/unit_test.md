@@ -1,37 +1,37 @@
-# 单元测试介绍。
+# 單元測試介紹。
 
-历史： 最早的测试框架，是 Junit. 作者 Kent Beck.  是敏捷开发大师，他是那种，写了几十年代码的人。
+歷史： 最早的測試框架，是 Junit. 作者 Kent Beck.  是敏捷開發大師，他是那種，寫了幾十年代碼的人。
 
-最早的Junit帮了大家的大忙。 解救人于水火。导致了Junit 出现之后， Nunit( Net) , CUnit( C/c++) ， jsUnit,
-以及现在的ruby的 test unit. 都纷纷出现。
+最早的Junit幫了大家的大忙。 解救人於水火。導致了Junit 出現之後， Nunit( Net) , CUnit( C/c++) ， jsUnit,
+以及現在的ruby的 test unit. 都紛紛出現。
 
-概念： unit test.  测试最小的代码粒度。
+概念： unit test.  測試最小的代碼粒度。
 
 100
 
 10 x 1000 = 10000
 
-## 单元测试产生的缘由
+## 單元測試產生的緣由
 
-如何保证项目是正常的？
+如何保證項目是正常的？
 
-大家的很常见共识：  在钢丝绳上跳舞。
+大家的很常見共識：  在鋼絲繩上跳舞。
 
-做了某个修改之后，如何保证你的修改，没有破坏其他功能正常的函数？
+做了某個修改之後，如何保證你的修改，沒有破壞其他功能正常的函數？
 
-1. 人肉测试 —— 把所有的功能都测试一下吗 ?
+1. 人肉測試 —— 把所有的功能都測試一下嗎 ?
    第一次，可以。 90%
-   第二 。  开始烦了。  测试 60%
+   第二 。  開始煩了。  測試 60%
    第三 ？
    第四？
 
-出现了一个问题，或者一个想法： 让之前的人肉测试过程，可以自动重播（re-play)
+出現了一個問題，或者一個想法： 讓之前的人肉測試過程，可以自動重播（re-play)
 
-催生出了一个理论：
+催生出了一個理論：
 
-人肉测试的步骤，最好是可以被 代码记录下来的。这样才能方便重现。
+人肉測試的步驟，最好是可以被 代碼記錄下來的。這樣才能方便重現。
 
-例如： 一个方法：
+例如： 一個方法：
 
 ```ruby
 def sum a, b
@@ -40,7 +40,7 @@ end
 ```
 
 
-如何测试这个方法呢？
+如何測試這個方法呢？
 
 ```
 irb,
@@ -48,49 +48,49 @@ irb,
 # => 3
 ```
 
-上面是人肉测试过程。   这个步骤里面，我们可以提取出，用代码重现的步骤。
+上面是人肉測試過程。   這個步驟裏面，我們可以提取出，用代碼重現的步驟。
 
 ```
 sum 1,2
-（肉眼对比， sum 1,2 给出的结果， 是否是3 )
+（肉眼對比， sum 1,2 給出的結果， 是否是3 )
 ```
 
-那么，我们就希望有一种  框架(framework) ,或者一种工具，能够帮我们把上述的过程给重新运行。
+那麼，我們就希望有一種  框架(framework) ,或者一種工具，能夠幫我們把上述的過程給重新運行。
 
-从上面的过程可以看出, 自动化的测试，需要两个重要过程：
+從上面的過程可以看出, 自動化的測試，需要兩個重要過程：
 
-1. 记录代码。      =>  我们人肉肯定是要做的。但是，只做一次。
-2. 运行代码。      =>  依赖于一条命令。就可以。
+1. 記錄代碼。      =>  我們人肉肯定是要做的。但是，只做一次。
+2. 運行代碼。      =>  依賴於一條命令。就可以。
 
-所以，我们可以吧代码， 按照作用，分成两种：
+所以，我們可以吧代碼， 按照作用，分成兩種：
 
-1. 实现代码。 它是来实现需求的。  ( implementation code)
-2. 测试代码。  测试 实现代码的。  ( test code)
+1. 實現代碼。 它是來實現需求的。  ( implementation code)
+2. 測試代碼。  測試 實現代碼的。  ( test code)
 
-所以，上面的人肉对比过程，就可以：
+所以，上面的人肉對比過程，就可以：
 
 ```
-# 这个是  实现代码
+# 這個是  實現代碼
 def sum a ,b
   a + b
 end
 
 
-# 下面是测试代码。
+# 下面是測試代碼。
 def test_sum
   temp = sum(1,2)
   assert temp == 3
 end
 ```
 
-因为 已经有这样的单元测试 框架了（工具）， test_unit. 所以，我们就这样用：
+因爲 已經有這樣的單元測試 框架了（工具）， test_unit. 所以，我們就這樣用：
 
-经典命名方式：
+經典命名方式：
 
- 任何一个class, 都要 命名成：  AbcTest
- 该test Case中的测试方法，包含两种：
-   before/after   在某个测试执行之前、之后的方法
-   test_xyz       测试方法
+ 任何一個class, 都要 命名成：  AbcTest
+ 該test Case中的測試方法，包含兩種：
+   before/after   在某個測試執行之前、之後的方法
+   test_xyz       測試方法
 
 ```
 #  sum_test.rb
@@ -110,7 +110,7 @@ end
 
 ```
 
-运行：
+運行：
 
 
 ```
@@ -136,18 +136,18 @@ Finished tests in 0.000432s, 2314.8148 tests/s, 2314.8148 assertions/s.
 1 tests, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-这样就测试了 `sum` 这个方法。
+這樣就測試了 `sum` 這個方法。
 
-但是这个例子太简单了。
+但是這個例子太簡單了。
 
-我们现实当中，需要测试：
+我們現實當中，需要測試：
 
-1. 对于数据库的操作
-2. 对于HTTP的请求。 （鼠标点连接， 提交表单等等）
+1. 對於數據庫的操作
+2. 對於HTTP的請求。 （鼠標點連接， 提交表單等等）
 
-所以，我们需要在Rails中，使用单元测试。
+所以，我們需要在Rails中，使用單元測試。
 
-默认情况下，rails是使用 test-unit 这个框架作为单元测试的。
+默認情況下，rails是使用 test-unit 這個框架作爲單元測試的。
 
 ```
 ▾ test/
@@ -160,10 +160,10 @@ Finished tests in 0.000432s, 2314.8148 tests/s, 2314.8148 assertions/s.
   test_helper.rb
 ```
 
-其中的 test 目录，是默认的放置测试文件的目录。 这里，
-test_helper.rb文件就是测试的配置文件。
+其中的 test 目錄，是默認的放置測試文件的目錄。 這裏，
+test_helper.rb文件就是測試的配置文件。
 
-test_helper中，定义了在Rails环境下的TestCase.
+test_helper中，定義了在Rails環境下的TestCase.
 
 ```ruby
 require 'active_support/testing/autorun'
@@ -174,17 +174,17 @@ require 'action_dispatch/testing/integration'
 require 'rails/generators/test_case'
 ```
 
-所以，有了 test目录下的 test_helper.rb, 我们才能在Rails中，
-运行单元测试（操作数据库，模拟发送HTTP  GET/POST/DELETE请求)
+所以，有了 test目錄下的 test_helper.rb, 我們才能在Rails中，
+運行單元測試（操作數據庫，模擬發送HTTP  GET/POST/DELETE請求)
 
-# 该如何做？
+# 該如何做？
 
-假设：
-1. 我们有个Rails项目。
-2. 该项目有个功能点： /books.  每个book, 有个属性：title:string
-3. 当前所有的功能都正常。
+假設：
+1. 我們有個Rails項目。
+2. 該項目有個功能點： /books.  每個book, 有個屬性：title:string
+3. 當前所有的功能都正常。
 
-## 先写一个针对 books controller的测试。
+## 先寫一個針對 books controller的測試。
 
 ```ruby
 # controller:
@@ -195,7 +195,7 @@ class BooksController < ApplicationController
   # ...
 end
 ```
-那么，测试文件就是：
+那麼，測試文件就是：
 
 ```ruby
 # test/controllers/books_controller_test.rb
@@ -208,17 +208,17 @@ class BooksControllerTest < ActionController::TestCase
 
   def test_should_get_index
 
-    # 我要访问：  /books
+    # 我要訪問：  /books
     get :index
 
-    # 下面这句，表示， 页面正常打开， 返回http 200
+    # 下面這句，表示， 頁面正常打開， 返回http 200
     assert_response :success
   end
 end
 
 ```
 
-运行：
+運行：
 ```bash
  $ bundle exec rake test:functionals
 Run options: --seed 10284
@@ -232,11 +232,11 @@ Finished in 0.628374s, 1.5914 runs/s, 1.5914 assertions/s.
 1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-说明刚才的单元测试是没错的。
+說明剛纔的單元測試是沒錯的。
 
-但是可能大家没有啥感觉。
+但是可能大家沒有啥感覺。
 
-所以，我就把代码做点儿更改：
+所以，我就把代碼做點兒更改：
 
 ```ruby
 # test/controllers/books_controller_test.rb
@@ -257,7 +257,7 @@ end
 
 ```
 
-运行它，可以看到，报错了：
+運行它，可以看到，報錯了：
 
 ```bash
 $ bundle exec rake test:functionals
@@ -278,29 +278,29 @@ RuntimeError: failed
 1 runs, 0 assertions, 0 failures, 1 errors, 0 skips
 ```
 
-可能大家还是没啥感觉。 所以，我们按照真实的例子来：
+可能大家還是沒啥感覺。 所以，我們按照真實的例子來：
 
-正常的  /books 页面看起来是：
-TODO 补充好图片。 保存在了桌面上。
+正常的  /books 頁面看起來是：
+TODO 補充好圖片。 保存在了桌面上。
 
-那么，假设我们在修改代码的时候，它出错了。
+那麼，假設我們在修改代碼的時候，它出錯了。
 
 ```ruby
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
 
   def index
-    raise "I got error!"  # => 这里故意让controller出错！
+    raise "I got error!"  # => 這裏故意讓controller出錯！
 
     @books = Book.all
   end
 ```
 
-重新打开  '/books':
+重新打開  '/books':
 
-TODO 出错的图片。
+TODO 出錯的圖片。
 
-这个时候，我们运行单元测试：
+這個時候，我們運行單元測試：
 
 ```bash
 $ bundle exec rake test:functionals
@@ -322,22 +322,22 @@ RuntimeError: I got error!
 
 ```
 
-不要小看这个小的case, 一个真实的项目中，有几百个需要测试的功能点是
-常事儿。  那么，我们在每次项目部署的时候，都需要保证所有的
-功能是正常运行的。 我们不应该每次都人肉做这个事情。
+不要小看這個小的case, 一個真實的項目中，有幾百個需要測試的功能點是
+常事兒。  那麼，我們在每次項目部署的時候，都需要保證所有的
+功能是正常運行的。 我們不應該每次都人肉做這個事情。
 
-所以，一定要用单元测试（来实现测试的自动化）.
+所以，一定要用單元測試（來實現測試的自動化）.
 
-## 再来个对 Model的测试
+## 再來個對 Model的測試
 
-model的代码：
+model的代碼：
 
 ```ruby
 #app/models/book.rb
 class Book < ActiveRecord::Base
 end
 ```
-对应的单元测试代码就是:
+對應的單元測試代碼就是:
 
 ```ruby
 # -*- encoding : utf-8 -*-
@@ -345,8 +345,8 @@ require 'test_helper'
 
 class BookTest < ActiveSupport::TestCase
   def test_save
-    Book.create :title => "三体"
-    Book.create :title => "球状闪电"
+    Book.create :title => "三體"
+    Book.create :title => "球狀閃電"
     Book.create :title => "海伯利安"
 
     assert Book.count == 3
@@ -354,7 +354,7 @@ class BookTest < ActiveSupport::TestCase
 end
 ```
 
-如果没有其他测试数据的话， 上面的代码就会正常运行：
+如果沒有其他測試數據的話， 上面的代碼就會正常運行：
 
 ``j
 $ bundle exec rake test:units
@@ -364,8 +364,8 @@ Run options: --seed 60624
 
 =====
 #<ActiveRecord::Relation [
- #<Book id: 980190963, title: "三体", created_at: "2015-10-23 07:33:10", updated_at: "2015-10-23 07:33:10">,
- #<Book id: 980190964, title: "球状闪电", created_at: "2015-10-23 07:33:10", updated_at: "2015-10-23 07:33:10">,
+ #<Book id: 980190963, title: "三體", created_at: "2015-10-23 07:33:10", updated_at: "2015-10-23 07:33:10">,
+ #<Book id: 980190964, title: "球狀閃電", created_at: "2015-10-23 07:33:10", updated_at: "2015-10-23 07:33:10">,
  #<Book id: 980190965, title: "海伯利安", created_at: "2015-10-23 07:33:10", updated_at: "2015-10-23 07:33:10">]
 >
 .
@@ -375,17 +375,17 @@ Finished in 0.061792s, 16.1833 runs/s, 16.1833 assertions/s.
 1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-但是，我们实际当中，发现报错，于是我们增加调试信息：
+但是，我們實際當中，發現報錯，於是我們增加調試信息：
 
 ```ruby
 
   def test_save
-    # 往数据库中，新增3个book
-    Book.create :title => "三体"
-    Book.create :title => "球状闪电"
+    # 往數據庫中，新增3個book
+    Book.create :title => "三體"
+    Book.create :title => "球狀閃電"
     Book.create :title => "海伯利安"
 
-    # 打印数据库中的数据
+    # 打印數據庫中的數據
     puts "===== "
     puts Book.all.inspect
 
@@ -393,8 +393,8 @@ Finished in 0.061792s, 16.1833 runs/s, 16.1833 assertions/s.
   end
 ```
 
-于是发现，最开始，由于使用scaffold, 生成了测试数据(test/fixtures/books.yml)
-导致了，数据库中，不但存在了上面的三个Book, 还有另外两个：title 等于 "MyString" 的Book.
+於是發現，最開始，由於使用scaffold, 生成了測試數據(test/fixtures/books.yml)
+導致了，數據庫中，不但存在了上面的三個Book, 還有另外兩個：title 等於 "MyString" 的Book.
 
 ```bash
 $ bundle exec rake test:units
@@ -406,8 +406,8 @@ Run options: --seed 55101
 #<ActiveRecord::Relation [
  #<Book id: 298486374, title: "MyString", created_at: "2015-10-23 07:31:05", updated_at: "2015-10-23 07:31:05">,
  #<Book id: 980190962, title: "MyString", created_at: "2015-10-23 07:31:05", updated_at: "2015-10-23 07:31:05">,
- #<Book id: 980190963, title: "三体", created_at: "2015-10-23 07:31:05", updated_at: "2015-10-23 07:31:05">,
- #<Book id: 980190964, title: "球状闪电", created_at: "2015-10-23 07:31:05", updated_at: "2015-10-23 07:31:05">,
+ #<Book id: 980190963, title: "三體", created_at: "2015-10-23 07:31:05", updated_at: "2015-10-23 07:31:05">,
+ #<Book id: 980190964, title: "球狀閃電", created_at: "2015-10-23 07:31:05", updated_at: "2015-10-23 07:31:05">,
  #<Book id: 980190965, title: "海伯利安", created_at: "2015-10-23 07:31:05", updated_at: "2015-10-23 07:31:05">]>
 F
 
@@ -420,8 +420,8 @@ Failed assertion, no message given.
 1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
 
 ```
-这是为啥呢？ 就是因为， Rails中的单元测试，在每次运行前，都会
-自动加载 fixtures.
+這是爲啥呢？ 就是因爲， Rails中的單元測試，在每次運行前，都會
+自動加載 fixtures.
 
 ```yaml
 # test/fixtures/books.yml
@@ -433,11 +433,11 @@ two:
   title: MyString
 ```
 
-## setup 与 teardown
+## setup 與 teardown
 
-setup: 在每个 testcase 运行之前， 运行。
+setup: 在每個 testcase 運行之前， 運行。
 
-teardown:  在每个testcase 运行完之后，运行。
+teardown:  在每個testcase 運行完之後，運行。
 
 例子：
 
@@ -467,7 +467,7 @@ class BooksControllerTest < ActionController::TestCase
 end
 ```
 
-结果：可以看到， setup, teardown 分别执行了两次。
+結果：可以看到， setup, teardown 分別執行了兩次。
 
 ```bash
 $ bundle exec rake test:functionals
@@ -486,23 +486,23 @@ Finished in 0.162701s, 12.2925 runs/s, 12.2925 assertions/s.
 2 runs, 2 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-## 可读性更好的一种变形：
+## 可讀性更好的一種變形：
 
-下面两种对于test case 的写法，是相同的
+下面兩種對於test case 的寫法，是相同的
 ```ruby
 
 def test_sum
   assert 1+2 ==  3
 end
 
-# 这种写法就是受到了 rspec的巨大影响。
-test "1 + 2 应该等于3" do
+# 這種寫法就是受到了 rspec的巨大影響。
+test "1 + 2 應該等於3" do
   assett 1+2 == 3
 end
 ```
 
 ```ruby
-# 下面两种写法，相同
+# 下面兩種寫法，相同
 def setup
   Book.create :title => 'the name'
 end
@@ -514,15 +514,15 @@ end
 
 同理， teardown 也是。
 
-下面是个完整的例子，大家可以参考来写。
+下面是個完整的例子，大家可以參考來寫。
 
-原则：
+原則：
 
-1. 基本的增删改查，必须要写单元测试。
-2. 单元测试中，必须要有用户的登录。
-3. 上传文件，或者发送邮件，或者其他比较麻烦的，可以不写。
-4. 针对controller的测试，必须写。model的测试，可以有选择的写（比如说，特别复杂的关联关系，或者某个方法），
-5. 其他的，request, view, routes 不需要写单元测试。
+1. 基本的增刪改查，必須要寫單元測試。
+2. 單元測試中，必須要有用戶的登錄。
+3. 上傳文件，或者發送郵件，或者其他比較麻煩的，可以不寫。
+4. 針對controller的測試，必須寫。model的測試，可以有選擇的寫（比如說，特別複雜的關聯關係，或者某個方法），
+5. 其他的，request, view, routes 不需要寫單元測試。
 
 
 ```ruby
@@ -552,9 +552,9 @@ class BooksControllerTest < ActionController::TestCase
 
   test 'post create' do
     post :create, :book => {
-      :title => '三体'
+      :title => '三體'
     }
-    assert Book.last.title  == '三体'
+    assert Book.last.title  == '三體'
   end
 
   test 'delete destroy' do
@@ -570,10 +570,10 @@ class BooksControllerTest < ActionController::TestCase
 
   test 'should put update' do
     put :update, :id => @book.id , :book => {
-      :title => '球状闪电'
+      :title => '球狀閃電'
     }
 
-    assert Book.find(@book.id).title == '球状闪电'
+    assert Book.find(@book.id).title == '球狀閃電'
   end
 
 end
@@ -581,9 +581,9 @@ end
 
 注意：
 
-单元测试所用的数据库，必须跟其他的数据库（development, production)
-分开，因为每次运行单元测试的时候，都会把测试数据库中的数据，
-删掉，重写。 所以，config/database.yml中，你总会看到这句话：
+單元測試所用的數據庫，必須跟其他的數據庫（development, production)
+分開，因爲每次運行單元測試的時候，都會把測試數據庫中的數據，
+刪掉，重寫。 所以，config/database.yml中，你總會看到這句話：
 
 ```
  16 # Warning: The database defined as "test" will be erased and
@@ -591,5 +591,5 @@ end
  18 # Do not set this db to the same as development or production.
 ```
 
-但是，实践中，一个常见的手法是，在部署时，development, production 可以
-弄成一个。
+但是，實踐中，一個常見的手法是，在部署時，development, production 可以
+弄成一個。

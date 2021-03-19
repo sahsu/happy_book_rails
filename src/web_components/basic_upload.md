@@ -1,26 +1,26 @@
-# 基本的上传文件
-1. 保证前端有个form表单，
-并且这个表单， 是可以传递参数的。例如：
+# 基本的上傳文件
+1. 保證前端有個form表單，
+並且這個表單， 是可以傳遞參數的。例如：
 
 ```
 <%= form_for @article, url:article_path(@article), method: :patch,
   :html => {multipart: true} do |f| %>
-  文章标题: <%= f.text_field :title %>
+  文章標題: <%= f.text_field :title %>
 ```
 
-生成的form中，就会出现  enctype="multipart/form-data"
+生成的form中，就會出現  enctype="multipart/form-data"
 ```
 <form class="edit_article" id="edit_article_2"
 enctype="multipart/form-data" action="/articles/2" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="_method" value="patch"><input type="hidden" name="authenticity_token" value="1Kv9e+Y7JGODBU2FphDHFNC3ALkH4/apaCbam+UBWLoOmUj9Lq0MyffSWXwyZvVHXwFWmEVAKlH7HCsEhFl5cw==">
 ```
 
-2. 提交上面的表单后， 在rails日志，就可以看到： 参数变了。
-多了可以保存成文件的内容：
+2. 提交上面的表單後， 在rails日誌，就可以看到： 參數變了。
+多了可以保存成文件的內容：
 ```
 10:47:07 INFO:   Parameters: {"utf8"=>"✓",
  "authenticity_token"=>"1Kv9e+Y7JGODBU2FphDHFNC3ALkH4/apaCbam+UBWLoOmUj9Lq0MyffSWXwyZvVHXwFWmEVAKlH7HCsEhFl5cw==",
  "article"=>{"title"=>"mysql mysql? ",
- "content"=>"<p>使用mysql的同学，请直接下载附件的exe....</p>\r\n"},
+ "content"=>"<p>使用mysql的同學，請直接下載附件的exe....</p>\r\n"},
  "attachment"=>#<ActionDispatch::Http::UploadedFile:0x007f7441dd8c60 @tempfile=#<Tempfile:/tmp/RackMultipart20161103-8186-48u1mt.png>,
  @original_filename="定位示例.png",
  @content_type="image/png",
@@ -29,7 +29,7 @@ enctype="multipart/form-data" action="/articles/2" accept-charset="UTF-8" method
  "id"=>"2"}
 ```
 
-3. 知道rails小知识： Rails.root
+3. 知道rails小知識： Rails.root
 
 ```
 $ bundle exec rails console
@@ -42,9 +42,9 @@ irb(main):010:0> Rails.root.join('public', 'uploads')
 ```
 
 
-(我们要保证  /public/uploads 这个目录存在）
+(我們要保證  /public/uploads 這個目錄存在）
 
-所以，我们就可以写上传代码了：
+所以，我們就可以寫上傳代碼了：
 
 ```
 def update
@@ -57,9 +57,9 @@ end
 
 ```
 
-于是，我们就可以看到，/pulic/uploads 目录下出现了新文件：
+於是，我們就可以看到，/pulic/uploads 目錄下出現了新文件：
 
-通过浏览器，就可以访问了：
+通過瀏覽器，就可以訪問了：
 ```
 http://localhost:3000/uploads/%E5%AE%9A%E4%BD%8D%E7%A4%BA%E4%BE%8B.png
 ```

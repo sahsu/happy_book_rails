@@ -1,12 +1,12 @@
-# 关于密码校验
+# 關於密碼校驗
 
-## 密码的产生过程。
+## 密碼的產生過程。
 
-明文 -> md5(明文）  ->  'a1b2c3d4 .... z20' -> 保存到数据库。
+明文 -> md5(明文）  ->  'a1b2c3d4 .... z20' -> 保存到數據庫。
 
-永远不要把明文密码保存在数据库中。永远要使用md5加密的方式。
+永遠不要把明文密碼保存在數據庫中。永遠要使用md5加密的方式。
 
-在rails/ java 等 框架中，正确的做法是： md5加密是框架自动做的。
+在rails/ java 等 框架中，正確的做法是： md5加密是框架自動做的。
 
 例如：
 
@@ -14,16 +14,16 @@
 user = User.create  :name => 'Jim',  :password => '123456'
 ```
 
-然后我们登录到MYSQL 查看password 这个列的时候，会发现，已经被自动加密过了。
+然後我們登錄到MYSQL 查看password 這個列的時候，會發現，已經被自動加密過了。
 
-## WEB 端， 也不是每次都需要校验密码。
+## WEB 端， 也不是每次都需要校驗密碼。
 
 靠的是： session.
 
-session: 会话。保存在服务器端的状态数据。
-可以认为，服务器跟客户端保持的一种持续的状态。（例如： 30分钟内不需要登录）
+session: 會話。保存在服務器端的狀態數據。
+可以認爲，服務器跟客戶端保持的一種持續的狀態。（例如： 30分鐘內不需要登錄）
 
-例如： 对于某个论坛，如果当前有3个人在线，服务器端，对就会专门记录这三个客户端的session_id:
+例如： 對於某個論壇，如果當前有3個人在線，服務器端，對就會專門記錄這三個客戶端的session_id:
 
 ```
 sessions:
@@ -37,61 +37,61 @@ sessions:
 
 ```
 
-总之，每个session 都不一样。
-从上面的代码中，如果对于同样的一段erb代码（服务器端）:
+總之，每個session 都不一樣。
+從上面的代碼中，如果對於同樣的一段erb代碼（服務器端）:
 
 ```ruby
 <%=  session[:is_logged_in] %>
 ```
 
-在1# 客户端上， 就会显示：  true
+在1# 客戶端上， 就會顯示：  true
 
-在2#， 3#客户端上，就会显示：    （空）
+在2#， 3#客戶端上，就會顯示：    （空）
 
 cookie:
 
-保存在客户端的变量。
+保存在客戶端的變量。
 
-## Devise 中的密码体系
+## Devise 中的密碼體系
 
-例如，我们有个 User 表，它由devise 进行控制。那么，默认这个表(User)有若干列：
+例如，我們有個 User 表，它由devise 進行控制。那麼，默認這個表(User)有若干列：
 
 1. email
 2. encrypted_password
 
-然后，user 还有个属性（attribute) :   password
+然後，user 還有個屬性（attribute) :   password
 
-所以，每当我们新建一个model的时候， ：
+所以，每當我們新建一個model的時候， ：
 
 User.create :email => 'someone@fake.com', :password => '88888888'
 
-于是，新的user 记录就会自动生成，并且，数据库中它的encrypted_password 会根据 '88888888'来
-自动生成。
+於是，新的user 記錄就會自動生成，並且，數據庫中它的encrypted_password 會根據 '88888888'來
+自動生成。
 
-3. 根据上面生成的记录， devise 还能自动的根据encrypted_password, 得到真正的password.
+3. 根據上面生成的記錄， devise 還能自動的根據encrypted_password, 得到真正的password.
 
 ```
-user = User.last # 获取到刚才新建的用户
+user = User.last # 獲取到剛纔新建的用戶
 user.password  # => 88888888
 ```
 
-所以，在devise所作用的user表中，是没有password这个列存在的,它是一个独立的属性, 可以
-供我们访问。
+所以，在devise所作用的user表中，是沒有password這個列存在的,它是一個獨立的屬性, 可以
+供我們訪問。
 
-## 移动端，不是每次都需要密码。
-大家可以认为：在移动端，没有session这个概念。
+## 移動端，不是每次都需要密碼。
+大家可以認爲：在移動端，沒有session這個概念。
 
-## 如何在移动端，判断当前用户是否正确登录？
+## 如何在移動端，判斷當前用戶是否正確登錄？
 
-1. 身份的验证。  客户端： 发送 用户名 + 密码， 服务器端认证。
-2. 每次由 客户端，向 服务器端，发送请求的时候，要附带一段 “密码字符串”，它的作用等同于密码。
+1. 身份的驗證。  客戶端： 發送 用戶名 + 密碼， 服務器端認證。
+2. 每次由 客戶端，向 服務器端，發送請求的時候，要附帶一段 “密碼字符串”，它的作用等同於密碼。
 
 例如：
-1. 身份验证后：
+1. 身份驗證後：
 
 app ：  /interface/login?name=xiaowang&password=123456
 
-服务器端： 对该request处理。 正确的话，返回：
+服務器端： 對該request處理。 正確的話，返回：
 
 ```
 {
@@ -100,8 +100,8 @@ app ：  /interface/login?name=xiaowang&password=123456
 }
 ```
 
-2. 接下来，app端，就把该token保存在本地数据库，然后，每次发送请求到服务器时，
-都附带上这个token:
+2. 接下來，app端，就把該token保存在本地數據庫，然後，每次發送請求到服務器時，
+都附帶上這個token:
 
 app:
 
@@ -111,7 +111,7 @@ GET  /interface/delete_case?id=3&token=abc
 ```
 
 
-这样的话，我们在服务器端，每次都可以针对一个request做验证：
+這樣的話，我們在服務器端，每次都可以針對一個request做驗證：
 
 ```ruby
 class Interface < ActionController::Base
@@ -119,7 +119,7 @@ class Interface < ActionController::Base
   def create_case
     if params[:token].blank? || params[:token].is_invalid?
       render :json => {
-        message: '您没有登录'
+        message: '您沒有登錄'
       }
     end
     Case.create ....
@@ -132,10 +132,10 @@ class Interface < ActionController::Base
 end
 ```
 
-在实际的操作当中，如果严格一些的话，每次发起的请求，不仅有token ,还应该有
-md5的值，有当前的时间戳。有pid ... guid ...
+在實際的操作當中，如果嚴格一些的話，每次發起的請求，不僅有token ,還應該有
+md5的值，有當前的時間戳。有pid ... guid ...
 
-## 如果根据 token找到对应的用户呢？
+## 如果根據 token找到對應的用戶呢？
 
 User表：
 
@@ -145,9 +145,9 @@ id  | name  |   encrypted_password  | token
 2   | Lilei |   c3d4e5...           | efg
 ```
 
-token是可以变的。我们可以让它具有一定的时效性：
+token是可以變的。我們可以讓它具有一定的時效性：
 
-改良后的：User表：
+改良後的：User表：
 
 ```
 id  | name  |   encrypted_password  | token | expires_at
@@ -155,21 +155,21 @@ id  | name  |   encrypted_password  | token | expires_at
 2   | Lilei |   c3d4e5...           | efg   | 2015-11-5
 ```
 
-那么，这样的话，我们就可以根据某个user记录的expires_at 来判断，该用户的token是否有效。
+那麼，這樣的話，我們就可以根據某個user記錄的expires_at 來判斷，該用戶的token是否有效。
 
-然后，在每次登录的时候，更新 token 和 expires_at .
+然後，在每次登錄的時候，更新 token 和 expires_at .
 
 
-## 所以app的发起request，要有一个实现模式
+## 所以app的發起request，要有一個實現模式
 
-1. 要有一个统一的方法来发起get/post 请求
+1. 要有一個統一的方法來發起get/post 請求
 
 
 ```
-// 就是确保每次发起请求的时候，都要给到服务器端：  token,pid, guid....
+// 就是確保每次發起請求的時候，都要給到服務器端：  token,pid, guid....
 function send_request(url){
 
   final_url =  url + "&token=" + get_token() + "&pid=" + get_pid() ...
-  // 把这个final_url 发送出去
+  // 把這個final_url 發送出去
 }
 ```

@@ -1,12 +1,12 @@
 # migration comments
 
-如果我们的命名良好时，不需要为数据库的某个列，某个表增加注释。
+如果我們的命名良好時，不需要爲數據庫的某個列，某個表增加註釋。
 
-但是实践证明，大部分的国内开发者都无法100%的保证自己的名字是良好的，
-例如：'客厅', '客餐厅',
-所以，我们须要为每个列都增加注释。
+但是實踐證明，大部分的國內開發者都無法100%的保證自己的名字是良好的，
+例如：'客廳', '客餐廳',
+所以，我們須要爲每個列都增加註釋。
 
-这个 migration comments gem就是为了解决MYSQL 下这个问题的。
+這個 migration comments gem就是爲了解決MYSQL 下這個問題的。
 
 ## 使用方法：
 
@@ -17,39 +17,39 @@ gem 'migration_comments'
 
 注意：
 
-- 所有的注释，都添加在migration中!
-- 为列增加注释时，最好加上个例子。例如：  "该列保存用户的年纪，例如： 32"
+- 所有的註釋，都添加在migration中!
+- 爲列增加註釋時，最好加上個例子。例如：  "該列保存用戶的年紀，例如： 32"
 
-## 为表和列增加注释
+## 爲表和列增加註釋
 
 ```ruby
 def self.up
-  set_table_comment :users, "用户表"
-  set_column_comment :users, :email, "用户的邮箱，例如： a@b.com"
+  set_table_comment :users, "用戶表"
+  set_column_comment :users, :email, "用戶的郵箱，例如： a@b.com"
 end
 ```
 
-也可以单独指定 comment:
+也可以單獨指定 comment:
 ```ruby
 def self.up
   change_table :users do |t|
-    t.comment "普通用户表。"
-    t.change_comment :email, "用户的邮箱，必须是happysoft.com的，例如：a@happysoft.cc"
+    t.comment "普通用戶表。"
+    t.change_comment :email, "用戶的郵箱，必須是happysoft.com的，例如：a@happysoft.cc"
   end
 end
 ```
 
-在新建table时指定comment:
+在新建table時指定comment:
 ```ruby
 def self.up
-  create_table :users, :comment => "用户表" do |t|
+  create_table :users, :comment => "用戶表" do |t|
     t.string :email, :comment => "email, 例如： a@b.com"
   end
 end
 ```
 
 
-删除表或者列中的comment:
+刪除表或者列中的comment:
 ```ruby
 def self.up
   remove_table_comment :table_name
@@ -57,19 +57,19 @@ def self.up
 end
 ```
 
-把所有的列子综合起来：
+把所有的列子綜合起來：
 ```ruby
 def self.up
   change_table :existing_table do |t|
-    # 删除某个表的comment
+    # 刪除某個表的comment
     t.comment nil
-    # 增加一个新列.带有comment.
+    # 增加一個新列.帶有comment.
     t.string :new_column, :comment => "新列的comment"
-    # 删掉一个列的注释
+    # 刪掉一個列的註釋
     t.change_comment :existing_column, nil
-    # 修改一个列的类型, 连带注释也删掉。
+    # 修改一個列的類型, 連帶註釋也刪掉。
     t.integer :another_existing_column, :comment => nil
-    # 仅仅修改列，不修改它的注释
+    # 僅僅修改列，不修改它的註釋
     t.boolean :column_with_comment
   end
 end

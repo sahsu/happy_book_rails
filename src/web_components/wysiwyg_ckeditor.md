@@ -1,12 +1,12 @@
-# 所见即所得编辑器  WYSIWYG editor
+# 所見即所得編輯器  WYSIWYG editor
 
-ckeditor 是目前最流行的所见即所得编辑器。它可以为用户提供极大地方便。
+ckeditor 是目前最流行的所見即所得編輯器。它可以爲用戶提供極大地方便。
 
-注意： 不要使用 "ckeditor_rails" 这个gem.
+注意： 不要使用 "ckeditor_rails" 這個gem.
 
 ![ckeditor例子](/images/ckeditor.png)
 
-1。 安装 imagemagick
+1。 安裝 imagemagick
 
 Linux下：
 
@@ -14,7 +14,7 @@ Linux下：
 $ sudo apt-get install imagemagick
 ```
 
-2. 编辑： Gemfile
+2. 編輯： Gemfile
 
 ```ruby
 gem 'carrierwave'
@@ -47,7 +47,7 @@ $ rake db:migrate
 <% end %>
 ```
 
-注意, 做完上面几步, ckeditor是出来了,但是还没有 "上传文件" 这个功能. 所以还需要解决这个问题,参考(
+注意, 做完上面幾步, ckeditor是出來了,但是還沒有 "上傳文件" 這個功能. 所以還需要解決這個問題,參考(
 http://stackoverflow.com/questions/20010675/no-image-upload-capability-in-ui-with-ckeditor-gem-paperclip-rails-4 )
 
 7.  add this file to : app/assets/javascripts/ckeditor/config.js
@@ -148,13 +148,13 @@ CKEDITOR.editorConfig = function( config )
 };
 ```
 
-8. 默认的编辑页面的高度是200px, 需要我们做一些定制，例如增加高度，使用汉语：
+8. 默認的編輯頁面的高度是200px, 需要我們做一些定製，例如增加高度，使用漢語：
 
 ```
 $ mkdir app/assets/javascripts/ckeditor/ -p
 ```
 
-在上面的目录下，新增config.js:
+在上面的目錄下，新增config.js:
 ```javascript
 CKEDITOR.editorConfig = function( config ) {
   // Define changes to default configuration here. For example:
@@ -165,27 +165,27 @@ CKEDITOR.editorConfig = function( config ) {
 };
 ```
 
-## 注意1: ckeditor的语言包特别大。
+## 注意1: ckeditor的語言包特別大。
 
-在rails中使用它时，务必指定它的语言，并且编译 assets,
-否则每次需要加载几十个文件。
+在rails中使用它時，務必指定它的語言，並且編譯 assets,
+否則每次需要加載幾十個文件。
 
 
-## 注意2：ckeditor中，只能输入inline style,
+## 注意2：ckeditor中，只能輸入inline style,
 
-之前写过  ckeditor 会默认吃掉inline style (http://siwei.me/blog/posts/ckeditor-inline-style-preserve-inline-style-in-ckeditor)
+之前寫過  ckeditor 會默認吃掉inline style (http://siwei.me/blog/posts/ckeditor-inline-style-preserve-inline-style-in-ckeditor)
 
-其实, ckeditor, 还会吃掉:  <script> ,  <style>,  以及所有的 '<' 标签. (把它转换成:  &lt; )
+其實, ckeditor, 還會吃掉:  <script> ,  <style>,  以及所有的 '<' 標籤. (把它轉換成:  &lt; )
 
-为什么呢?  这是考虑到 安全性.
+爲什麼呢?  這是考慮到 安全性.
 
-设想一个场景:  某个 CSDN 的 BLOG 用户,发布了一个博客文章, 里面嵌入了一段js hacker的代码:
+設想一個場景:  某個 CSDN 的 BLOG 用戶,發佈了一個博客文章, 裏面嵌入了一段js hacker的代碼:
 
 <script >  some_dirty_code ... </script>
 
-那么就会对所有访问这个页面的人造成损失.
+那麼就會對所有訪問這個頁面的人造成損失.
 
-所以, CKEDITOR , 以及其他好多编辑器,都是默认输入的内容是有限制性的.
+所以, CKEDITOR , 以及其他好多編輯器,都是默認輸入的內容是有限制性的.
 
 或者，使用：
 

@@ -1,10 +1,10 @@
-# 新手入门不用学的东西
+# 新手入門不用學的東西
 
-以下内容在新手入门的时候不用学习，因为根据经验来看，这些内容会对新手造成困扰。
+以下內容在新手入門的時候不用學習，因爲根據經驗來看，這些內容會對新手造成困擾。
 
-## `csrf_token` 在学习前可以省略掉。
+## `csrf_token` 在學習前可以省略掉。
 
-在`application_controller.rb`注释掉 `protect_from_forgery`
+在`application_controller.rb`註釋掉 `protect_from_forgery`
 
 ```
 class ApplicationController < ActionController::Base
@@ -14,9 +14,9 @@ end
 
 ##  asset pipe line
 
-会在部署的时候给你带来大麻烦
+會在部署的時候給你帶來大麻煩
 
-可以在`config/application.rb`中暂时把它注释掉，这个可以在整体学完之后再学:
+可以在`config/application.rb`中暫時把它註釋掉，這個可以在整體學完之後再學:
 
 ```
 config.assets.enabled = false
@@ -24,30 +24,30 @@ config.assets.enabled = false
 
 ## scaffold
 
-仅用于新手入门和了解。但是做项目时，不要依赖它。
+僅用於新手入門和了解。但是做項目時，不要依賴它。
 
-仅仅把它用在学习的过程中。例如，我希望知道，一个完整的 CRUD， 是需要哪些文件来配合的。那么一个最快速的办法就是使用
+僅僅把它用在學習的過程中。例如，我希望知道，一個完整的 CRUD， 是需要哪些文件來配合的。那麼一個最快速的辦法就是使用
 
 ```
 $ rails g scaffold users  name:string ..
 ```
 
-这个命令来生成,就能看到：
+這個命令來生成,就能看到：
 
-会生成controller, model, view, helper ... 所有依赖的文件。也会生成 migration 等等。
+會生成controller, model, view, helper ... 所有依賴的文件。也會生成 migration 等等。
 
-根据我的经验，依赖这个命令（以及类似命令 rails g model, rails g controller）的新人，入门的速度会最长达3个月。
-但是，不依赖这个命令，所有的CRUD都自己手写的人，可以在 2~3周入门。
+根據我的經驗，依賴這個命令（以及類似命令 rails g model, rails g controller）的新人，入門的速度會最長達3個月。
+但是，不依賴這個命令，所有的CRUD都自己手寫的人，可以在 2~3周入門。
 
-## form validation 表单验证
+## form validation 表單驗證
 
-在服务器端，验证一个 form object , 是否符合要求。例如，name是否是空, email 是否是xx@yy.com 这个格式。
+在服務器端，驗證一個 form object , 是否符合要求。例如，name是否是空, email 是否是xx@yy.com 這個格式。
 
-除非特别重要，否则前端验证就足够了
+除非特別重要，否則前端驗證就足夠了
 
-解决办法：直接用jquery validate, 在client端进行验证。
+解決辦法：直接用jquery validate, 在client端進行驗證。
 
-所以，每个`_form.html.erb`中的内容，都要删掉：
+所以，每個`_form.html.erb`中的內容，都要刪掉：
 
 ```
   <% if @book.errors.any? %>
@@ -63,33 +63,33 @@ $ rails g scaffold users  name:string ..
   <% end %>
 ```
 
-## 关联关系: 多对多.
+## 關聯關係: 多對多.
 
 忘掉 `has_many_and_belongs_to` .
 
-不用这个，我们要用`has_many` 来代替。
+不用這個，我們要用`has_many` 來代替。
 
-因为多对多的关系，不是由两个对象（表）来决定的,而是由3个表来决定的。例如：
+因爲多對多的關係，不是由兩個對象（表）來決定的,而是由3個表來決定的。例如：
 
-老师-学生 = N:N
+老師-學生 = N:N
 
-1. 有个老师表
-2. 有个学生表
-3. 有个中间表（课程，成绩）
+1. 有個老師表
+2. 有個學生表
+3. 有個中間表（課程，成績）
 
-所以，我们要使用 `has_many` 就可以了，不要用 `has_many_and_belongs_to`
+所以，我們要使用 `has_many` 就可以了，不要用 `has_many_and_belongs_to`
 
-## 尽量不用单表继承
+## 儘量不用單表繼承
 
-假设有3个对象:
+假設有3個對象:
 
 1. 男人
 2. 女人
 3. 生物
 
-也可以这样设计：
+也可以這樣設計：
 
-只有一个表, 就叫creatures
+只有一個表, 就叫creatures
 
 ```
 creatures
@@ -99,17 +99,17 @@ name: string
 type: string
 ```
 
-表的内容就是:
+表的內容就是:
 
 ```
 id  name      type
 -------------------------
-1   '张三丰'  Man
-2   '武则天'  Women
+1   '張三丰'  Man
+2   '武則天'  Women
 3   '青蛙'    Creature
 ```
 
-对应的class是：
+對應的class是：
 
 ```
 class Man < Creature
@@ -122,39 +122,39 @@ class Creature < ActiveRecord::Base
 end
 ```
 
-这就是单表继承。我们可以了解, 但是不要在实际项目中使用。因为Rails中，充满了太多的"按照惯例编程"，这些惯例，很容易会被单表继承所破坏。
+這就是單表繼承。我們可以瞭解, 但是不要在實際項目中使用。因爲Rails中，充滿了太多的"按照慣例編程"，這些慣例，很容易會被單表繼承所破壞。
 
-例如： `form_for @man` ,rails就会认为"传递给 form_for函数 的 参数@man 的class" 是`Man`, 而不是`Creature`, 那么，该form是要提交到哪个url？
+例如： `form_for @man` ,rails就會認爲"傳遞給 form_for函數 的 參數@man 的class" 是`Man`, 而不是`Creature`, 那麼，該form是要提交到哪個url？
 
 ```
 - /creatures/2/update
 - /men/2/update
 ```
 
-总之，这里的坑很深，就老老实实的按照惯例编程，不要为了抽象而抽象。
+總之，這裏的坑很深，就老老實實的按照慣例編程，不要爲了抽象而抽象。
 
-另外，一旦rails用多了，我们就会发现，尽量不要改变`form_for`, `form_tag` 这样的功能。
+另外，一旦rails用多了，我們就會發現，儘量不要改變`form_for`, `form_tag` 這樣的功能。
 
-## i18n 国际化
+## i18n 國際化
 
-忘掉它。咱们国内项目永远用不到。而且国际化将来会为你带来巨大的麻烦。例如影响页面CSS的布局等等。
+忘掉它。咱們國內項目永遠用不到。而且國際化將來會爲你帶來巨大的麻煩。例如影響頁面CSS的佈局等等。
 
 ## Plugins
 
-忘掉它。我从来没写过。在我使用ruby的第一年，好像官方就把它抛弃了。(deprecated)
+忘掉它。我從來沒寫過。在我使用ruby的第一年，好像官方就把它拋棄了。(deprecated)
 
-可以写个新的gem
+可以寫個新的gem
 
 ## 不要使用 nested form.
 
-例如：  我在新建 一个文章的时候，就在页面上，增加针对文章的form.
-不要：  在这个form中，又新增文章，又新增 该文章的评论。 (因为这个评论是属于这个文章的）
+例如：  我在新建 一個文章的時候，就在頁面上，增加針對文章的form.
+不要：  在這個form中，又新增文章，又新增 該文章的評論。 (因爲這個評論是屬於這個文章的）
 
-## 不要使用 respond_to 或者 类似的方法。
+## 不要使用 respond_to 或者 類似的方法。
 
-要么只返回html, 要么只返回json
+要麼只返回html, 要麼只返回json
 
-下面的代码，同时支持两种格式： json, html, 实际上这是鸡肋。
+下面的代碼，同時支持兩種格式： json, html, 實際上這是雞肋。
 ```
 def destroy
   @book.destroy
@@ -165,7 +165,7 @@ def destroy
 end
 ```
 
-我们在实际操作中，一个路由仅仅对应一种返回格式，这样更好写代码，安全性也更高例如：
+我們在實際操作中，一個路由僅僅對應一種返回格式，這樣更好寫代碼，安全性也更高例如：
 
 ```
 GET /api/books    # 只支持json
@@ -174,45 +174,45 @@ GET /books        # 只支持html
 
 ## nested routes (嵌套的路由)
 
-- 正常的路由：  `/comments/2`  表示id = 2 的 评论
-- 奇怪的路由：  `/posts/50/comments/2`    表示 id = 50的文章的评论中， id = 2 的评论。
+- 正常的路由：  `/comments/2`  表示id = 2 的 評論
+- 奇怪的路由：  `/posts/50/comments/2`    表示 id = 50的文章的評論中， id = 2 的評論。
 
-问题来了: 如果想找出"辽宁省阜新市海州区第三小学"该怎么找？
+問題來了: 如果想找出"遼寧省阜新市海州區第三小學"該怎麼找？
 
 - 奇怪的路由：  `/provinces/4/cities/3/schools/2`
-- 我干嘛不用：  `/schools/2`  呢？
+- 我幹嘛不用：  `/schools/2`  呢？
 
-如果一定要带上前面的参数的话，干嘛不直接这样:
+如果一定要帶上前面的參數的話，幹嘛不直接這樣:
 
 - `/schools/2?province_id=4&city_id=3`
 
-后者我可以加上100个参数，不超过64k的长度（或者2K长度，在IE下）就可以。
-如果用 nested routes, 我们就没法开发了
+後者我可以加上100個參數，不超過64k的長度（或者2K長度，在IE下）就可以。
+如果用 nested routes, 我們就沒法開發了
 
-极端例子： `/provinces/4/cities/3/schools/2/grade/5/class/3/student/2`
+極端例子： `/provinces/4/cities/3/schools/2/grade/5/class/3/student/2`
 
-可惜的是，官方的rails guide中，第一个就是这个例子。
+可惜的是，官方的rails guide中，第一個就是這個例子。
 
-我的建议是：忘掉这个功能。
+我的建議是：忘掉這個功能。
 
 ## routes中，只使用 resources,  不要使用其他的路由
 
-下面这两种都尽量别用:
+下面這兩種都儘量別用:
 
 ```
 get 'welcome/index'
 match ...
 ```
 
-routes.rb中，只应该出现： `resources`, `root` 两种路由。
+routes.rb中，只應該出現： `resources`, `root` 兩種路由。
 
 ## params().require().permit
 
-除非你对 `form_object` 很熟悉了, 否则很多新手会蒙。
+除非你對 `form_object` 很熟悉了, 否則很多新手會蒙。
 
-应该直接使用`params[:users]`
+應該直接使用`params[:users]`
 
-可以在`config/application.rb`中关闭这个功能:
+可以在`config/application.rb`中關閉這個功能:
 
 ```
 config.action_controller.permit_all_parameters = true
@@ -220,22 +220,22 @@ config.action_controller.permit_all_parameters = true
 
 ## 不要使用turbo links
 
-这个技术，是为了让客户端减少对服务器端的请求。但是效果不理想，很容易引起js的错误。
-那么我们在需要的场合，直接使用更加纯粹的single-page-app. (例如vuejs)
+這個技術，是爲了讓客戶端減少對服務器端的請求。但是效果不理想，很容易引起js的錯誤。
+那麼我們在需要的場合，直接使用更加純粹的single-page-app. (例如vuejs)
 
-1.删掉Gemfile 中的gem:
+1.刪掉Gemfile 中的gem:
 
 ```
 gem 'turbolinks'
 ```
 
-2.在`app/assets/javascripts/application.js` 中删掉下面的内容：
+2.在`app/assets/javascripts/application.js` 中刪掉下面的內容：
 
 ```
 //= require turbolinks
 ```
 
-3.在`app/views/layouts/application.html.erb` 中删掉下面的内容：
+3.在`app/views/layouts/application.html.erb` 中刪掉下面的內容：
 
 ```
 "data-turbolinks-track" => true

@@ -1,22 +1,22 @@
 #[delayed_job](https://github.com/collectiveidea/delayed_job)
-delayed_job用来处理rails中的异步延时任务,支持发送大量实时通讯、改变图片尺寸、http下载等等。
+delayed_job用來處理rails中的異步延時任務,支持發送大量實時通訊、改變圖片尺寸、http下載等等。
 
-例如， 我要在controller中，发送10万封邮件。 这个操作要耗时3个小时。我们不能这样写：
+例如， 我要在controller中，發送10萬封郵件。 這個操作要耗時3個小時。我們不能這樣寫：
 
 ```
 def send_emails
   (1..1000000).each do |n|
-    ## 开始处理发送邮件。
+    ## 開始處理髮送郵件。
   end
   redirect_to ...
 end
 ```
 
-这样写的话，是不行的。 每次这个action都会timeout。
+這樣寫的話，是不行的。 每次這個action都會timeout。
 
-对于这个情况，我们就要让程序在后台运行。
+對於這個情況，我們就要讓程序在後臺運行。
 
-##安装
+##安裝
 
 在Active Record中使用，直接在`Gemfile`中加入
 
@@ -24,14 +24,14 @@ end
 gem 'delayed_job_active_record'
 ```
 
-运行`bundle install`安装后端和delayed_job gem。
-Active Record后端需要一个任务表，创建命令：
+運行`bundle install`安裝後端和delayed_job gem。
+Active Record後端需要一個任務表，創建命令：
 
 ```bash
 $ rails generate delayed_job:active_record
 $ rake db:migrate
 ```
-就会生成一个migration:
+就會生成一個migration:
 
 ```
 class CreateDelayedJobs < ActiveRecord::Migration
@@ -59,28 +59,28 @@ end
 
 ```
 
-如果是`rails 4.2`，则需要在`config/application.rb`中配置`queue_adapter`
+如果是`rails 4.2`，則需要在`config/application.rb`中配置`queue_adapter`
 ```ruby
 # config/application.rb
 module YourApp
   class Application < Rails::Application
 
-  　# 这里，加上下面这一行：
+  　# 這裏，加上下面這一行：
     config.active_job.queue_adapter = :delayed_job
   end
 end
 ```
 
->如果在`Rails 4.x`中使用了`protected_attributes` gem，必须将`gem protected_attributes`放在delayed_job前面，不然会报以下错误:
+>如果在`Rails 4.x`中使用了`protected_attributes` gem，必須將`gem protected_attributes`放在delayed_job前面，不然會報以下錯誤:
 
 >ActiveRecord::StatementInvalid: PG::NotNullViolation: ERROR:  null value in column "handler" violates not-null constraint
 
-##开发模式(development)
-在development环境下，如果rails的版本大于3.1，每当执行完100个任务或者任务完成时，程序代码会自动加载，所以在development环境更改代码后不用重启任务。
+##開發模式(development)
+在development環境下，如果rails的版本大於3.1，每當執行完100個任務或者任務完成時，程序代碼會自動加載，所以在development環境更改代碼後不用重啓任務。
 
 ## 基本用法
 
-假设，原来的代码是：
+假設，原來的代碼是：
 
 ```
 ["jim", "lily", "lucy", "alex"].each do |name|
@@ -89,19 +89,19 @@ end
 
 ```
 
-需要创建一个文件：
+需要創建一個文件：
 
 ```
 # app/jobs/query_price_job.rb
 class QueryPriceJob < Struct.new(:name)
 	def perform
-    # 注意： 下面参数中的name, 来自于上面的  Struct参数
+    # 注意： 下面參數中的name, 來自於上面的  Struct參數
 		puts "hi #{name}"
 	end
 end
 ```
 
-## 创建钩子方法
+## 創建鉤子方法
 
 ```
 class QueryPriceJob< Struct.new(:name)
@@ -112,9 +112,9 @@ class QueryPriceJob< Struct.new(:name)
 		puts "hi #{name}"
 	end
 
-  # 注意：　钩子方法中，参数要有 job.
+  # 注意：　鉤子方法中，參數要有 job.
   def before(job)
-    # 注意：　每个钩子方法，可以使用该Struct的构建参数
+    # 注意：　每個鉤子方法，可以使用該Struct的構建參數
 		puts "== in before, parameter: #{name}"
   end
 
@@ -132,7 +132,7 @@ class QueryPriceJob< Struct.new(:name)
 end
 ```
 
-在它的源代码中，我们可以看到下面几个顺序：
+在它的源代碼中，我們可以看到下面幾個順序：
 
 ```
 def invoke_job
@@ -147,42 +147,42 @@ ensure
 end
 ```
 
-## 关于执行的问题
+## 關於執行的問題
 
-1.每个job worker的默认工作间隔时间，是　60s, 也就是说，这些worker进程，每隔60s, 才会检查一下 delayed_jobs这个表．
-2.比较有用的钩子方法是after, 可以根据delayed_jobs这个表的handler，来查看状态，例如：
+1.每個job worker的默認工作間隔時間，是　60s, 也就是說，這些worker進程，每隔60s, 纔會檢查一下 delayed_jobs這個表．
+2.比較有用的鉤子方法是after, 可以根據delayed_jobs這個表的handler，來查看狀態，例如：
 
 ```
 def after job
 	crypto_code = options[:crypto_code]
 	target_code = options[:target_code]
 
- 	# 注意：　在这里，可以根据下面这句话，找到符合条件的job.
+ 	# 注意：　在這裏，可以根據下面這句話，找到符合條件的job.
 	size = Delayed::Job.where('handler like ?', "%crypto_code: SALT%").size
-	# 如果该job是最后一个job, 那么就开始更新．．．
+	# 如果該job是最後一個job, 那麼就開始更新．．．
 	if size == 1
 		Pair.update_single_crypto_difference_rate crypto_code, target_code
 	end
 　　
-　# 执行完这个after, 上面的size才能变成0
+　# 執行完這個after, 上面的size才能變成0
 end
 ```
 
-##任务队列
+##任務隊列
 
-在任何对象中调用`.delay.method(params)`，它将在后台进行处理
+在任何對象中調用`.delay.method(params)`，它將在後臺進行處理
 ```ruby
-#不使用延时任务
+#不使用延時任務
 @user.activate!(@device)
 
-#使用延时任务
+#使用延時任務
 @user.delay.activate!(@device)
 ```
 
-使用了 `delay`之后， 所有的任务，都要：
+使用了 `delay`之後， 所有的任務，都要：
 
-1. 写入到特定的“任务表”中。
-2. 我们要运行一些“工人（worker）“， 来执行这些任务。
+1. 寫入到特定的“任務表”中。
+2. 我們要運行一些“工人（worker）“， 來執行這些任務。
 
 ```
 class User < ActiveRecord::Base
@@ -202,7 +202,7 @@ rails console:
 ```
 $ bundle exec script/delayed_job -n 2 start
 ```
-表示，同时有两个worker 在干活儿。这两个worker, 会紧盯着“任务表”， 一有任务，马上开始执行。
+表示，同時有兩個worker 在幹活兒。這兩個worker, 會緊盯着“任務表”， 一有任務，馬上開始執行。
 
 ```
 kaikai:graduate$ bundle exec ruby bin/delayed_job -n 2 start
@@ -210,30 +210,30 @@ delayed_job.0: process with pid 31047 started.
 delayed_job.1: process with pid 31053 started.
 ```
 
-3. 看日志。就会发现， 这些worker 在不间断的工作。
+3. 看日誌。就會發現， 這些worker 在不間斷的工作。
 
 ```
-# 表示 worker 开始认领了这个任务，开始执行了。
-# 第一步。 认领该任务。并且，把该任务的状态，变成: locked.
+# 表示 worker 開始認領了這個任務，開始執行了。
+# 第一步。 認領該任務。並且，把該任務的狀態，變成: locked.
 17:44:52 DEBUG:   Delayed::Backend::ActiveRecord::Job Load (0.5ms)  SELECT  `delayed_jobs`.* FROM `delayed_jobs` WHERE `delayed_jobs`.`locked_by` = 'delayed_job.1 host:kaikai pid:31053' AND `delayed_jobs`.`locked_at` = '2016-11-03 09:44:52' AND `delayed_jobs`.`failed_at` IS NULL  ORDER BY `delayed_jobs`.`id` ASC LIMIT 1
-# 第二步。 开始执行了。
+# 第二步。 開始執行了。
 17:44:52 INFO: == begin eating ...
 17:44:52 DEBUG:   User Load (0.3ms)  SELECT  `users`.* FROM `users` WHERE `users`.`id` = 1 LIMIT 1
-# 这个是delayed job的日志
+# 這個是delayed job的日誌
 17:44:52 INFO: 2016-11-03T17:44:52+0800: [Worker(delayed_job.1 host:kaikai pid:31053)] Job User#eat (id=2) RUNNING
 17:44:54 INFO: == finished ...
-# 第三步。 执行完毕，从delay_jobs （任务表）中，删掉干才干完的任务。
+# 第三步。 執行完畢，從delay_jobs （任務表）中，刪掉幹才幹完的任務。
 17:44:54 INFO: 2016-11-03T17:44:54+0800: [Worker(delayed_job.0 host:kaikai pid:31047)] Job User#eat (id=1) COMPLETED after 2.2580
-# 因为它干完一个任务就删掉一个， 所以，当delay_jobs 表中，没有任何记录的时候，就是活儿干完
-的时候。
+# 因爲它幹完一個任務就刪掉一個， 所以，當delay_jobs 表中，沒有任何記錄的時候，就是活兒幹完
+的時候。
 ```
 
-如果一个方法需要一直在后台运行，可以在方法声明之后，调用`handle_asynchronously`
+如果一個方法需要一直在後臺運行，可以在方法聲明之後，調用`handle_asynchronously`
 
 ```ruby
 class Device
   def deliver
-    #长时间运行方法
+    #長時間運行方法
   end
   handle_asynchronously :deliver
 end
@@ -241,11 +241,11 @@ end
 device = Device.new
 device.deliver
 ```
-###参数
-`handle_asynchronously`和`delay`有下列参数：
-* :priority (number):数值越小越先执行，默认为0，但可以重新配置
-* :run_at (time):在这个时间后执行任务
-* :queue(string):任务队列名，是priority的另一种选择
+###參數
+`handle_asynchronously`和`delay`有下列參數：
+* :priority (number):數值越小越先執行，默認爲0，但可以重新配置
+* :run_at (time):在這個時間後執行任務
+* :queue(string):任務隊列名，是priority的另一種選擇
 
 ```ruby
 class LongTasks
@@ -257,7 +257,7 @@ class LongTasks
   def in_the_future
     # Some other code
   end
-  #五分钟后将执行(5.minutes.from_now)
+  #五分鐘後將執行(5.minutes.from_now)
   handle_asynchronously :in_the_future, :run_at => Proc.new { 5.minutes.from_now }
 
   def self.when_to_run
@@ -279,59 +279,59 @@ class LongTasks
   handle_asynchronously :call_an_instance_method, :priority => Proc.new {|i| i.how_important }
 end
 ```
-如果在调试的时候要调用一个`handle_asynchronously`的方法，但是不想延迟执行，这时候可以在方法名后面加上`_without_delay`，例如原方法名叫做`foo`，立即执行为`foo_without_delay`
+如果在調試的時候要調用一個`handle_asynchronously`的方法，但是不想延遲執行，這時候可以在方法名後面加上`_without_delay`，例如原方法名叫做`foo`，立即執行爲`foo_without_delay`
 
-##运行任务
-`script/delayed_job`能够用来管理后来进程，开始任务。
-添加`gem "daemons"到`Gemfile`，并且执行`rails generate delayed_job`
+##運行任務
+`script/delayed_job`能夠用來管理後來進程，開始任務。
+添加`gem "daemons"到`Gemfile`，並且執行`rails generate delayed_job`
 ```bash
 RAILS_ENV=production script/delayed_job start
 RAILS_ENV=production script/delayed_job stop
 
-# 在不同的进程上执行两个worker
+# 在不同的進程上執行兩個worker
 RAILS_ENV=production script/delayed_job -n 2 start
 RAILS_ENV=production script/delayed_job stop
 
-# 使用--queue或者--queues选项来指定不同的队列
+# 使用--queue或者--queues選項來指定不同的隊列
 RAILS_ENV=production script/delayed_job --queue=tracking start
 RAILS_ENV=production script/delayed_job --queues=mailers,tasks start
 
-#使用--pool选项来指定worker pool，可以多次使用这个选项来给不同队列启动不同数量的worker
+#使用--pool選項來指定worker pool，可以多次使用這個選項來給不同隊列啓動不同數量的worker
 
-#下面启动一个worker执行`tracking`队列，两个worker执行`mailers`和`task`队列，另外两个worker给其他的任务
+#下面啓動一個worker執行`tracking`隊列，兩個worker執行`mailers`和`task`隊列，另外兩個worker給其他的任務
 RAILS_ENV=production script/delayed_job --pool=tracking --pool=mailers,tasks:2 --pool=*:2 start
 
-# 执行所有任务，然后退出
+# 執行所有任務，然後退出
 RAILS_ENV=production script/delayed_job start --exit-on-complete
-#或者直接在前端执行
+#或者直接在前端執行
 RAILS_ENV=production script/delayed_job run --exit-on-complete
 ```
->Rials 4 需要替换`script/delayed_job`为`bin/delayed_job`
-worker可以运行在任何电脑上，只要它们能够访问数据库并且时钟保持同步。每个worker至少每5秒钟检查一次数据库。
+>Rials 4 需要替換`script/delayed_job`爲`bin/delayed_job`
+worker可以運行在任何電腦上，只要它們能夠訪問數據庫並且時鐘保持同步。每個worker至少每5秒鐘檢查一次數據庫。
 
-可以使用`rake jobs:work`来开启任务，使用`CTRL-C`终止rake任务。
-如果需要执行所有任务并退出，可以使用`rake jobs:workoff`
-处理队列通过设置环境变量`QUEUE`或者`QUEUES`
+可以使用`rake jobs:work`來開啓任務，使用`CTRL-C`終止rake任務。
+如果需要執行所有任務並退出，可以使用`rake jobs:workoff`
+處理隊列通過設置環境變量`QUEUE`或者`QUEUES`
 ```bash
 $ QUEUE=tracking rake jobs:work
 $ QUEUES=mailers,tasks rake jobs:work
 ```
 
-##重启delayed_job
+##重啓delayed_job
 
-单个job的重启
+單個job的重啓
 
 ```bash
 $ RAILS_ENV=production script/delayed_job restart
 ```
 
-多个job ：
+多個job ：
 
 ```bash
 $ RAILS_ENV=production script/delayed_job -n2 restart
 ```
 
-建议：　使用下面的ruby脚本来重启：　
+建議：　使用下面的ruby腳本來重啓：　
 
 ```
 # stop_delayed_job.rb
@@ -341,7 +341,7 @@ pids.each_line do |pid|
 end
 ```
 
->Rials 4 需要替换`script/delayed_job`为`bin/delayed_job`
+>Rials 4 需要替換`script/delayed_job`爲`bin/delayed_job`
 
-###清除任务
-使用`rake jobs:clear`删除队列中的所有任务
+###清除任務
+使用`rake jobs:clear`刪除隊列中的所有任務

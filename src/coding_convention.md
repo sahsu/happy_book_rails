@@ -1,22 +1,22 @@
-# 编程风格
+# 編程風格
 
-下面是Rails建议的风格：
+下面是Rails建議的風格：
 
-## 绝对不要用缩写
+## 絕對不要用縮寫
 
 例如：
 
-- button 写成 btn
-- manager 写成 mng , mgr
-- implement 写成 impl
+- button 寫成 btn
+- manager 寫成 mng , mgr
+- implement 寫成 impl
 
-仅仅可以在无意义的变量上可以使用简单的字母，例如：
+僅僅可以在無意義的變量上可以使用簡單的字母，例如：
 
 `for i in [1,2,3,4,5]`
 
-## 表的主键一定是id
+## 表的主鍵一定是id
 
-students 表的主键一定是id, 不是sid. 例如：
+students 表的主鍵一定是id, 不是sid. 例如：
 
 ```
 students
@@ -24,7 +24,7 @@ students
 id, name
 ```
 
-teachers 表的主键一定是id, 不是tid. 例如：
+teachers 表的主鍵一定是id, 不是tid. 例如：
 
 ```
 teachers
@@ -32,15 +32,15 @@ teachers
 id, name
 ```
 
-## 表的外键一定是 表名 + 下划线id
+## 表的外鍵一定是 表名 + 下劃線id
 
-如果要实现多对多关系，那么就根据rails的管理，`表名_id`即可，例如：
+如果要實現多對多關係，那麼就根據rails的管理，`表名_id`即可，例如：
 
 ```
 lessons
 --------
-student_id  ( 该列对应 students表的id)
-teacher_id  ( 该列对应 teachers表的id)
+student_id  ( 該列對應 students表的id)
+teacher_id  ( 該列對應 teachers表的id)
 ```
 
 
