@@ -1,72 +1,72 @@
 # Rubygem
 
-rubygem 简称gem, 是Ruby的重要组成部分. 一个gem 就是一个ruby的组件。
+rubygem 簡稱gem, 是Ruby的重要組成部分. 一個gem 就是一個ruby的組件。
 
-在ruby中，一个gem对应是一个文件夹，默认是安装在某个文件夹中，例如
+在ruby中，一個gem對應是一個文件夾，默認是安裝在某個文件夾中，例如
 
 ```
 /home/siwei/.rbenv/versions/2.6.4/lib/ruby/gems/2.6.0
 ```
 
-rubygem的思想是：把所有用到的gem都统一放在网络上，使用gem命令就可以自动下载，免去了手动安装依赖的麻烦。
+rubygem的思想是：把所有用到的gem都統一放在網絡上，使用gem命令就可以自動下載，免去了手動安裝依賴的麻煩。
 
-rubygems.org如图：
+rubygems.org如圖：
 
 ![rubygems.org](images/rubygems.org.jpeg)
 
 ## gem的使用
 
-以下例子都以 `rails`作为gem的名字。
+以下例子都以 `rails`作爲gem的名字。
 
-安装gem包
+安裝gem包
 
 ```bash
 $ gem install rails
 ```
 
-卸载gem包
+卸載gem包
 
 ```bash
 $ gem uninstall rails
 ```
 
-列出本地已安装的gem包
+列出本地已安裝的gem包
 ```bash
 $ gem list --local rails
 ```
 
-列出远程的gem包
+列出遠程的gem包
 
 ```bash
 $ gem list --remote rails
 ```
 
-查询带有某个关键字的gem包
+查詢帶有某個關鍵字的gem包
 
 ```bash
 $ gem list -r keyword
 ```
 
-获取gem帮助命令
+獲取gem幫助命令
 
 ```bash
 $ gem help
 ```
 
-获取一些gem的事例命令
+獲取一些gem的事例命令
 
 ```bash
 $ gem help example
 ```
 
-查看gem 在本机的安装路径：
+查看gem 在本機的安裝路徑：
 
 ```
 $ gem env
 
 ```
 
-结果如：
+結果如：
 
 ```
 RubyGems Environment:
@@ -83,10 +83,10 @@ RubyGems Environment:
 
 ```
 
-可以看出，安装路径为：
+可以看出，安裝路徑爲：
 
 ```
   - INSTALLATION DIRECTORY: /home/siwei/.rbenv/versions/2.6.4/lib/ruby/gems/2.6.0
 ```
 
-我们可以直接进入到该目录，找到对应的gem, 然后查看对应的gem 的源代码
+我們可以直接進入到該目錄，找到對應的gem, 然後查看對應的gem 的源代碼

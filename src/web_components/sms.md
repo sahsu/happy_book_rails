@@ -1,25 +1,25 @@
-#发送短信
-开发中，我们经常需要和用户校验身份，或者实时的通知用户一些重要的信息，短信是比较方便直接的方式。下面介绍怎样给用户发送短信。
-这里我们使用[阳洋传媒](http://www.ipyy.net/)的短信服务为例([华信科技](http://www.ipyy.com/)方法类似)。其提供的HTTP借口的方式完成信息发送，我们只需将特定参数以`POST`请求的方式访问给定的接口即可完成短信发送。
+#發送短信
+開發中，我們經常需要和用戶校驗身份，或者實時的通知用戶一些重要的信息，短信是比較方便直接的方式。下面介紹怎樣給用戶發送短信。
+這裏我們使用[陽洋傳媒](http://www.ipyy.net/)的短信服務爲例([華信科技](http://www.ipyy.com/)方法類似)。其提供的HTTP藉口的方式完成信息發送，我們只需將特定參數以`POST`請求的方式訪問給定的接口即可完成短信發送。
 
-群发短信：
+羣發短信：
 ```javascript
 //titanium demo
 var client = Ti.Network.createHTTPClient();
 client.open("POST","http://ipyy.net/WS/BatchSend.aspx");
 var parameters = {
-  CorpID: "用户ID",
-  Pwd: "用户密码",
-  Mobile: "接收号码，多个用逗号隔开，最多600个",
-  Content: "短信内容",
-  Cell: "子号（可为空）",
-  SendTime: "定时发送时间(为空标示立即发送)"
+  CorpID: "用戶ID",
+  Pwd: "用戶密碼",
+  Mobile: "接收號碼，多個用逗號隔開，最多600個",
+  Content: "短信內容",
+  Cell: "子號（可爲空）",
+  SendTime: "定時發送時間(爲空標示立即發送)"
 }
 client.send(parameters);
 client.onload = function(){
   do_when_onload;
 }
 ```
-其他业务参数格式[HTTP接口](http://www.ipyy.net/http.asp)
+其他業務參數格式[HTTP接口](http://www.ipyy.net/http.asp)
 
-其他短信平台使用方法类似。
+其他短信平臺使用方法類似。

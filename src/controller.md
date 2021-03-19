@@ -2,72 +2,72 @@
 
 Controller的作用是：
 
-1. 处理request中的参数，例如用户提交的表单  (使用`params`)
-2. 处理完毕后，进行页面的渲染或者跳转。(使用`redirect_to` 或者 `render`)
+1. 處理request中的參數，例如用戶提交的表單  (使用`params`)
+2. 處理完畢後，進行頁面的渲染或者跳轉。(使用`redirect_to` 或者 `render`)
 
-学习本节的时候，直接用最原始的HTML `form`, 不要使用Rails的`form_for`和`form_tag`.
+學習本節的時候，直接用最原始的HTML `form`, 不要使用Rails的`form_for`和`form_tag`.
 
-## 开始之前
+## 開始之前
 
-记得修改 `application_controller.rb` , 把它的 把它的`protect_from_forgery` 注释掉。
+記得修改 `application_controller.rb` , 把它的 把它的`protect_from_forgery` 註釋掉。
 
 ```
 class ApplicationController < ActionController::Base
-  # 注释掉下面这一行
+  # 註釋掉下面這一行
   #protect_from_forgery with: :exception
 end
 ```
 
-上面的代码，要求我们提交表单时，多提交几个参数。我们从学习的目的出发，暂时先把它注释掉。
+上面的代碼，要求我們提交表單時，多提交幾個參數。我們從學習的目的出發，暫時先把它註釋掉。
 
-## 使用controller处理参数
+## 使用controller處理參數
 
-我们知道，最常见的参数有两种来源：
+我們知道，最常見的參數有兩種來源：
 
-1.url, 例如:  `/books?name=三体`
+1.url, 例如:  `/books?name=三體`
 2.form, 例如：
 
 ```
 <form action='/books'  method='POST'>
-  <input type=text name='name' value='三体' />
+  <input type=text name='name' value='三體' />
   <input type=submit value='搜索' />
 </form>
 ```
 
-在对应的controller中, 可以获得该参数，并打印。
+在對應的controller中, 可以獲得該參數，並打印。
 
 ```
 class BooksController < ApplicationController
   def index
 
-    # 获得了参数
+    # 獲得了參數
     name = params[:name]
 
-    # 在控制台中打印了出来。
+    # 在控制檯中打印了出來。
     puts name.inspect
   end
 end
 ```
 
-## 七个最基础的action
+## 七個最基礎的action
 
-这七个Action都是Rails自带的特殊action, 用于"按照惯例编程".
+這七個Action都是Rails自帶的特殊action, 用於"按照慣例編程".
 
-- `index`: 列表页
-- `new`: 新建页。用户在该页面上输入一些数据，点击确定按钮后，会触发create action。
-- `create： 创建数据的action. 处理`new`中的form传递过来的参数，保存到数据库。
-- `edit`: 显示编辑的页面。 用户在这个页面上输入编辑的数据, 在点击确定按钮后，会触发update action
-- `update： 保存数据的action. 处理 `edit` 中的form传递过来的参数，保存到数据库。
-- `show`: 详情页 (往往用户是在列表页中，点击某一行的记录，就会跳转到该记录的详情页了）
-- `destroy`: 删除action. (往往用户是在列表页中，点击某一行中的“删除”按钮，就会触发该action）
+- `index`: 列表頁
+- `new`: 新建頁。用戶在該頁面上輸入一些數據，點擊確定按鈕後，會觸發create action。
+- `create： 創建數據的action. 處理`new`中的form傳遞過來的參數，保存到數據庫。
+- `edit`: 顯示編輯的頁面。 用戶在這個頁面上輸入編輯的數據, 在點擊確定按鈕後，會觸發update action
+- `update： 保存數據的action. 處理 `edit` 中的form傳遞過來的參數，保存到數據庫。
+- `show`: 詳情頁 (往往用戶是在列表頁中，點擊某一行的記錄，就會跳轉到該記錄的詳情頁了）
+- `destroy`: 刪除action. (往往用戶是在列表頁中，點擊某一行中的“刪除”按鈕，就會觸發該action）
 
-所以，上面7个action, 4个有页面（index, show, edit, new) , 3个无页面(直接操作数据库，操作完之后跳转到某个页面)（例如，显示列表页）
+所以，上面7個action, 4個有頁面（index, show, edit, new) , 3個無頁面(直接操作數據庫，操作完之後跳轉到某個頁面)（例如，顯示列表頁）
 
-下面我们来依次说明。
+下面我們來依次說明。
 
-### 创建对应的controller和routes
+### 創建對應的controller和routes
 
-假设，我们在路由(`config/routes.rb`中，定义了：　
+假設，我們在路由(`config/routes.rb`中，定義了：　
 
 ```ruby
 Rails.application.routes.draw do
@@ -75,17 +75,17 @@ Rails.application.routes.draw do
 end
 ```
 
-并且，我们定好对应的controller: `app/controllers/books_controller.rb`
+並且，我們定好對應的controller: `app/controllers/books_controller.rb`
 
 ```ruby
-# 现在这里是一个空的controller, 随着下面的学习，我们会陆续增加7种最基础的action
+# 現在這裏是一個空的controller, 隨着下面的學習，我們會陸續增加7種最基礎的action
 class BooksController < ApplicationController
 end
 ```
 
 ### index (列表)
 
-我们在books controller中，增加：
+我們在books controller中，增加：
 
 ```ruby
 def index
@@ -93,7 +93,7 @@ def index
 end
 ```
 
-2.在view( `app/views/books/index.html.erb`) 中显示就可以了：
+2.在view( `app/views/books/index.html.erb`) 中顯示就可以了：
 
 ```
 <% @books.each do |book| %>
@@ -101,25 +101,25 @@ end
 <% end %>
 ```
 
-3.在浏览器中，输入`/books` 就可以看到页面了。如下图所示。
+3.在瀏覽器中，輸入`/books` 就可以看到頁面了。如下圖所示。
 
 
-### new 与 create
+### new 與 create
 
-1.回顾下路由：　
+1.回顧下路由：　
 
 ```
 GET /books/new
 POST /books
 ```
 
-2.在视图中，创建： `app/views/books/new.html.erb`
+2.在視圖中，創建： `app/views/books/new.html.erb`
 
 ```
-请输入：
+請輸入：
 <form action='/books' method='POST'>
   <input type='text' name='the_name'/>
-  <input type='submit' value='确定'/>
+  <input type='submit' value='確定'/>
 </form>
 ```
 
@@ -135,14 +135,14 @@ POST /books
   end
 ```
 
-4.这时候，用户直接打开　`/books/new`，　就可以看到　'new'这个页面。
+4.這時候，用戶直接打開　`/books/new`，　就可以看到　'new'這個頁面。
 
-5.输入数据之后，点击“确定”，　就会触发 `create` action
-,就可以看到数据库中多了一条这个记录。 并且，会跳转到　`/books`这个页面。
+5.輸入數據之後，點擊“確定”，　就會觸發 `create` action
+,就可以看到數據庫中多了一條這個記錄。 並且，會跳轉到　`/books`這個頁面。
 
-### edit 与 update
+### edit 與 update
 
-1.回顾一下，`resources :books`会提供7种路由，跟edit相关的路由是：
+1.回顧一下，`resources :books`會提供7種路由，跟edit相關的路由是：
 
 ```
 GET /books/:id/edit
@@ -150,27 +150,27 @@ PUT /books/:id
 PATCH /books/:id
 ```
 
-`PUT`与`PATCH`都对应着`update`action. 所以，我们忽略PATCH这个路由。
+`PUT`與`PATCH`都對應着`update`action. 所以，我們忽略PATCH這個路由。
 
-2.在列表页中， 为每个记录，都增加一个链接：
+2.在列表頁中， 爲每個記錄，都增加一個鏈接：
 修改 `app/views/books/index.html.erb`
 
 ```erb
 <% @books.each do |book| %>
   <%= book.inspect%> ,
-  <%= link_to '编辑', edit_book_path( :id => book.id )%>
+  <%= link_to '編輯', edit_book_path( :id => book.id )%>
   <br/>
 <% end %>
 ```
 
-3.在“编辑页”中，增加一个表单。
+3.在“編輯頁”中，增加一個表單。
 修改 `app/views/books/edit.html.erb`
 
 ```html
-请输入：
+請輸入：
 <form action='/books' method='POST'>
   <input type='text' name='the_name'/>
-  <input type='submit' value='确定'/>
+  <input type='submit' value='確定'/>
 </form>
 ```
 
@@ -182,17 +182,17 @@ def edit
 end
 ```
 
-5.在view中增加表单的默认值, 把原来的`input name='the_name'`,修改成：　
+5.在view中增加表單的默認值, 把原來的`input name='the_name'`,修改成：　
 ```
 <input type='text' name='the_name' value=<%= @book.name  %>/>
 ```
 
-5.继续修改view, 增加下面的`<hidden>`标签:
+5.繼續修改view, 增加下面的`<hidden>`標籤:
 
 ```
 <input type='hidden' name='_method' value='put' />
 ```
-`_method=put`告诉rails这个form 是以put形式发起的请求, Rails才会把这个form用对应的action来处理（update）
+`_method=put`告訴rails這個form 是以put形式發起的請求, Rails纔會把這個form用對應的action來處理（update）
 
 6.修改`form`的`action`：
 ```
@@ -202,26 +202,26 @@ end
 完整的view
 
 ```
-请输入：
+請輸入：
 <form action="/books/<%= @teacher.id %>" method='POST'>
   <input type='hidden' name='_method' value='put' />
   <input type='text' name='the_name' value='<%= @teacher.name %>'/>
-  <input type='submit' value='确定'/>
+  <input type='submit' value='確定'/>
 </form>
 ```
 
 生成的 html例子：
 
 ```
-请输入：
+請輸入：
 <form action="/books/14" method='POST'>
   <input type='hidden' name='_method' value='put' />
-  <input type='text' name='the_name' value='linux的安装调试'/>
-  <input type='submit' value='确定'/>
+  <input type='text' name='the_name' value='linux的安裝調試'/>
+  <input type='submit' value='確定'/>
 </form>
 ```
 
-输入值，点击 确认， 就会发起一个请求：
+輸入值，點擊 確認， 就會發起一個請求：
 
 ```
 PUT /books/14
@@ -237,9 +237,9 @@ def update
 end
 ```
 
-### 查看详情
+### 查看詳情
 
-1.根据路由
+1.根據路由
 
 ```
 GET    /books/:id
@@ -255,25 +255,25 @@ end
 
 3.在`app/views/books/show.html.erb`中，增加:
 ```html
-<h3>详情页</h3>
+<h3>詳情頁</h3>
 <%= @book.name %>
 ```
 
-### 删除
+### 刪除
 
 
-1.根据路由：
+1.根據路由：
 
 ```
 DELETE /books/:id
 ```
 
-2.在列表页中为每个记录都增加一个链接. 修改 `app/views/books/index.html.erb`文件
+2.在列表頁中爲每個記錄都增加一個鏈接. 修改 `app/views/books/index.html.erb`文件
 
 ```
 <% @books.each do |book| %>
   <%= book.inspect%> ,
-  <%= link_to "删除", "/books/#{book.id}", :method => 'delete'%>
+  <%= link_to "刪除", "/books/#{book.id}", :method => 'delete'%>
   <br/>
 <% end %>
 ```
@@ -288,14 +288,14 @@ def destroy
 end
 ```
 
-4.在列表页中，点击任意一行记录对应的删除，就可以触发这个`destroy` action了。
+4.在列表頁中，點擊任意一行記錄對應的刪除，就可以觸發這個`destroy` action了。
 
-数据库就会删除对应的记录，然后页面会显示 “列表页”
+數據庫就會刪除對應的記錄，然後頁面會顯示 “列表頁”
 
 
 ## redirect_to 的用法
 
-1.可以跳转到有效的URL, 例如：
+1.可以跳轉到有效的URL, 例如：
 
 ```
 redirect_to books_path
@@ -308,66 +308,66 @@ redirect_to '/books'
 redirect_to :back
 ```
 
-## 军规
+## 軍規
 
-1.7个默认的路由(`index`, `show`, `new`, `edit`, `update`, `destroy`, `create`)，不能被覆盖。 例如：
+1.7個默認的路由(`index`, `show`, `new`, `edit`, `update`, `destroy`, `create`)，不能被覆蓋。 例如：
 
 ```
 resouces :books do
   collection do
-    get :new  # 这样不行，不要重复定义路由。
+    get :new  # 這樣不行，不要重複定義路由。
   end
 end
 ```
 
-2.`redirect_to` 或者`render`只能有一个。并且这两者都只能出现在action的最后一行.
-它们相当于方法的`return`，执行完之后不会往下面继续执行。
+2.`redirect_to` 或者`render`只能有一個。並且這兩者都只能出現在action的最後一行.
+它們相當於方法的`return`，執行完之後不會往下面繼續執行。
 
 ```
 def create
   Teacher.create :name => params[:the_name]
 
-  # 下面的render 与redirect_to 不能同时存在，否则会报错
+  # 下面的render 與redirect_to 不能同時存在，否則會報錯
   render :text => 'ok'
   redirect_to books_path
 end
 ```
 
-## 作业
+## 作業
 
-1.新建rails项目, market
+1.新建rails項目, market
 
-2.新建两个页面:
+2.新建兩個頁面:
 
-2.1 水果列表页,`/fruits/list` 内容显示　三种水果列表就可以了．
+2.1 水果列表頁,`/fruits/list` 內容顯示　三種水果列表就可以了．
 
-2.2 水果的新建页, `/fruits/new` 显示啥都行
+2.2 水果的新建頁, `/fruits/new` 顯示啥都行
 
-3.列表页中，下方有个链接，可以跳转到新建页．
+3.列表頁中，下方有個鏈接，可以跳轉到新建頁．
 
-4.新建页中，下方有个链接，可以跳转到列表页．
+4.新建頁中，下方有個鏈接，可以跳轉到列表頁．
 
-要使用`named_routes`  (`xx_path`) 这样的形式．　
+要使用`named_routes`  (`xx_path`) 這樣的形式．　
 
-- (错误例子)　`<a href='/fruits/list'>xx</a>`
-- (正确例子)　`<a href='<%= list_fruits_path %>'>xx</a>`
-- (正确例子)　`<%= link_to 'xx', list_fruits_path %>`
+- (錯誤例子)　`<a href='/fruits/list'>xx</a>`
+- (正確例子)　`<a href='<%= list_fruits_path %>'>xx</a>`
+- (正確例子)　`<%= link_to 'xx', list_fruits_path %>`
 
-5.要有`root_path` (访问 `/`  的时候，　要显示页面，"欢迎来到某某水果超市!" )
+5.要有`root_path` (訪問 `/`  的時候，　要顯示頁面，"歡迎來到某某水果超市!" )
 
-6.有个接口:  访问 `/interface/fruits/all` 的时候, 要给到json结果:
+6.有個接口:  訪問 `/interface/fruits/all` 的時候, 要給到json結果:
 
 (提示: 使用namespace路由)
 
 ```
 {
-  "result": ['香蕉', '苹果', '橘子']
+  "result": ['香蕉', '蘋果', '橘子']
 }
 
 ```
 
-(渲染json 的时候, 使用 render :json => ... )
+(渲染json 的時候, 使用 render :json => ... )
 
-7.实现对fruits 的列表页，新增，编辑，删除功能。
+7.實現對fruits 的列表頁，新增，編輯，刪除功能。
 
-8.列表页要有查询，例如输入 "葡"，就会显示名字中带有"葡"的水果
+8.列表頁要有查詢，例如輸入 "葡"，就會顯示名字中帶有"葡"的水果

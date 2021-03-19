@@ -1,48 +1,48 @@
-# Model2 增删改查
+# Model2 增刪改查
 
-本节中，我们只学习Model的基本操作
+本節中，我們只學習Model的基本操作
 
-## 数据持久层
+## 數據持久層
 
-简单的说, 持久层就是对数据库直接查询操作的封装。
+簡單的說, 持久層就是對數據庫直接查詢操作的封裝。
 
 ```
-Ruby代码  <===>  持久层  <===> 数据库SQL语句
+Ruby代碼  <===>  持久層  <===> 數據庫SQL語句
 ```
 
-## 从例子来看持久层
+## 從例子來看持久層
 
-在Ruby中，使用ActiveRecord作为持久层。
+在Ruby中，使用ActiveRecord作爲持久層。
 
 ```
 Book.all
 ```
 
-- `Book` 它是个model.  它映射到了 books 表。
-- `Book.all`,  就会被Rails的持久层的机制，转换成一段SQL语句：
+- `Book` 它是個model.  它映射到了 books 表。
+- `Book.all`,  就會被Rails的持久層的機制，轉換成一段SQL語句：
 
 ```
 select * from books;
 ```
 
-然后，Rails的持久层，再把上面SQL的结果转换成："ruby 对象" 的格式。
+然後，Rails的持久層，再把上面SQL的結果轉換成："ruby 對象" 的格式。
 
-## 数据库与持久层
+## 數據庫與持久層
 
-数据库：
+數據庫：
 
-- mysql:  是一个文件。 对于ubuntu, 默认放在： /var/lib/mysql/数据库名下面，例如：
+- mysql:  是一個文件。 對於ubuntu, 默認放在： /var/lib/mysql/數據庫名下面，例如：
 
 ```
 /var/lib/mysql/me/students.frm
 /var/lib/mysql/me/students.ibd
 ```
 
-文件放在硬盘上。
+文件放在硬盤上。
 
-## 持久层的巨大作用：为了一统(数据操作的)天下
+## 持久層的巨大作用：爲了一統(數據操作的)天下
 
-例如: 不同数据库对于分页的操作。
+例如: 不同數據庫對於分頁的操作。
 
 如果用MYSQL：
 
@@ -50,61 +50,61 @@ select * from books;
 select ... from ... order by id limit(100) offset(2000)
 ```
 
-oracle: 写法就变了：
+oracle: 寫法就變了：
 
 ```
 select ... from ... order by id limit(100) top(2000)
 ```
 
-ms sql server: 写法又变了：
+ms sql server: 寫法又變了：
 
 ```
 select ... from ... order by id between 2000 and 2100
 ```
 
-其他的： postgres, ... 都不一样。
+其他的： postgres, ... 都不一樣。
 
-所以，想兼容数据库，那就是一场噩梦。
+所以，想兼容數據庫，那就是一場噩夢。
 
-（例如： mysql支持 `select ... from (select ... from ... )` 这样的嵌套 select,  其他好多数据库就不支持）
+（例如： mysql支持 `select ... from (select ... from ... )` 這樣的嵌套 select,  其他好多數據庫就不支持）
 
-市面上， 根本找不到 熟悉所有数据库的人。 而且各个数据库的“方言(dialact )“ 都不一样。
+市面上， 根本找不到 熟悉所有數據庫的人。 而且各個數據庫的“方言(dialact )“ 都不一樣。
 
-十年以前的环境，比现在的还糟糕。（当年作java都没现在多。）
+十年以前的環境，比現在的還糟糕。（當年作java都沒現在多。）
 
-所以：持久层最大的卖点：
+所以：持久層最大的賣點：
 
-学好一个持久层， 可以操作所有数据库。
+學好一個持久層， 可以操作所有數據庫。
 
-例如： 学好hibernate/Rails ActiveRecord, 可以在所有数据库上操作。
+例如： 學好hibernate/Rails ActiveRecord, 可以在所有數據庫上操作。
 
-而且持久层生成的代码，就是专家级别的。(持久层在生成代码时会自动作优化。)
+而且持久層生成的代碼，就是專家級別的。(持久層在生成代碼時會自動作優化。)
 
-# 正式学习Model的增删改查
+# 正式學習Model的增刪改查
 
-说明： 下面的所有代码中，需要同学们输入的只是在  `irb..>` 右侧的内容。例如：
+說明： 下面的所有代碼中，需要同學們輸入的只是在  `irb..>` 右側的內容。例如：
 
 ```
 irb(main):006:0> book = Book.first
 ```
 
-其他的文字（例如SQL语句等都是控制台的自动输出)
+其他的文字（例如SQL語句等都是控制檯的自動輸出)
 
-## 准备工作（修改表结构，创建持久层文件）
+## 準備工作（修改表結構，創建持久層文件）
 
-4.1 回顾一下，我们前一节通过migration创建了一个表 books, 只有一个列name (这个name 列我们不使用)
+4.1 回顧一下，我們前一節通過migration創建了一個表 books, 只有一個列name (這個name 列我們不使用)
 
-4.2 创建一个新的migration, 为这个books表增加内容: author和title列
+4.2 創建一個新的migration, 爲這個books表增加內容: author和title列
 
 `$ bundle exec rails g migration add_title_and_author_to_books`
 
-内容如下：
+內容如下：
 ```
 class AddTitleAndAuthorToBooks < ActiveRecord::Migration
 
   def up
 
-    # 增加列：标题
+    # 增加列：標題
     add_column :books, :title, :string
 
     # 增加列：作者
@@ -113,16 +113,16 @@ class AddTitleAndAuthorToBooks < ActiveRecord::Migration
 
   def down
 
-    # 删除列 books 表中的title
+    # 刪除列 books 表中的title
     remove_column :books, :title
 
-    # 删除列 books 表中的author
+    # 刪除列 books 表中的author
     remove_column :books, :author
   end
 end
 ```
 
-4.3 运行migrate
+4.3 運行migrate
 
 ```
 $ bundle exec rake db:migrate
@@ -135,9 +135,9 @@ $ bundle exec rake db:migrate
 == 20210130010914 AddTitleAndAuthorToBooks: migrated (0.0602s) ================
 ```
 
-从控制台的日志当中可以看到，books表已经增加了两列。
+從控制檯的日誌當中可以看到，books表已經增加了兩列。
 
-同时，我们查看MySQL，可以发现books表的内容也发生了改变。
+同時，我們查看MySQL，可以發現books表的內容也發生了改變。
 
 ```
 mysql> show create table books;
@@ -155,27 +155,27 @@ mysql> show create table books;
 1 row in set (0.00 sec)
 ```
 
-4.4 创建model文件
+4.4 創建model文件
 
-创建一个文件 `app/models/book.rb`, 内容如下：
+創建一個文件 `app/models/book.rb`, 內容如下：
 
 ```
 class Book < ActiveRecord::Base
 end
 ```
 
-在上面的代码中，
+在上面的代碼中，
 
-- `class Book` 对应数据库的表名`books`
-- `< ActiveRecord::Base` 表示该class继承了ActiveRecord, 是一个持久层的类（一定对应一个表）
+- `class Book` 對應數據庫的表名`books`
+- `< ActiveRecord::Base` 表示該class繼承了ActiveRecord, 是一個持久層的類（一定對應一個表）
 
-4.5 进入到控制台
+4.5 進入到控制檯
 
 ```
 $ bundle exec rails console
 ```
 
-就可以进入到rails console来操作数据库了.
+就可以進入到rails console來操作數據庫了.
 
 ```
 Loading development environment (Rails 4.1.6)
@@ -183,15 +183,15 @@ irb(main):001:0> Book
 => Book (call 'Book.connection' to establish a connection)
 ```
 
-## 创建记录
+## 創建記錄
 
-接下来,我可以创建一个book, author为 王博士
+接下來,我可以創建一個book, author爲 王博士
 
 ```
 irb(main):001:0> Book.create author: '王博士'
 ```
 
-可以看到, 上面的代码被转换成了下面的SQL语句并执行：
+可以看到, 上面的代碼被轉換成了下面的SQL語句並執行：
 
 ```
 (0.2ms)  BEGIN
@@ -199,7 +199,7 @@ SQL (0.6ms)  INSERT INTO `books` (`author`) VALUES ('王博士')
 (3.3ms)  COMMIT
 ```
 
-在MySQL控制台中，也可以看到这个记录了。
+在MySQL控制檯中，也可以看到這個記錄了。
 
 ```
 mysql> select * from books;
@@ -211,216 +211,216 @@ mysql> select * from books;
 1 row in set (0.00 sec)
 ```
 
-## 修改记录
+## 修改記錄
 
-我们为`id=1`的book 设置`title`, 依次输入：
+我們爲`id=1`的book 設置`title`, 依次輸入：
 
 ```
 irb(main):006:0> book = Book.first
-irb(main):007:0> book.title = '十万个为什么'
+irb(main):007:0> book.title = '十萬個爲什麼'
 irb(main):008:0> book.save
 ```
 
-可以看到, 上面的代码被转换成了下面的SQL语句并执行：
+可以看到, 上面的代碼被轉換成了下面的SQL語句並執行：
 
 ```
 (0.3ms)  BEGIN
-SQL (1.8ms)  UPDATE `books` SET `title` = '十万个为什么' WHERE `books`.`id` = 1
+SQL (1.8ms)  UPDATE `books` SET `title` = '十萬個爲什麼' WHERE `books`.`id` = 1
 (3.2ms)  COMMIT
 ```
 
-在MySQL控制台中，也可以看到这个记录了。
+在MySQL控制檯中，也可以看到這個記錄了。
 
 ```
 mysql> select * from books;
 +----+------+--------------------+-----------+
 | id | name | title              | author    |
 +----+------+--------------------+-----------+
-|  1 | NULL | 十万个为什么       | 王博士    |
+|  1 | NULL | 十萬個爲什麼       | 王博士    |
 +----+------+--------------------+-----------+
 1 row in set (0.00 sec)
 ```
 
-## 删除记录
+## 刪除記錄
 
-删掉该`book`
+刪掉該`book`
 
 ```
 irb(main):010:0> a = Book.first
 irb(main):011:0> a.delete
 ```
 
-可以看到, 上面的代码被转换成了下面的SQL语句并执行：
+可以看到, 上面的代碼被轉換成了下面的SQL語句並執行：
 
 ```
 SQL (4.3ms)  DELETE FROM `books` WHERE `books`.`id` = 1
 ```
 
-可以看到，数据库中已经找不到这条记录了。
+可以看到，數據庫中已經找不到這條記錄了。
 
 ```
 mysql> select * from books;
 Empty set (0.00 sec)
 ```
 
-## where查询语句
+## where查詢語句
 
-## 查询
+## 查詢
 
-### 准备10条数据
+### 準備10條數據
 
-插入10本书的记录：
+插入10本書的記錄：
 
 ```
-irb> (1..10).each {|i| Book.create(title:"#{i}万个为什么", author: "#{i}号作者") }
+irb> (1..10).each {|i| Book.create(title:"#{i}萬個爲什麼", author: "#{i}號作者") }
 ```
 
-会有10条SQL被转换出来,并且被执行. 可以看到mysql中这些数据已经被创建了。
+會有10條SQL被轉換出來,並且被執行. 可以看到mysql中這些數據已經被創建了。
 
 ```
 mysql> select * from books;
 +----+------+-------------------+-------------+
 | id | name | title             | author      |
 +----+------+-------------------+-------------+
-|  3 | NULL | 1万个为什么       | 1号作者     |
-|  4 | NULL | 2万个为什么       | 2号作者     |
-|  5 | NULL | 3万个为什么       | 3号作者     |
-|  6 | NULL | 4万个为什么       | 4号作者     |
-|  7 | NULL | 5万个为什么       | 5号作者     |
-|  8 | NULL | 6万个为什么       | 6号作者     |
-|  9 | NULL | 7万个为什么       | 7号作者     |
-| 10 | NULL | 8万个为什么       | 8号作者     |
-| 11 | NULL | 9万个为什么       | 9号作者     |
-| 12 | NULL | 10万个为什么      | 10号作者    |
+|  3 | NULL | 1萬個爲什麼       | 1號作者     |
+|  4 | NULL | 2萬個爲什麼       | 2號作者     |
+|  5 | NULL | 3萬個爲什麼       | 3號作者     |
+|  6 | NULL | 4萬個爲什麼       | 4號作者     |
+|  7 | NULL | 5萬個爲什麼       | 5號作者     |
+|  8 | NULL | 6萬個爲什麼       | 6號作者     |
+|  9 | NULL | 7萬個爲什麼       | 7號作者     |
+| 10 | NULL | 8萬個爲什麼       | 8號作者     |
+| 11 | NULL | 9萬個爲什麼       | 9號作者     |
+| 12 | NULL | 10萬個爲什麼      | 10號作者    |
 +----+------+-------------------+-------------+
 10 rows in set (0.00 sec)
 ```
 
-### find: 根据id 查询
+### find: 根據id 查詢
 
-find返回一条记录。
+find返回一條記錄。
 
 ```
 irb> book = Book.find(8)
 ```
 
-可以看到，对应的SQL已经被执行：
+可以看到，對應的SQL已經被執行：
 
 ```
 Book Load (0.6ms)  SELECT  `books`.* FROM `books` WHERE `books`.`id` = 8 LIMIT 1
 ```
 
-并且在控制台上可以打印出详情：
+並且在控制檯上可以打印出詳情：
 
 ```
-=> #<Book id: 8, name: nil, title: "6万个为什么", author: "6号作者">
+=> #<Book id: 8, name: nil, title: "6萬個爲什麼", author: "6號作者">
 ```
 
-### find: 根据单个列来查询
+### find: 根據單個列來查詢
 
 使用`find_by_列名`就可以了。
 
-例如：查询 author='9号作者'
+例如：查詢 author='9號作者'
 
 ```
-irb(main):016:0> book = Book.find_by_author('9号作者')
+irb(main):016:0> book = Book.find_by_author('9號作者')
 ```
 
-可以看到SQL语句：
+可以看到SQL語句：
 ```
-Book Load (0.7ms)  SELECT  `books`.* FROM `books` WHERE `books`.`author` = '9号作者' LIMIT 1
-```
-
-并且在控制台上可以打印出详情：
-```
-=> #<Book id: 11, name: nil, title: "9万个为什么", author: "9号作者">
+Book Load (0.7ms)  SELECT  `books`.* FROM `books` WHERE `books`.`author` = '9號作者' LIMIT 1
 ```
 
-查询 title = '9万个为什么'
-
+並且在控制檯上可以打印出詳情：
 ```
-irb(main):017:0> book = Book.find_by_title('9万个为什么')
-```
-
-可以看到SQL语句：
-```
-Book Load (0.5ms)  SELECT  `books`.* FROM `books` WHERE `books`.`title` = '9万个为什么' LIMIT 1
+=> #<Book id: 11, name: nil, title: "9萬個爲什麼", author: "9號作者">
 ```
 
-并且在控制台上可以打印出详情：
+查詢 title = '9萬個爲什麼'
+
 ```
-=> #<Book id: 11, name: nil, title: "9万个为什么", author: "9号作者">
+irb(main):017:0> book = Book.find_by_title('9萬個爲什麼')
 ```
 
-### 使用where 进行查询
+可以看到SQL語句：
+```
+Book Load (0.5ms)  SELECT  `books`.* FROM `books` WHERE `books`.`title` = '9萬個爲什麼' LIMIT 1
+```
 
-我们绝大部分时候都用where进行查询。where返回的记录是一个数组。
+並且在控制檯上可以打印出詳情：
+```
+=> #<Book id: 11, name: nil, title: "9萬個爲什麼", author: "9號作者">
+```
 
-where是ActiveRecord的函数，里面可以包含几乎所有的标准SQL语句的where条件。
+### 使用where 進行查詢
 
-例如，查询id = 5的book
+我們絕大部分時候都用where進行查詢。where返回的記錄是一個數組。
+
+where是ActiveRecord的函數，裏面可以包含幾乎所有的標準SQL語句的where條件。
+
+例如，查詢id = 5的book
 
 ```
 irb> a = Book.where('id = ?', 5)
 ```
-可以看到，对应的SQL语句被执行，并且返回一个数组。
+可以看到，對應的SQL語句被執行，並且返回一個數組。
 ```
   Book Load (0.7ms)  SELECT `books`.* FROM `books` WHERE (id = 5)
-=> #<ActiveRecord::Relation [#<Book id: 5, name: nil, title: "3万个为什么", author: "3号作者">]>
+=> #<ActiveRecord::Relation [#<Book id: 5, name: nil, title: "3萬個爲什麼", author: "3號作者">]>
 ```
 
-想要获得第一条记录的话，就可以使用`.first`方法。
+想要獲得第一條記錄的話，就可以使用`.first`方法。
 ```
 irb> a.first
-=> #<Book id: 5, name: nil, title: "3万个为什么", author: "3号作者">
+=> #<Book id: 5, name: nil, title: "3萬個爲什麼", author: "3號作者">
 ```
 
-也可以进行`like`查询。例如，查询所有标题以`5`开头的Book.
+也可以進行`like`查詢。例如，查詢所有標題以`5`開頭的Book.
 
 ```
 irb> Book.where('title like "5%"')
 ```
-或者写成这样：
+或者寫成這樣：
 ```
 irb> Book.where('title like ?', "5%")
 ```
 
-可以看到，对应的SQL语句被执行，并且返回一个数组。
+可以看到，對應的SQL語句被執行，並且返回一個數組。
 ```
   Book Load (2.2ms)  SELECT `books`.* FROM `books` WHERE (title like "5%")
-=> #<ActiveRecord::Relation [#<Book id: 7, name: nil, title: "5万个为什么", author: "5号作者">]
+=> #<ActiveRecord::Relation [#<Book id: 7, name: nil, title: "5萬個爲什麼", author: "5號作者">]
 ```
 
-### where 中的or与and
+### where 中的or與and
 
-一个where查询中可以包含任意条件的任意嵌套。例如：
+一個where查詢中可以包含任意條件的任意嵌套。例如：
 
-如果你的查询中有or 或者and, 直接按照原生SQL的顺序写入到where函数中即可，例如：
+如果你的查詢中有or 或者and, 直接按照原生SQL的順序寫入到where函數中即可，例如：
 
-例如，查询and条件：
+例如，查詢and條件：
 
 ```
-> Book.where('title like ? and author like ?', '3万个%', '5号%')
+> Book.where('title like ? and author like ?', '3萬個%', '5號%')
 ```
-可以看到，对应的SQL查询到的内容是空。如下：
+可以看到，對應的SQL查詢到的內容是空。如下：
 ```
-  Book Load (0.8ms)  SELECT `books`.* FROM `books` WHERE (title like '3万个%' and author like '5号%')
+  Book Load (0.8ms)  SELECT `books`.* FROM `books` WHERE (title like '3萬個%' and author like '5號%')
 => #<ActiveRecord::Relation []>
 ```
 
-再如，查询or条件：
+再如，查詢or條件：
 
 ```
-> Book.where('title like ? or author like ?', '3万个%', '5号%')
+> Book.where('title like ? or author like ?', '3萬個%', '5號%')
 ```
 
-可以看到，查到了标题是"3万个" 和作者是"5号作者"的Book:
+可以看到，查到了標題是"3萬個" 和作者是"5號作者"的Book:
 ```
-  Book Load (0.6ms)  SELECT `books`.* FROM `books` WHERE (title like '3万个%' or author like '5号%')
-=> #<ActiveRecord::Relation [#<Book id: 5, name: nil, title: "3万个为什么", author: "3号作者">, #<Book id: 7, name: nil, title: "5万个为什么", author: "5号作者">]>
+  Book Load (0.6ms)  SELECT `books`.* FROM `books` WHERE (title like '3萬個%' or author like '5號%')
+=> #<ActiveRecord::Relation [#<Book id: 5, name: nil, title: "3萬個爲什麼", author: "3號作者">, #<Book id: 7, name: nil, title: "5萬個爲什麼", author: "5號作者">]>
 ```
 
-你也可以使用多个`where`方法，等同于若干AND条件语句，例如：
+你也可以使用多個`where`方法，等同於若干AND條件語句，例如：
 
 ```
 Book.where('id > 1')
@@ -428,72 +428,72 @@ Book.where('id > 1')
   .where('title like ?', '3%')
 ```
 
-上面会生成对应SQL:
+上面會生成對應SQL:
 
 ```
 SELECT `books`.* FROM `books` WHERE (id > 1) AND (id<100) AND (title like '3%')
 ```
 
-结果为：
+結果爲：
 ```
-=> #<ActiveRecord::Relation [#<Book id: 5, name: nil, title: "3万个为什么", author: "3号作者">]>
+=> #<ActiveRecord::Relation [#<Book id: 5, name: nil, title: "3萬個爲什麼", author: "3號作者">]>
 ```
 
 ### 排序. order
 
-跟标准的SQL语句非常像，例如根据title进行倒序：
+跟標準的SQL語句非常像，例如根據title進行倒序：
 
 ```
 irb> Book.where('title like "3%" or title like "4%" or title like "5%"').order('title desc')
 ```
-可以注意到，上面的查询是根据title进行条件查询，并且按照title进行倒序。
+可以注意到，上面的查詢是根據title進行條件查詢，並且按照title進行倒序。
 
-下面是结果SQL语句：
+下面是結果SQL語句：
 ```
   Book Load (0.5ms)  SELECT `books`.* FROM `books` WHERE (title like "3%" or title like "4%" or title like "5%")  ORDER BY title desc
 ```
 
-结果为：
+結果爲：
 ```
 => #<ActiveRecord::Relation [
-  #<Book id: 7, name: nil, title: "5万个为什么", author: "5号作者">,
-  #<Book id: 6, name: nil, title: "4万个为什么", author: "4号作者">,
-  #<Book id: 5, name: nil, title: "3万个为什么", author: "3号作者">
+  #<Book id: 7, name: nil, title: "5萬個爲什麼", author: "5號作者">,
+  #<Book id: 6, name: nil, title: "4萬個爲什麼", author: "4號作者">,
+  #<Book id: 5, name: nil, title: "3萬個爲什麼", author: "3號作者">
   ]>
 ```
 
 ### limit
 
-可以限制查询条件的数量。例如：
+可以限制查詢條件的數量。例如：
 
 ```
 Book.where('1 = 1').limit(3)
 ```
 
-得到对应的SQL：
+得到對應的SQL：
 
 ```
 Book Load (0.4ms)  SELECT  `books`.* FROM `books` WHERE (1 = 1) LIMIT 3
 ```
 
-结果是：
+結果是：
 ```
 => #<ActiveRecord::Relation[
-  #<Book id: 3, name: nil, title: "1万个为什么", author: "1号作者">,
-  #<Book id: 4, name: nil, title: "2万个为什么", author: "2号作者">,
-  #<Book id: 5, name: nil, title: "3万个为什么", author: "3号作者">
+  #<Book id: 3, name: nil, title: "1萬個爲什麼", author: "1號作者">,
+  #<Book id: 4, name: nil, title: "2萬個爲什麼", author: "2號作者">,
+  #<Book id: 5, name: nil, title: "3萬個爲什麼", author: "3號作者">
   ]>
 ```
 
-### where, all与延迟加载
+### where, all與延遲加載
 
-`all` 等同于 `.where('1=1')`, 作用只是让查询更加可读。
+`all` 等同於 `.where('1=1')`, 作用只是讓查詢更加可讀。
 
-通常说来where非常智能, 只会在需要执行的时候才会执行.
+通常說來where非常智能, 只會在需要執行的時候纔會執行.
 
-例如，在controller中不会执行，只有到了erb页面需要渲染的阶段，才会执行。或者有`all`方法的时候，查询才会强制执行。
+例如，在controller中不會執行，只有到了erb頁面需要渲染的階段，纔會執行。或者有`all`方法的時候，查詢纔會強制執行。
 
-例如：这行代码不会被执行. 因为它的结果没有在任何地方被使用.
+例如：這行代碼不會被執行. 因爲它的結果沒有在任何地方被使用.
 
 ```
 def index
@@ -501,7 +501,7 @@ def index
 end
 ```
 
-下面这行代码会被执行, 因为变量 `@books`被渲染在了view中。
+下面這行代碼會被執行, 因爲變量 `@books`被渲染在了view中。
 
 ```
 #controller:
@@ -515,68 +515,68 @@ end
 
 ### count
 
-用来计算某个查询的数量，例如：
+用來計算某個查詢的數量，例如：
 
 ```
 Book.where('title like ?', '3%').count
 ```
 
-对应的SQL：
+對應的SQL：
 ```
 SELECT COUNT(*) FROM `books` WHERE (title like '3%')
 ```
 
-结果是
+結果是
 
 ```
 => 1
 ```
 
-### group 与 having
+### group 與 having
 
-这类聚合函数的使用也很简单，就不赘述了。可以在官网直接看到例子。
+這類聚合函數的使用也很簡單，就不贅述了。可以在官網直接看到例子。
 
 https://guides.rubyonrails.org/active_record_querying.html#group
 
-个人认为使用聚合函数时，如果SQL语句比较复杂，或者结果集比较复杂，就直接使用原生SQL来查询。
+個人認爲使用聚合函數時，如果SQL語句比較複雜，或者結果集比較複雜，就直接使用原生SQL來查詢。
 
-## 直接运行原生SQL
+## 直接運行原生SQL
 
-在某些情况下，直接运行SQL才能达到我们的目的。我们可以这样做：
+在某些情況下，直接運行SQL才能達到我們的目的。我們可以這樣做：
 
 ```
 sql = "insert into temp_orders select * from orders"
 ActiveRecord::Base.connection.execute(sql)
 ```
 
-## find 与 where 的区别
+## find 與 where 的區別
 
 find 在3.0 之前的版本用的最普遍.
-到 3.0之后,往往被where 取代.
+到 3.0之後,往往被where 取代.
 
-根据查询id 直接用 find(2).
-查询多个数据的话, 往往用where 更加合适一些.
+根據查詢id 直接用 find(2).
+查詢多個數據的話, 往往用where 更加合適一些.
 
-find 得到的都是单数
-where 得到的都是复数.
+find 得到的都是單數
+where 得到的都是複數.
 
-## 总结: 如何在Rails中实现 数据库的映射呢？
+## 總結: 如何在Rails中實現 數據庫的映射呢？
 
-Rails中声明持久层极其简单:
+Rails中聲明持久層極其簡單:
 
-如果你的表，名字叫：  teachers, 那么，就在
-app/models 目录下，新建一个rb文件：  teacher.rb
+如果你的表，名字叫：  teachers, 那麼，就在
+app/models 目錄下，新建一個rb文件：  teacher.rb
 
 ```
 class Teacher < ActiveRecord::Base
 end
 ```
 
-然后就可以在Rails框架的任意文件中调用这个 teacher了。
+然後就可以在Rails框架的任意文件中調用這個 teacher了。
 
-## 军规
+## 軍規
 
-1.Model的名字不能跟项目重名. 例如你的项目名字叫"book", 那么`config/application.rb`中一定定义了:
+1.Model的名字不能跟項目重名. 例如你的項目名字叫"book", 那麼`config/application.rb`中一定定義了:
 
 ```
 module Book
@@ -585,15 +585,15 @@ module Book
 end
 ```
 
-那么, 这个`Book`变量已经被全局范围内定义了,任何变量都不能叫做`Book`，包括Model。
+那麼, 這個`Book`變量已經被全局範圍內定義了,任何變量都不能叫做`Book`，包括Model。
 
-2.where查询中，一定要使用问号形式传递参数，这样才是安全的。例如：
+2.where查詢中，一定要使用問號形式傳遞參數，這樣纔是安全的。例如：
 
 ```
 Book.where('id = ?', 3)
 ```
 
-绝对不是：
+絕對不是：
 
 ```
 # 在controller中：
@@ -601,54 +601,54 @@ id = params[:id]
 Book.where("id = #{id}")
 ```
 
-因为在上面的代码中，变量`id`可能被恶意攻击者利用，传入参数`xx or 1=1`, 这样，生成的SQL就是一个全体查询。例如：
+因爲在上面的代碼中，變量`id`可能被惡意攻擊者利用，傳入參數`xx or 1=1`, 這樣，生成的SQL就是一個全體查詢。例如：
 
 ```
 id = "1000 or 1 = 1"
 Book.where("id = #{id}")
 ```
 
-得到的SQL语句是这样的，注意where条件中的 `or 1 = 1` 直接把前面的条件给无视掉了。
+得到的SQL語句是這樣的，注意where條件中的 `or 1 = 1` 直接把前面的條件給無視掉了。
 ```
 Book Load (0.6ms)  SELECT `books`.* FROM `books` WHERE (id = 1000 or 1 = 1)
 ```
 
-得到的结果：
+得到的結果：
 ```
 => #<ActiveRecord::Relation [
-  #<Book id: 3, name: nil, title: "1万个为什么", author: "1号作者">,
-  #<Book id: 4, name: nil, title: "2万个为什么", author: "2号作者">,
-  #<Book id: 5, name: nil, title: "3万个为什么", author: "3号作者">,
-  #<Book id: 6, name: nil, title: "4万个为什么", author: "4号作者">,
-  #<Book id: 7, name: nil, title: "5万个为什么", author: "5号作者">,
-  #<Book id: 8, name: nil, title: "6万个为什么", author: "6号作者">,
-  #<Book id: 9, name: nil, title: "7万个为什么", author: "7号作者">,
-  #<Book id: 10, name: nil, title: "8万个为什么", author: "8号作者">,
-  #<Book id: 11, name: nil, title: "9万个为什么", author: "9号作者">,
-  #<Book id: 12, name: nil, title: "10万个为什么", author: "10号作者">
+  #<Book id: 3, name: nil, title: "1萬個爲什麼", author: "1號作者">,
+  #<Book id: 4, name: nil, title: "2萬個爲什麼", author: "2號作者">,
+  #<Book id: 5, name: nil, title: "3萬個爲什麼", author: "3號作者">,
+  #<Book id: 6, name: nil, title: "4萬個爲什麼", author: "4號作者">,
+  #<Book id: 7, name: nil, title: "5萬個爲什麼", author: "5號作者">,
+  #<Book id: 8, name: nil, title: "6萬個爲什麼", author: "6號作者">,
+  #<Book id: 9, name: nil, title: "7萬個爲什麼", author: "7號作者">,
+  #<Book id: 10, name: nil, title: "8萬個爲什麼", author: "8號作者">,
+  #<Book id: 11, name: nil, title: "9萬個爲什麼", author: "9號作者">,
+  #<Book id: 12, name: nil, title: "10萬個爲什麼", author: "10號作者">
   ]>
 ```
 
-# 作业：
+# 作業：
 
-创建一个rails项目, 连接到本地的mysql， 本地mysql有个表：book，
+創建一個rails項目, 連接到本地的mysql， 本地mysql有個表：book，
 
-有两个列： title, author:
+有兩個列： title, author:
 
-1.在console下面，实现book表的增删改查。
+1.在console下面，實現book表的增刪改查。
 
-  1.1 新建一个文件, app/models/book.rb
-  1.2 操作,分别试试 book的 crud.
+  1.1 新建一個文件, app/models/book.rb
+  1.2 操作,分別試試 book的 crud.
 
-2.在Rails的action里面，实现book表的增删改查。
+2.在Rails的action裏面，實現book表的增刪改查。
 
 例如：
 
-2.1 用户访问 `/books/create_a_book`， 数据库 books表中就会出现一条记录（title: "三体", author: "大刘"），页面显示结果： “操作成功”
+2.1 用戶訪問 `/books/create_a_book`， 數據庫 books表中就會出現一條記錄（title: "三體", author: "大劉"），頁面顯示結果： “操作成功”
 
-2.2 用户访问 `/books/update_the_book`, 数据库的 books表的第一条记录，的title，就会变成： “十万个为什么”.  页面显示结果： “操作成功"
+2.2 用戶訪問 `/books/update_the_book`, 數據庫的 books表的第一條記錄，的title，就會變成： “十萬個爲什麼”.  頁面顯示結果： “操作成功"
 
-2.3 用户访问 `/books/search_the_book`, 数据库的books表，会查询：  author=大刘 的记录。页面显示结果：   找到1/0个结果。
+2.3 用戶訪問 `/books/search_the_book`, 數據庫的books表，會查詢：  author=大劉 的記錄。頁面顯示結果：   找到1/0個結果。
 
-2.4 用户访问 `/books/delete_the_book`, 会删除数据库books表中的第一条记录。 页面显示结果： “操作成功”
+2.4 用戶訪問 `/books/delete_the_book`, 會刪除數據庫books表中的第一條記錄。 頁面顯示結果： “操作成功”
 
